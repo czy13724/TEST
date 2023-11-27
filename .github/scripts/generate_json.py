@@ -24,3 +24,5 @@ def generate_json():
 
 if __name__ == "__main__":
     generate_json()
+print("Current working directory:", os.getcwd())
+print("List of files in the directory:", os.listdir())
