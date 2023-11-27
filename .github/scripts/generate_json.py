@@ -16,15 +16,11 @@ def generate_json():
             icon_data = {"name": filename, "url": raw_url}
             json_data["icons"].append(icon_data)
 
-    # Add debug output
-    print("Current working directory:", os.getcwd())
-    print("List of files in the directory:", os.listdir())
+    # Set the output path relative to the repository root
+    output_path = os.path.join(os.getcwd(), 'TEST', 'test.icons.json')
 
-    with open('icons.json', 'w') as json_file:
+    with open(output_path, 'w') as json_file:
         json.dump(json_data, json_file)
-
-    # Additional debug output
-    print("Generated JSON data:", json_data)
 
 if __name__ == "__main__":
     generate_json()
