@@ -22,9 +22,9 @@ def generate_json():
     with open(output_path, 'w') as json_file:
         json.dump(json_data, json_file)
 
-    # Save output data to an Environment File
-    with open('output.env', 'w') as env_file:
-        env_file.write(f"ICONS_JSON_PATH={output_path}")
+    # Save output data to the GITHUB_STATE environment file
+    with open(os.environ['GITHUB_STATE'], 'a') as state_file:
+        state_file.write(f"ICONS_JSON_PATH={output_path}\n")
 
 if __name__ == "__main__":
     generate_json()
