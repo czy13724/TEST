@@ -27,6 +27,13 @@ jobs:
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
-    - name: Show working directory contents
+        
+    - name: Show working directory contents (After generate_json.py)
       run: ls -R
+
+    - name: Debug file existence and content
+      run: |
+        echo "Current working directory:" $(pwd)
+        echo "List of files in the directory:" $(ls -R)
+        cat test.icons.json
 
