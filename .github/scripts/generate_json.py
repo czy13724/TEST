@@ -5,7 +5,7 @@ def generate_json():
     image_folder = 'test'
     json_data = {
         "name": "TEST图标订阅",
-        "description": "收集一些自己常用的图标，更新日期：xxx",
+        "description": "收集一些自己常用的图标",
         "icons": []
     }
 
@@ -22,10 +22,9 @@ def generate_json():
     with open(output_path, 'w') as json_file:
         json.dump(json_data, json_file)
 
-    # Additional debug output
-    print("Generated JSON data:", json_data)
-    print("Current working directory:", os.getcwd())
-    print("List of files in the directory:", os.listdir())
+    # Save output data to an Environment File
+    with open('output.env', 'w') as env_file:
+        env_file.write(f"ICONS_JSON_PATH={output_path}")
 
 if __name__ == "__main__":
     generate_json()
