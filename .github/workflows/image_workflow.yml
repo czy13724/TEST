@@ -26,7 +26,7 @@ jobs:
 
     - name: Install dotenv
       run: |
-        npm install -g dotenv-cli
+        npm install -g dotenv-cli --force
 
     - name: Generate JSON
       run: |
