@@ -28,6 +28,10 @@ jobs:
       run: |
         python .github/scripts/generate_json.py
         sleep 5
+
+    - name: Load output variables
+      run: |
+        export $(dotenv -f output.env list)
         
     - name: Show working directory contents (After generate_json.py)
       run: ls -R
