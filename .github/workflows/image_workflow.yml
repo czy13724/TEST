@@ -68,7 +68,7 @@ jobs:
     - name: Copy Artifact to Repository
       run: |
         mkdir -p cloned-repo/json
-        cp ${{ github.workspace }}/$ICONS_JSON_PATH cloned-repo/json/test.icons.json
+        cp -r ${{ github.workspace }}/$ICONS_JSON_PATH cloned-repo/json/test.icons.json
       shell: bash
 
     - name: Commit and Push Changes
