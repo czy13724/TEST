@@ -27,6 +27,7 @@ jobs:
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
+        sleep 5
         
     - name: Show working directory contents (After generate_json.py)
       run: ls -R
