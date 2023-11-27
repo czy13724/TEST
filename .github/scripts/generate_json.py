@@ -1,4 +1,3 @@
-print("Running generate_json.py")
 import os
 import json
 
@@ -24,6 +23,8 @@ def generate_json():
     with open('icons.json', 'w') as json_file:
         json.dump(json_data, json_file)
 
+    # Additional debug output
+    print("Generated JSON data:", json_data)
+
 if __name__ == "__main__":
     generate_json()
-print("Current working directory:", os.getcwd())
