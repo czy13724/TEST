@@ -36,6 +36,9 @@ jobs:
     - name: Load output variables
       run: |
         export $(dotenv -f output.env list)
+
+    - name: Save state
+      run: echo "ICONS_JSON_PATH=${ICONS_JSON_PATH}" >> $GITHUB_STATE
         
     - name: Show working directory contents (After generate_json.py)
       run: ls -R
