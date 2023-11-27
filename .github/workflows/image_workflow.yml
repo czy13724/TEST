@@ -24,6 +24,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
+    - name: Debug GitHub context
+      run: |
+        echo "GitHub Repository: ${GITHUB_REPOSITORY}"
+        echo "GitHub Workspace: ${GITHUB_WORKSPACE}"
+        echo "GitHub Token: ${GITHUB_TOKEN}"
+        echo "GitHub Actor: ${GITHUB_ACTOR}"
+        echo "GitHub Email: ${GITHUB_ACTOR}@users.noreply.github.com"
+    
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
