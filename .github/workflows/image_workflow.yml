@@ -27,3 +27,6 @@ jobs:
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
+    - name: Show working directory contents
+      run: ls -R
+
