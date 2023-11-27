@@ -16,12 +16,12 @@ def generate_json():
             icon_data = {"name": filename, "url": raw_url}
             json_data["icons"].append(icon_data)
 
-    with open('test.icons.json', 'w') as json_file:
+    # Add debug output
+    print("Current working directory:", os.getcwd())
+    print("List of files in the directory:", os.listdir())
+
+    with open('icons.json', 'w') as json_file:
         json.dump(json_data, json_file)
 
 if __name__ == "__main__":
     generate_json()
-print("Current working directory:", os.getcwd())
-json_path = 'test.icons.json'
-print("JSON file path:", json_path)
-
