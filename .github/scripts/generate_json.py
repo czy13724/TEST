@@ -1,3 +1,4 @@
+print("Running generate_json.py")
 import os
 import json
 
@@ -25,3 +26,4 @@ def generate_json():
 
 if __name__ == "__main__":
     generate_json()
+print("Current working directory:", os.getcwd())
