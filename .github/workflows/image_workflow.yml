@@ -42,13 +42,11 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const githubLib = require('@actions/github');
           const fs = require('fs');
           const path = 'test.icons.json';
           const content = fs.readFileSync(path, 'utf8');
           const base64Content = Buffer.from(content).toString('base64');
-          const octokit = githubLib.getOctokit(process.env.GITHUB_TOKEN);
-          const response = await octokit.repos.createOrUpdateFile({
+          const response = await github.repos.createOrUpdateFile({
             owner: 'czy13724',
             repo: 'TEST',
             path: path,
