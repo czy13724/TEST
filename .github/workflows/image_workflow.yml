@@ -24,57 +24,31 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Debug GitHub context
-      run: |
-        echo "GitHub Repository: ${GITHUB_REPOSITORY}"
-        echo "GitHub Workspace: ${GITHUB_WORKSPACE}"
-        echo "GitHub Token: ${GITHUB_TOKEN}"
-        echo "GitHub Actor: ${GITHUB_ACTOR}"
-        echo "GitHub Email: ${GITHUB_ACTOR}@users.noreply.github.com"
-    
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
-
-    - name: Load output variables
-      run: |
-        export $(dotenv -f output.env list)
-
-    - name: Save state
-      run: echo "ICONS_JSON_PATH=${ICONS_JSON_PATH}" >> $GITHUB_STATE
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: json-artifact
-        path: $ICONS_JSON_PATH
+        path: ${{ github.workspace }}/.github/scripts/generated_json.json
 
-    - name: Show working directory contents (After generate_json.py)
-      run: ls -R
-
-    - name: Debug file existence and content
-      run: |
-        echo "Current working directory:" $(pwd)
-        echo "List of files in the directory:" $(ls -R)
-        cat $ICONS_JSON_PATH
-
-    - name: Clone Repository for Pushing Artifact
-      run: |
-        git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        git config --local user.name "${GITHUB_ACTOR}"
-        git clone https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git cloned-repo
-      shell: bash
-
-    - name: Copy Artifact to Repository
-      run: |
-        mkdir -p cloned-repo/json
-        cp -r ${{ github.workspace }}/$ICONS_JSON_PATH cloned-repo/json/test.icons.json
-      shell: bash
-
-    - name: Commit and Push Changes
-      run: |
-        cd cloned-repo
-        git add -A
-        git commit -m "Add generated JSON file"
-        git push origin main
-      shell: bash
+    - name: Push to TEST repository
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const path = '.github/scripts/generated_json.json';
+          const content = fs.readFileSync(path, 'utf8');
+          const base64Content = Buffer.from(content).toString('base64');
+          const response = await octokit.repos.createOrUpdateFile({
+            owner: 'czy13724',
+            repo: 'TEST',
+            path: 'generated_json.json',
+            message: 'Add generated JSON file',
+            content: base64Content,
+            branch: 'main',
+          });
+          console.log(response);
