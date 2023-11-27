@@ -40,6 +40,12 @@ jobs:
     - name: Save state
       run: echo "ICONS_JSON_PATH=${ICONS_JSON_PATH}" >> $GITHUB_STATE
         
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: json-artifact
+        path: $ICONS_JSON_PATH
+    
     - name: Show working directory contents (After generate_json.py)
       run: ls -R
 
