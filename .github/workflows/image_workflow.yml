@@ -12,10 +12,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v2
 
     - name: Set up Python
-      uses: actions/setup-python@v4.7.1
+      uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
@@ -24,14 +24,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Install dotenv
-      run: |
-        npm install -g dotenv-cli --force
-
     - name: Generate JSON
       run: |
         python .github/scripts/generate_json.py
-        sleep 5
 
     - name: Load output variables
       run: |
@@ -39,13 +34,13 @@ jobs:
 
     - name: Save state
       run: echo "ICONS_JSON_PATH=${ICONS_JSON_PATH}" >> $GITHUB_STATE
-        
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: json-artifact
         path: $ICONS_JSON_PATH
-    
+
     - name: Show working directory contents (After generate_json.py)
       run: ls -R
 
@@ -53,8 +48,25 @@ jobs:
       run: |
         echo "Current working directory:" $(pwd)
         echo "List of files in the directory:" $(ls -R)
-        cat test.icons.json
-        
-    - name: Output JSON raw link
-      run: echo "::set-output name=json_raw_link::https://raw.githubusercontent.com/${{ github.repository }}/main/test.icons.json"
+        cat $ICONS_JSON_PATH
 
+    - name: Clone Repository for Pushing Artifact
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git clone ${{ github.repository }}.git cloned-repo
+      shell: bash
+
+    - name: Copy Artifact to Repository
+      run: |
+        mkdir -p cloned-repo/.github/workflows
+        cp -r ${{ github.workspace }}/$ICONS_JSON_PATH cloned-repo/.github/workflows
+      shell: bash
+
+    - name: Commit and Push Changes
+      run: |
+        cd cloned-repo
+        git add -A
+        git commit -m "Add generated JSON file"
+        git push origin main
+      shell: bash
