@@ -36,4 +36,7 @@ jobs:
         echo "Current working directory:" $(pwd)
         echo "List of files in the directory:" $(ls -R)
         cat test.icons.json
+        
+    - name: Output JSON raw link
+      run: echo "::set-output name=json_raw_link::https://raw.githubusercontent.com/${{ github.repository }}/main/test.icons.json"
 
