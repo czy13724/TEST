@@ -40,7 +40,7 @@ jobs:
     - name: Push to TEST Repository
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const gh = require('@actions/github');
           const fs = require('fs');
