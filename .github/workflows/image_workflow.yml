@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'test/*.png'
+  workflow_dispatch:
 
 jobs:
   generate_json:
