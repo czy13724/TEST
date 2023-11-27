@@ -22,4 +22,6 @@ def generate_json():
 if __name__ == "__main__":
     generate_json()
 print("Current working directory:", os.getcwd())
-print("List of files in the directory:", os.listdir())
+json_path = 'test.icons.json'
+print("JSON file path:", json_path)
+
