@@ -9,27 +9,29 @@
 #### 功能
 基于github aciton自动生成Quantmult X图标订阅。用于将对应仓库所有的图标raw整合为一个json文件，以便Quantumult X，Surge，Loon等软件的图标订阅导入。
 #### 使用方法：
-1. 新建一个仓库作为图床，并新建一个文件夹用于存储图片，可随意命名（~~不建议使用中文~~）。   
+1. 新建一个仓库(以下以TEST为例)作为图床，并新建一个文件夹(以下以test为例)用于存储图片，可随意命名（~~不建议使用中文~~）。   
 2. 点击`action`并创建一个工作流（workflow）,将下方代码放入并按照说明进行替换,并在`.github`该文件夹下创建`scripts`文件夹, 将generate_image_json.py放置到这里。
 #### 详细教学
 下面是一个从0-1创建仓库、设置 GitHub Actions 工作流、并上传图片生成 JSON 的详细教程。
+
 注意⚠️：下方所有的TEST和test需要全部替换，以下不再作出说明。TEST为仓库名称，test为该TEST仓库下放置图标的文件夹名称。
 
 请按照以下步骤进行操作：
 
 1. 创建仓库
+
 首先，登录 GitHub 并点击右上角的 "+" 按钮，选择 "New repository"或"Create Repository"
 
 输入仓库名称为 TEST，添加一个简短的描述，并选择 "Public"（公共仓库）或 "Private"（私有仓库），然后点击 "Create repository"。
 
-2. 克隆仓库到本地
+2. 克隆仓库到本地(此处以本地拉取仓库为例；你还可以在云端自动创建，如选用云端方式则跳过这一步从下方第三步开始)
 在你的本地机器上打开终端（或 Git Bash），执行以下命令：
 ```shell
 #请替换 your-username 为你的 GitHub 用户名。
 git clone https://github.com/your-username/TEST.git
 cd TEST
 ```
-3. 创建 test 文件夹和图片文件
+3. 创建 test 文件夹和上传图片文件
 在克隆的仓库目录下创建一个名为 test 的文件夹，并在其中上传一些图片文件。你可以通过拖拽文件到 GitHub 网页界面上或使用命令行方式上传文件。
 
 4. 创建工作流配置文件
