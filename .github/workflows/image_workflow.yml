@@ -29,7 +29,7 @@ jobs:
 
     - name: Generate JSON
       run: |
-        python .github/scripts/generate_json.py
+        python .github/scripts/generate_image_json.py
 
     - name: Load output variables
       run: |
