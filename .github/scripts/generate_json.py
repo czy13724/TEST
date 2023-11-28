@@ -5,7 +5,7 @@ def generate_json():
     image_folder = 'test'
     json_data = {
         "name": "TEST图标订阅",
-        "description": "收集一些自己常用的图标",
+        "description": "收集一些自己常用的图标，更新日期：xxx",
         "icons": []
     }
 
@@ -19,8 +19,8 @@ def generate_json():
     # Set the output path relative to the repository root
     output_path = os.path.join(os.getcwd(), 'test.icons.json')
 
-    with open(output_path, 'w') as json_file:
-        json.dump(json_data, json_file)
+    with open(output_path, 'w', encoding='utf-8') as json_file:
+        json.dump(json_data, json_file, ensure_ascii=False)
 
     # Save output data to the GITHUB_STATE environment file
     with open(os.environ['GITHUB_STATE'], 'a') as state_file:
