@@ -20,7 +20,7 @@ def generate_json():
     output_path = os.path.join(os.getcwd(), 'test.icons.json')
 
     with open(output_path, 'w', encoding='utf-8') as json_file:
-        json.dump(json_data, json_file, ensure_ascii=False)
+        json.dump(json_data, json_file, ensure_ascii=False, indent=2)
 
     # Save output data to the GITHUB_STATE environment file
     with open(os.environ['GITHUB_STATE'], 'a') as state_file:
