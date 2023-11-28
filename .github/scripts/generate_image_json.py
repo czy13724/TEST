@@ -5,7 +5,7 @@ def generate_json():
     image_folder = 'test'
     json_data = {
         "name": "TEST图标订阅",
-        "description": "收集一些自己常用的图标，更新日期：xxx",
+        "description": "收集一些自己常用的图标",
         "icons": []
     }
 
