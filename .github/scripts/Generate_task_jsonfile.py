@@ -5,12 +5,12 @@ import json
 from random import randint
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "TEST", "TEST")
+repo_root = os.path.join(os.getcwd(), "..")
 
 # 文件夹路径，包含上传的 JavaScript 和配置文件
-scripts_folder = os.path.join(repo_root, "javascript")
-image_folder = os.path.join(repo_root, "image")
-conf_folder = os.path.join(repo_root, "conf")
+scripts_folder = os.path.join(repo_root, "TEST", "javascript")
+image_folder = os.path.join(repo_root, "TEST", "image")
+conf_folder = os.path.join(repo_root, "TEST", "conf")
 
 def fetch_script(script_url):
     response = requests.get(script_url)
