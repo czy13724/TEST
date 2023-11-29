@@ -1,6 +1,12 @@
 import os
 import requests
 
+script_folder = os.path.dirname(os.path.abspath(__file__))
+print(f"Script folder: {script_folder}")
+
+# 之后再执行文件的其他部分
+
+
 # GitHub 用户名
 github_username = "czy13724"
 
