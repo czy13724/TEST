@@ -6,13 +6,13 @@ on:
       - '.github/scripts/**'
       - 'javascript/**'
       - 'conf/**'
-      - 'test/**'
+      - 'image/**'
   pull_request:
     paths:
       - '.github/scripts/**'
       - 'javascript/**'
       - 'conf/**'
-      - 'test/**'
+      - 'image/**'
   workflow_dispatch:
 
 jobs:
