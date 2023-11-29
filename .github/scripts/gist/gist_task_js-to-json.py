@@ -100,15 +100,20 @@ def generate_task_json(gist_info):
             task_entry["config"] += f"{cron_expression} {raw_url}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
 
             # 判断是否有配置文件，决定是否添加 addons 字段
-            if js_file.endswith(".js"):
-                # 如果是 JavaScript 文件，则添加 addons 字段
-                task_entry["addons"] = f"{raw_url}, tag={js_file[:-3]}"
+            if conf_files:
+        # 如果有配置文件，则添加 addons 字段
+                conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
+                task_entry["addons"] = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
+
+            # 判断 addons 是否为空，若为空则移除 addons 字段
+            if not task_entry["addons"]:
+                task_entry.pop("addons")
 
             # 将 task_entry 添加到 result 字典中
             result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
-    output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
+    output_file_path = os.path.join(os.getcwd(), "testgist.gallery.json")
     with open(output_file_path, "w", encoding="utf-8") as output_file:
         json.dump(result, output_file, indent=4, ensure_ascii=False)
 
