@@ -26,8 +26,8 @@ def get_private_gist_id(username, token):
         print(f"Failed to fetch Gists: {response.text}")
         return
 
-print(f"GitHub Token: {github_token}")
-print(f"Fetching Gists from: {gists_url}")
+    print(f"GitHub Token: {github_token}")
+    print(f"Fetching Gists from: {gists_url}")
     
     gists = response.json()
 
