@@ -10,14 +10,6 @@ github_username = "czy13724"
 # Gist Token
 gist_token = "GETGISTID"
 
-# 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "..")
-
-# 文件夹路径，包含上传的 JavaScript 和配置文件
-scripts_folder = os.path.join(repo_root, "TEST", "javascript")
-image_folder = os.path.join(repo_root, "TEST", "image")
-conf_folder = os.path.join(repo_root, "TEST", "conf")
-
 def fetch_script(script_url):
     response = requests.get(script_url)
     return response.text if response.status_code == 200 else None
@@ -39,35 +31,35 @@ import requests
         print(f"Executing script:\n{script_content}")
         exec(script_content, globals(), {})
 
-def get_private_gist_info(username, token):
+def get_gist_info(username, token):
     headers = {
         "Authorization": f"token {token}"
     }
 
-    # 获取用户的 Gists 列表
-    gists_url = f"https://api.github.com/users/{username}/gists"
-    response = requests.get(gists_url, headers=headers)
+    # 从文件中加载 Gist ID
+    with open("gist_ids.txt", "r") as id_file:
+        gist_ids = [line.strip() for line in id_file]
 
-    if response.status_code != 200:
-        print(f"Failed to fetch Gists: {response.text}")
-        return
-
-    gists = response.json()
     gist_info = {}
 
-    # 遍历 Gists
-    for gist in gists:
-        gist_id = gist["id"]
-        gist_files = gist["files"]
+    # 遍历 Gist ID
+    for gist_id in gist_ids:
+        # 获取 Gist 信息
+        gist_url = f"https://api.github.com/gists/{gist_id}"
+        response = requests.get(gist_url, headers=headers)
 
-        # 遍历 Gist 中的文件
-        for filename, file_info in gist_files.items():
-            if filename.endswith((".js", ".conf")):
-                # 文件名作为字典的 key，值为包含 Raw URL 和 Gist ID 的元组
-                gist_info[filename] = {
-                    "raw_url": file_info["raw_url"],
-                    "gist_id": gist_id
-                }
+        if response.status_code == 200:
+            gist_data = response.json()
+            gist_files = gist_data["files"]
+
+            # 遍历 Gist 中的文件
+            for filename, file_info in gist_files.items():
+                if filename.endswith((".js", ".conf")):
+                    # 文件名作为字典的 key，值为包含 Raw URL 和 Gist ID 的元组
+                    gist_info[filename] = {
+                        "raw_url": file_info["raw_url"],
+                        "gist_id": gist_id
+                    }
 
     return gist_info
 
@@ -79,7 +71,7 @@ def generate_task_json(gist_info):
     }
 
     # 遍历 JavaScript 文件
-    js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
+    js_files = [file for file in os.listdir("TEST/javascript") if file.endswith(".js")]
 
     for js_file in js_files:
         # 获取 Gist 信息
@@ -100,20 +92,15 @@ def generate_task_json(gist_info):
             task_entry["config"] += f"{cron_expression} {raw_url}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
 
             # 判断是否有配置文件，决定是否添加 addons 字段
-            if conf_files:
-        # 如果有配置文件，则添加 addons 字段
-                conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-                task_entry["addons"] = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
-
-            # 判断 addons 是否为空，若为空则移除 addons 字段
-            if not task_entry["addons"]:
-                task_entry.pop("addons")
+            if js_file.endswith(".js"):
+                # 如果是 JavaScript 文件，则添加 addons 字段
+                task_entry["addons"] = f"{raw_url}, tag={js_file[:-3]}"
 
             # 将 task_entry 添加到 result 字典中
             result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
-    output_file_path = os.path.join(os.getcwd(), "testgist.gallery.json")
+    output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
     with open(output_file_path, "w", encoding="utf-8") as output_file:
         json.dump(result, output_file, indent=4, ensure_ascii=False)
 
@@ -122,8 +109,8 @@ def generate_task_json(gist_info):
     print(f"File path: {output_file_path}")
 
 if __name__ == "__main__":
-    # 获取私有 Gist 信息
-    gist_info = get_private_gist_info(github_username, gist_token)
+    # 获取 Gist 信息
+    gist_info = get_gist_info(github_username, gist_token)
 
     # 生成任务 JSON
     generate_task_json(gist_info)
