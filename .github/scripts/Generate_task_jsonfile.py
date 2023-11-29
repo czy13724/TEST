@@ -64,7 +64,7 @@ def generate_task_json():
             task_entry["addons"] = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
 
     # 将 task_entry 添加到 result 字典中
-    result["task"].append(task_entry)
+        result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
     output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
