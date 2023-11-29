@@ -63,6 +63,10 @@ def generate_task_json():
             conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
             task_entry["addons"] = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
 
+        # 判断 addons 是否为空，若为空则移除 addons 字段
+        if not task_entry["addons"]:
+            task_entry.pop("addons")
+
     # 将 task_entry 添加到 result 字典中
         result["task"].append(task_entry)
 
