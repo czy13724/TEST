@@ -3,8 +3,6 @@ import requests
 
 script_folder = os.path.dirname(os.path.abspath(__file__))
 print(f"Script folder: {script_folder}")
-print(f"GitHub Token: {github_token}")
-print(f"Fetching Gists from: {gists_url}")
 
 # 之后再执行文件的其他部分
 
@@ -28,6 +26,9 @@ def get_private_gist_id(username, token):
         print(f"Failed to fetch Gists: {response.text}")
         return
 
+print(f"GitHub Token: {github_token}")
+print(f"Fetching Gists from: {gists_url}")
+    
     gists = response.json()
 
     # 遍历 Gists，并将每个 Gist 的 ID 写入文件
