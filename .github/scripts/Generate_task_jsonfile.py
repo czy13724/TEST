@@ -42,11 +42,11 @@ def generate_task_json():
         "task": []
     }
     # 遍历 JavaScript 文件
-    js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
+js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
 
-    for js_file in js_files:
-        pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
-        conf_files = [conf_file for conf_file in os.listdir(conf_folder) if pattern.match(conf_file)]
+for js_file in js_files:
+    pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
+    conf_files = [conf_file for conf_file in os.listdir(conf_folder) if pattern.match(conf_file)]
 
     # 创建一个 task_entry 字典，用于表示每个脚本的信息
     task_entry = {"config": "", "addons": ""}
@@ -55,20 +55,15 @@ def generate_task_json():
     cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
 
     # 添加 cron 表达式到 task_entry
-    task_entry["config"] += f"{cron_expression}\n"
-
-    # 添加 js 文件的链接、tag、img_url 和 enabled 到 task_entry
-    task_entry["config"] += f"https://raw.githubusercontent.com/czy13724/TEST/main/javascript/{js_file}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
+    task_entry["config"] += f"{cron_expression} https://raw.githubusercontent.com/czy13724/TEST/main/javascript/{js_file}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
 
     # 判断是否有配置文件，决定是否添加 addons 字段
     if conf_files:
         # 如果有配置文件，则添加 addons 字段
-        task_entry["addons"] = [
-            f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
-            for conf_file in conf_files
-        ]
+        conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
+        task_entry["addons"] = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag={js_file[:-3]}"
 
-    # 将 task_entry 添加到 result["task"] 列表中
+    # 将 task_entry 添加到 result 字典中
     result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
