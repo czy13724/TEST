@@ -1,39 +1,47 @@
 import requests
 import json
+import os
 
-def get_all_gists(token):
-    headers = {"Authorization": f"token {token}"}
-    response = requests.get("https://api.github.com/gists", headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    return None
+# GitHub 用户名
+github_username = "czy13724"
 
-def extract_gist_info(gist_data):
-    result = []
-    for gist in gist_data:
+# Gist Token
+gist_token = "GETGISTID"
+
+def get_private_gist_info(username, token):
+    headers = {
+        "Authorization": f"token {token}"
+    }
+
+    # 获取用户的 Gists 列表
+    gists_url = f"https://api.github.com/users/{username}/gists"
+    response = requests.get(gists_url, headers=headers)
+
+    if response.status_code != 200:
+        print(f"Failed to fetch Gists: {response.text}")
+        return
+
+    gists = response.json()
+
+    # 遍历 Gists
+    for gist in gists:
         gist_id = gist["id"]
-        files = gist["files"]
-        for file_name, file_info in files.items():
-            if file_name.endswith((".js", ".conf")):
-                raw_url = file_info["raw_url"]
-                result.append({"file_name": file_name, "raw_url": raw_url, "gist_id": gist_id})
-    return result
+        gist_files = gist["files"]
 
-def main():
-    # 替换为你的 Gist token
-    gist_token = "GETGISTID"
-    
-    gist_data = get_all_gists(gist_token)
-    
-    if gist_data:
-        extracted_info = extract_gist_info(gist_data)
-        for info in extracted_info:
-            print(f"Gist ID: {info['gist_id']}")
-            print(f"File Name: {info['file_name']}")
-            print(f"Raw URL: {info['raw_url']}")
-            print("=" * 30)
-    else:
-        print("Failed to fetch Gists.")
+        # 遍历 Gist 中的文件
+        for filename, file_info in gist_files.items():
+            if filename.endswith((".js", ".conf")):
+                # 文件名
+                print(f"Filename: {filename}")
+
+                # Raw 链接
+                raw_url = file_info["raw_url"]
+                print(f"Raw URL: {raw_url}")
+
+                # Gist ID
+                print(f"Gist ID: {gist_id}")
+
+                print("-" * 30)
 
 if __name__ == "__main__":
-    main()
+    get_private_gist_info(github_username, gist_token)
