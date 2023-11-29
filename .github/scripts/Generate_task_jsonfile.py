@@ -5,7 +5,7 @@ import json
 from random import randint
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "TEST")
+repo_root = os.path.join(os.getcwd(), "TEST", "TEST")
 
 # 文件夹路径，包含上传的 JavaScript 和配置文件
 scripts_folder = os.path.join(repo_root, "javascript")
