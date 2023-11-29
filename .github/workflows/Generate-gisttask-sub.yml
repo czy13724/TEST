@@ -1,0 +1,37 @@
+name: Generate-gisttask-sub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  generate-task-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Get Private Gist ID
+      run: python .github/scripts/gist/get_gist_id.py
+
+    - name: Generate Task JSON
+      run: python .github/scripts/gist/gist_task_js-to-json.py
+
+    - name: Upload JSON to Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: gallery-json
+        path: ${{ github.workspace }}/test.gallery.json
