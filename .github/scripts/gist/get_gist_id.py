@@ -3,6 +3,8 @@ import requests
 
 script_folder = os.path.dirname(os.path.abspath(__file__))
 print(f"Script folder: {script_folder}")
+print(f"GitHub Token: {github_token}")
+print(f"Fetching Gists from: {gists_url}")
 
 # 之后再执行文件的其他部分
 
