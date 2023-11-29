@@ -42,11 +42,11 @@ def generate_task_json():
         "task": []
     }
     # 遍历 JavaScript 文件
-js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
+    js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
 
-for js_file in js_files:
-    pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
-    conf_files = [conf_file for conf_file in os.listdir(conf_folder) if pattern.match(conf_file)]
+    for js_file in js_files:
+        pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
+        conf_files = [conf_file for conf_file in os.listdir(conf_folder) if pattern.match(conf_file)]
 
     # 创建一个 task_entry 字典，用于表示每个脚本的信息
     task_entry = {"config": "", "addons": ""}
