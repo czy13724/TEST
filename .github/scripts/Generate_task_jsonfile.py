@@ -57,8 +57,9 @@ for js_file in js_files:
 
     if matching_conf_files:
         conf_file = matching_conf_files[0]
+        conf_url = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}"
         result["addons"] += f"{conf_file}的conf链接，{conf_file}的tag"
-        execute_script("file://" + os.path.join(conf_folder, conf_file))
+        execute_script(conf_url)
 
     # 只在存在 addons 时写入 JSON
     if result["addons"]:
