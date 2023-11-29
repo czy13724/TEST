@@ -34,8 +34,8 @@ import requests
         print(f"Executing script:\n{script_content}")
         exec(script_content, globals(), {})
 
+# 创建一个 result 字典用于存放任务信息
 def generate_task_json():
-    # 创建一个 result 字典用于存放任务信息
     result = {
         "name": "Levi任务合集订阅",
         "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
