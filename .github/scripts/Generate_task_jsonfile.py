@@ -72,9 +72,9 @@ def generate_task_json():
         result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
-    output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
-    with open(output_file_path, "w") as output_file:
-        json.dump(result, output_file, indent=4)
+    output_file_path = os.path.join(repo_root, "test.gallery.json")
+    with open(output_file_path, "w", encoding="utf-8") as output_file:
+        json.dump(result, output_file, indent=4, ensure_ascii=False)
 
     # 打印文件是否存在以及路径
     print(f"File exists: {os.path.exists(output_file_path)}")
