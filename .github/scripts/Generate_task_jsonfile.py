@@ -53,21 +53,20 @@ for js_file in js_files:
         "addons": "",
     }
 
-    result["config"] += f"{js_file}的cron表达式\n{js_file}的js链接，{js_file}的tag"
-
-    # 尝试获取图片链接
-    img_url = fetch_image_url(os.path.splitext(js_file)[0], image_folder)
-    if img_url:
-        result["config"] += f"\n{img_url}"
-
-    result["config"] += "\nenabled=false"
+    result["config"] += f"{js_file}的cron表达式\n{js_file}的js链接，{js_file}的tag=https://raw.githubusercontent.com/czy13724/TEST/main/test/{os.path.splitext(js_file)[0]}.png, enabled=false"
 
     if matching_conf_files:
         conf_file = matching_conf_files[0]
         result["addons"] += f"{conf_file}的conf链接，{conf_file}的tag"
         execute_script("file://" + os.path.join(conf_folder, conf_file))
 
-    results["task"].append(result)
+    # 只在存在 addons 时写入 JSON
+    if result["addons"]:
+        results["task"].append(result)
+    else:
+        # 如果不存在 addons，只写入 config 部分
+        result.pop("addons")
+        results["task"].append(result)
 
 # 将结果写入 JSON 文件
 output_file = os.path.join(repo_root, "test.gallery.json")
