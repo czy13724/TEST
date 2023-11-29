@@ -1,84 +1,76 @@
 import os
+import re
 import requests
 import json
-import re
+from random import randint
+
+# 仓库根目录路径，包含上传的 JavaScript 和配置文件
+repo_root = os.path.join(os.getcwd(), "TEST")
+
+# 文件夹路径，包含上传的 JavaScript 和配置文件
+scripts_folder = os.path.join(repo_root, "javascript")
+image_folder = os.path.join(repo_root, "image")
+conf_folder = os.path.join(repo_root, "conf")
 
 def fetch_script(script_url):
     response = requests.get(script_url)
-    if response.status_code == 200:
-        return response.text
-    else:
-        print(f"Failed to fetch script from {script_url}")
-        return None
-
-def fetch_image_url(script_name, image_folder):
-    image_file = f"{script_name}.png"  # 假设图片文件的格式为png
-    image_path = os.path.join(image_folder, image_file)
-
-    if os.path.exists(image_path):
-        return f"https://raw.githubusercontent.com/czy13724/TEST/main/image/{image_file}"
-    else:
-        print(f"Image file {image_file} not found in the image folder.")
-        return None
+    return response.text if response.status_code == 200 else None
 
 def execute_script(script_url):
     script_content = fetch_script(script_url)
     if script_content:
         # 替换URL为注释，避免语法错误
         script_content = script_content.replace("https://", "# https://")
-        
+
         # 在脚本开头添加导入语句
-        script_content = f"import h5\n{script_content}"
+        script_content = f"""
+import re
+import requests
+
+{script_content}
+"""
 
         print(f"Executing script:\n{script_content}")
         exec(script_content, globals(), {})
 
-# 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "..")
+def generate_task_json():
+    result = []
 
-# 文件夹路径，包含上传的 JavaScript 和配置文件
-scripts_folder = os.path.join(repo_root, "TEST", "javascript")
-image_folder = os.path.join(repo_root, "TEST", "image")
-conf_folder = os.path.join(repo_root, "TEST", "conf")
+    # 遍历 JavaScript 文件
+    js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
 
-# 获取文件夹中所有文件
-js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
+    for js_file in js_files:
+        # 通过正则匹配对应的配置文件
+        pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
+        conf_files = [file for file in os.listdir(conf_folder) if pattern.match(file)]
 
-# 匹配相似的 .js 和 .conf 文件，并整合
-results = {
-    "name": "Levi任务合集订阅",
-    "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
-    "task": []
-}
+        if conf_files:
+            # 如果有对应的配置文件，则生成包含 config 和 addons 的信息
+            for conf_file in conf_files:
+                # 随机生成 cron 表达式，每天随机一个小时触发
+                cron_expression = f"{randint(0, 23)} {randint(0, 59)} * * *"
 
-for js_file in js_files:
-    pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
-    matching_conf_files = [file for file in os.listdir(conf_folder) if pattern.match(file)]
+                # 构建配置信息
+                config_info = {
+                    "config": f"{cron_expression} https://raw.githubusercontent.com/czy13724/TEST/main/javascript/{js_file}, tag=image_url_here, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file.replace('.js', '.png')}, enabled=false",
+                    "addons": f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}, tag=image_url_here"
+                }
+                result.append(config_info)
+        else:
+            # 如果没有对应的配置文件，则生成仅包含 config 的信息
+            # 随机生成 cron 表达式，每天随机一个小时触发
+            cron_expression = f"{randint(0, 23)} {randint(0, 59)} * * *"
 
-    result = {
-        "config": "",
-        "addons": "",
-    }
+            config_info = {
+                "config": f"{cron_expression} https://raw.githubusercontent.com/czy13724/TEST/main/javascript/{js_file}, tag=image_url_here, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file.replace('.js', '.png')}, enabled=false",
+                "addons": ""
+            }
+            result.append(config_info)
 
-    result["config"] += f"{js_file}的cron表达式\n{js_file}的js链接，{js_file}的tag=https://raw.githubusercontent.com/czy13724/TEST/main/image/{os.path.splitext(js_file)[0]}.png, enabled=false"
+    # 将结果输出到 JSON 文件
+    output_file_path = os.path.join(repo_root, "test.gallery.json")
+    with open(output_file_path, "w") as output_file:
+        json.dump(result, output_file, indent=4)
 
-    if matching_conf_files:
-        conf_file = matching_conf_files[0]
-        conf_url = f"https://raw.githubusercontent.com/czy13724/TEST/main/conf/{conf_file}"
-        result["addons"] += f"{conf_file}的conf链接，{conf_file}的tag"
-        execute_script(conf_url)
-
-    # 只在存在 addons 时写入 JSON
-    if result["addons"]:
-        results["task"].append(result)
-    else:
-        # 如果不存在 addons，只写入 config 部分
-        result.pop("addons")
-        results["task"].append(result)
-
-# 将结果写入 JSON 文件
-output_file = os.path.join(repo_root, "TEST", "test.gallery.json")
-with open(output_file, 'w') as json_file:
-    json.dump(results, json_file, indent=2)
-
-print(f"脚本执行完成，并将结果保存到 {output_file} 文件中。")
+if __name__ == "__main__":
+    generate_task_json()
