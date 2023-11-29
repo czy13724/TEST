@@ -37,7 +37,7 @@ def get_gist_info(username, token):
     }
 
     # 从文件中加载 Gist ID
-    with open("gist_ids.txt", "r") as id_file:
+    with open(os.path.join(os.getcwd(), "gist_ids.txt"), "r") as id_file:
         gist_ids = [line.strip() for line in id_file]
 
     gist_info = {}
