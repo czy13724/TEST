@@ -50,15 +50,17 @@ jobs:
         
     - name: Push to TEST Repository
       run: |
+        set -x
         git config user.name "${{ github.actor }}"
         git config user.email "${{ github.actor }}@users.noreply.github.com"
         if git diff --exit-code; then
           echo "No changes to commit"
         else
-        git add .
-        git commit -m "Add generated task JSON file"
-        git push origin HEAD:main
+          git add .
+          git commit -m "Add generated task JSON file"
+          git push origin HEAD:main
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
