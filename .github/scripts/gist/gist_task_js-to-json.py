@@ -36,6 +36,10 @@ def get_gist_info(username, token):
         "Authorization": f"token {token}"
     }
 
+file_path = os.path.join(os.getcwd(), "gist_ids.txt")
+print(f"Trying to open file: {file_path}")
+with open(file_path, "r") as id_file:
+    
     # 从文件中加载 Gist ID
     with open(os.path.join(os.getcwd(), "gist_ids.txt"), "r") as id_file:
         gist_ids = [line.strip() for line in id_file]
