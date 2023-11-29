@@ -27,12 +27,12 @@ def execute_script(script_url):
         exec(script_content)
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "TEST")
+repo_root = os.path.join(os.getcwd(), "..")
 
 # 文件夹路径，包含上传的 JavaScript 和配置文件
-scripts_folder = os.path.join(repo_root, "javascript")
-image_folder = os.path.join(repo_root, "image")
-conf_folder = os.path.join(repo_root, "conf")
+scripts_folder = os.path.join(repo_root, "TEST", "javascript")
+image_folder = os.path.join(repo_root, "TEST", "image")
+conf_folder = os.path.join(repo_root, "TEST", "conf")
 
 # 获取文件夹中所有文件
 js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
@@ -69,7 +69,7 @@ for js_file in js_files:
         results["task"].append(result)
 
 # 将结果写入 JSON 文件
-output_file = os.path.join(repo_root, "test.gallery.json")
+output_file = os.path.join(repo_root, "TEST", "test.gallery.json")
 with open(output_file, 'w') as json_file:
     json.dump(results, json_file, indent=2)
 
