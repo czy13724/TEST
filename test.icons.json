@@ -1,6 +1,6 @@
 {
   "name": "TEST图标订阅",
-  "description": "收集一些自己常用的图标，更新日期：xxx",
+  "description": "收集一些自己常用的图标",
   "icons": [
     {
       "name": "sp.png",
@@ -9,6 +9,10 @@
     {
       "name": "Japan.png",
       "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/Japan.png"
+    },
+    {
+      "name": "youzan.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/youzan.png"
     },
     {
       "name": "ru.png",
