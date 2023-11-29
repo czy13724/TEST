@@ -24,6 +24,8 @@ def fetch_image_url(script_name, image_folder):
 def execute_script(script_url):
     script_content = fetch_script(script_url)
     if script_content:
+        # 替换URL为注释，避免语法错误
+        script_content = script_content.replace("https://", "# https://")
         exec(script_content)
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
