@@ -16,7 +16,7 @@ def fetch_image_url(script_name, image_folder):
     image_path = os.path.join(image_folder, image_file)
 
     if os.path.exists(image_path):
-        return f"https://raw.githubusercontent.com/czy13724/TEST/main/test/{image_file}"
+        return f"https://raw.githubusercontent.com/czy13724/TEST/main/image/{image_file}"
     else:
         print(f"Image file {image_file} not found in the image folder.")
         return None
@@ -31,7 +31,7 @@ repo_root = os.path.join(os.getcwd(), "TEST")
 
 # 文件夹路径，包含上传的 JavaScript 和配置文件
 scripts_folder = os.path.join(repo_root, "javascript")
-image_folder = os.path.join(repo_root, "test")
+image_folder = os.path.join(repo_root, "image")
 conf_folder = os.path.join(repo_root, "conf")
 
 # 获取文件夹中所有文件
@@ -53,7 +53,7 @@ for js_file in js_files:
         "addons": "",
     }
 
-    result["config"] += f"{js_file}的cron表达式\n{js_file}的js链接，{js_file}的tag=https://raw.githubusercontent.com/czy13724/TEST/main/test/{os.path.splitext(js_file)[0]}.png, enabled=false"
+    result["config"] += f"{js_file}的cron表达式\n{js_file}的js链接，{js_file}的tag=https://raw.githubusercontent.com/czy13724/TEST/main/image/{os.path.splitext(js_file)[0]}.png, enabled=false"
 
     if matching_conf_files:
         conf_file = matching_conf_files[0]
