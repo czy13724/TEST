@@ -34,4 +34,14 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: gallery-json
-        path: ${{ github.workspace }}/test.gallery.json
+        path: ${{ github.workspace }}/taskgist.gallery.json
+
+    - name: Push to TEST Repository
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git add .
+        git commit -m "Add generated taskgistJSON file"
+        git push origin HEAD:main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
