@@ -2,6 +2,7 @@ import os
 import re
 import requests
 import json
+import random
 from random import randint
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
