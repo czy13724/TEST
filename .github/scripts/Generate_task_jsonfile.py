@@ -27,6 +27,8 @@ def execute_script(script_url):
     if script_content:
         # 替换URL为注释，避免语法错误
         script_content = script_content.replace("https://", "# https://")
+        # 手动导入模块，避免 NameError
+        globals()["h5"] = __import__("h5")
         print(f"Executing script:\n{script_content}")
         exec(script_content, globals(), {})
 
