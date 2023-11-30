@@ -58,12 +58,12 @@ def generate_task_json():
                 # 寻找相似的配置文件名
                 similar_conf_file = max(files.values(), key=lambda conf_file: similar(file_name_without_extension, os.path.splitext(conf_file["filename"])[0]))
 
-                if similar_conf_file:
-                    # 如果有相似的配置文件，则添加 addons 字段
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file['filename']}, tag={file_name_without_extension}"
-
                 # 使用相似度匹配算法寻找相似的图片文件名
                 similar_images = [image for image in os.listdir("image") if file_name_without_extension in image]
+
+                if similar_conf_file and similar_conf_file["filename"].endswith(".conf"):
+                    # 如果有相似的配置文件，则添加 addons 字段
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
