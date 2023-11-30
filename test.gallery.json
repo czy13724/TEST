@@ -1,0 +1,22 @@
+{
+    "name": "Levi Tasks Collection",
+    "description": "For removal of infringement, please contact @PMLevibot. Telegram bot: https://t.me/PMLevibot",
+    "task": [
+        {
+            "config": "38 12 * * * https://gist.githubusercontent.com/czy13724/Gist ID: c42c38ca666d8f41131eccb446d7245b\nGist ID: 935091591c15eac513417061af01dd17\nGist ID: 06210c9347ba110552d1a1542e3edf4b\nGist ID: c867915d64ffd427c97acba4d51e0dca\nGist ID: e79c20cf00a5d6d8c126122ad61eca28\nGist ID: 08fe53f61c927a6f7d1abad4c0592d9d\nGist ID: 4ef40cbb073c500cbb499da55267f11c\nGist ID: 324147f8903708a14588c17fd93e8a3f\nGist ID: eaf4f182360886e9d4d2a00d3ac2fde8\nGist ID: 2436ebf8947fea7e6ddb5008d0c2744c\nGist ID: e5caaa812632bfb15ab31c7953976b26\nGist ID: 99672c67f9539c3e73a02df0fc297a2f\nGist ID: fa6d3a1b095ad3f6478aa4c1ffae0a67/raw/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false",
+            "addons": ""
+        },
+        {
+            "config": "25 16 * * * https://gist.githubusercontent.com/czy13724/Gist ID: c42c38ca666d8f41131eccb446d7245b\nGist ID: 935091591c15eac513417061af01dd17\nGist ID: 06210c9347ba110552d1a1542e3edf4b\nGist ID: c867915d64ffd427c97acba4d51e0dca\nGist ID: e79c20cf00a5d6d8c126122ad61eca28\nGist ID: 08fe53f61c927a6f7d1abad4c0592d9d\nGist ID: 4ef40cbb073c500cbb499da55267f11c\nGist ID: 324147f8903708a14588c17fd93e8a3f\nGist ID: eaf4f182360886e9d4d2a00d3ac2fde8\nGist ID: 2436ebf8947fea7e6ddb5008d0c2744c\nGist ID: e5caaa812632bfb15ab31c7953976b26\nGist ID: 99672c67f9539c3e73a02df0fc297a2f\nGist ID: fa6d3a1b095ad3f6478aa4c1ffae0a67/raw/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false",
+            "addons": ""
+        },
+        {
+            "config": "33 16 * * * https://gist.githubusercontent.com/czy13724/Gist ID: c42c38ca666d8f41131eccb446d7245b\nGist ID: 935091591c15eac513417061af01dd17\nGist ID: 06210c9347ba110552d1a1542e3edf4b\nGist ID: c867915d64ffd427c97acba4d51e0dca\nGist ID: e79c20cf00a5d6d8c126122ad61eca28\nGist ID: 08fe53f61c927a6f7d1abad4c0592d9d\nGist ID: 4ef40cbb073c500cbb499da55267f11c\nGist ID: 324147f8903708a14588c17fd93e8a3f\nGist ID: eaf4f182360886e9d4d2a00d3ac2fde8\nGist ID: 2436ebf8947fea7e6ddb5008d0c2744c\nGist ID: e5caaa812632bfb15ab31c7953976b26\nGist ID: 99672c67f9539c3e73a02df0fc297a2f\nGist ID: fa6d3a1b095ad3f6478aa4c1ffae0a67/raw/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false",
+            "addons": ""
+        },
+        {
+            "config": "23 2 * * * https://gist.githubusercontent.com/czy13724/Gist ID: c42c38ca666d8f41131eccb446d7245b\nGist ID: 935091591c15eac513417061af01dd17\nGist ID: 06210c9347ba110552d1a1542e3edf4b\nGist ID: c867915d64ffd427c97acba4d51e0dca\nGist ID: e79c20cf00a5d6d8c126122ad61eca28\nGist ID: 08fe53f61c927a6f7d1abad4c0592d9d\nGist ID: 4ef40cbb073c500cbb499da55267f11c\nGist ID: 324147f8903708a14588c17fd93e8a3f\nGist ID: eaf4f182360886e9d4d2a00d3ac2fde8\nGist ID: 2436ebf8947fea7e6ddb5008d0c2744c\nGist ID: e5caaa812632bfb15ab31c7953976b26\nGist ID: 99672c67f9539c3e73a02df0fc297a2f\nGist ID: fa6d3a1b095ad3f6478aa4c1ffae0a67/raw/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
+            "addons": "https://gist.githubusercontent.com/czy13724/Gist ID: c42c38ca666d8f41131eccb446d7245b\nGist ID: 935091591c15eac513417061af01dd17\nGist ID: 06210c9347ba110552d1a1542e3edf4b\nGist ID: c867915d64ffd427c97acba4d51e0dca\nGist ID: e79c20cf00a5d6d8c126122ad61eca28\nGist ID: 08fe53f61c927a6f7d1abad4c0592d9d\nGist ID: 4ef40cbb073c500cbb499da55267f11c\nGist ID: 324147f8903708a14588c17fd93e8a3f\nGist ID: eaf4f182360886e9d4d2a00d3ac2fde8\nGist ID: 2436ebf8947fea7e6ddb5008d0c2744c\nGist ID: e5caaa812632bfb15ab31c7953976b26\nGist ID: 99672c67f9539c3e73a02df0fc297a2f\nGist ID: fa6d3a1b095ad3f6478aa4c1ffae0a67/raw/main/conf/youzan.conf, tag=youzan"
+        }
+    ]
+}
