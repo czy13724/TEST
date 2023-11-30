@@ -3,17 +3,43 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "43 5 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
+            "config": "51 8 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/e6ae241ea2b957d971e8ec1cdecebc9ac90ef559/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false"
         },
         {
-            "config": "16 8 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
+            "config": "56 7 * * * , enabled=false"
         },
         {
-            "config": "34 16 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
+            "config": "29 12 * * * , enabled=false"
         },
         {
-            "config": "53 16 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
-            "addons": "https://raw.githubusercontent.com/czy13724/TEST/main/conf/youzan.conf, tag=youzan"
+            "config": "13 3 * * * , enabled=false"
+        },
+        {
+            "config": "52 20 * * * , enabled=false"
+        },
+        {
+            "config": "46 18 * * * , enabled=false"
+        },
+        {
+            "config": "54 19 * * * , enabled=false"
+        },
+        {
+            "config": "9 20 * * * , enabled=false"
+        },
+        {
+            "config": "6 20 * * * , enabled=false"
+        },
+        {
+            "config": "44 23 * * * , enabled=false"
+        },
+        {
+            "config": "17 19 * * * , enabled=false"
+        },
+        {
+            "config": "23 8 * * * , enabled=false"
+        },
+        {
+            "config": "1 4 * * * , enabled=false"
         }
     ]
 }
