@@ -2,8 +2,10 @@ import os
 import requests
 import json
 import random
-from difflib import get_close_matches
-from fuzzywuzzy import fuzz
+from difflib import SequenceMatcher
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 def generate_task_json():
     # GitHub 用户名
@@ -32,65 +34,64 @@ def generate_task_json():
         }
 
         # 遍历 Gist 列表
-    for gist in gists:
-        gist_id = gist["id"]
-        files = gist["files"]
+        for gist in gists:
+            gist_id = gist["id"]
+            files = gist["files"]
 
-        # 提取文件信息
-        js_file = None
-        conf_file = None
+            # 提取文件信息
+            js_file = None
+            conf_file = None
 
-        for filename, file_data in files.items():
-            file_extension = filename.split(".")[-1]
+            for filename, file_data in files.items():
+                file_extension = filename.split(".")[-1]
 
-            if file_extension == "js":
-                js_file = {"filename": filename, "raw_url": file_data["raw_url"]}
-            elif file_extension == "conf":
-                conf_file = {"filename": filename, "raw_url": file_data["raw_url"]}
+                if file_extension == "js":
+                    js_file = {"filename": filename, "raw_url": file_data["raw_url"]}
+                elif file_extension == "conf":
+                    conf_file = {"filename": filename, "raw_url": file_data["raw_url"]}
 
-        # 如果存在 js 文件，创建 task_entry
-        if js_file:
-            # 获取文件名，不带后缀
-            file_name_without_extension = js_file["filename"].rsplit(".", 1)[0]
+            # 如果存在 js 文件，创建 task_entry
+            if js_file:
+                # 获取文件名，不带后缀
+                file_name_without_extension = js_file["filename"].rsplit(".", 1)[0]
 
-            # 创建一个 task_entry 字典，用于表示每个脚本的信息
-            task_entry = {"config": "", "addons": ""}
+                # 创建一个 task_entry 字典，用于表示每个脚本的信息
+                task_entry = {"config": "", "addons": ""}
 
-            # 随机生成 cron 表达式
-            cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
+                # 随机生成 cron 表达式
+                cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
 
-            # 添加 cron 表达式到 task_entry
-            task_entry["config"] += f"{cron_expression} "
+                # 添加 cron 表达式到 task_entry
+                task_entry["config"] += f"{cron_expression} "
 
-            # 寻找相似的配置文件名
-            conf_files = [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")]
+                # 判断是否存在配置文件
+                if conf_file:
+                    # 如果存在配置文件，则添加 addons 字段
+                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={file_name_without_extension}"
 
-            # 判断是否有配置文件，决定是否添加 addons 字段
-            if conf_files:
-                # 如果有配置文件，则使用相似性算法匹配
-                matching_conf = max(conf_files, key=lambda x: fuzz.ratio(file_name_without_extension, x.rsplit(".", 1)[0]))
+                # 判断 addons 是否为空，若为空则移除 addons 字段
+                if not task_entry["addons"]:
+                    del task_entry["addons"]
 
-                # 添加 addons 字段
-                task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{matching_conf}, tag={file_name_without_extension}"
+                # 使用智能匹配算法寻找相似的图片文件名
+                similar_images = max(os.listdir("image"), key=lambda image: similar(file_name_without_extension, image))
 
-            # 判断 addons 是否为空，若为空则移除 addons 字段
-            if not task_entry["addons"]:
-                del task_entry["addons"]
+                # 添加其余信息到 task_entry
+                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{similar_images}, enabled=false"
 
-            # 寻找相似的图片文件名
-            similar_images = [image for image in os.listdir("image") if image.startswith(file_name_without_extension)]
+                # 将 task_entry 添加到 result 字典中
+                result["task"].append(task_entry)
 
-            # 如果找到相似的图片文件名，添加图片的 raw 链接
-            if similar_images:
-                image_filename = similar_images[0]
+        # 将结果输出到 JSON 文件
+        output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
+        with open(output_file_path, "w", encoding="utf-8") as output_file:
+            json.dump(result, output_file, indent=4, ensure_ascii=False)
 
-            # 添加其余信息到 task_entry
-            task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
-
-            # 将 task_entry 添加到 result 字典中
-            result["task"].append(task_entry)
-
-    # ... （后面的代码保持不变）
+        # 打印文件是否存在以及路径
+        print(f"File exists: {os.path.exists(output_file_path)}")
+        print(f"File path: {output_file_path}")
+    else:
+        print(f"Failed to retrieve Gist list. Status code: {response.status_code}")
 
 if __name__ == "__main__":
     generate_task_json()
