@@ -25,11 +25,6 @@ jobs:
         pip install requests
         pip install python-dotenv
 
-    - name: Get Private Gist ID
-      run: python .github/scripts/gist/get_gist_id.py
-      env:
-        GETGISTID: ${{ secrets.GETGISTID }}
-
     - name: Generate Task JSON
       run: python .github/scripts/gist/gist_task_js-to-json.py
       env:
