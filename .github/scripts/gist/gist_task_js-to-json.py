@@ -64,11 +64,13 @@ def generate_task_json():
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
                     image_filename = similar_images[0]
-
+                else:
+                # 如果没有找到相似的图片文件名，将 image_filename 设置为默认值（例如，空字符串）
+                    image_filename = ""
+                    
                 # 添加其余信息到 task_entry
                 task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/TEST/main/image/{image_filename}, enabled=false"
-                # 如果没有找到相似的图片文件名，添加其余信息到 task_entry（不包括图片链接）
-                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{js_file['filename']}, tag={file_name_without_extension}, enabled=false"
+                
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
 
