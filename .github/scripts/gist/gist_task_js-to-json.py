@@ -53,7 +53,7 @@ def generate_task_json():
                 task_entry["config"] += f"{cron_expression} "
 
                 # 使用相似度匹配算法寻找相似的配置文件名
-                similar_conf_files = get_close_matches(file_name_without_extension, [conf_file["filename"] for conf_file in files.values() if conf_file["filename"].endswith(".conf")])
+                similar_conf_files = get_close_matches(file_name_without_extension, [conf_file["filename"] for conf_file in files.values() if conf_file["filename"].endswith(".conf")], n=1)
 
                 if similar_conf_files:
                     # 如果有相似的配置文件，则添加 addons 字段
