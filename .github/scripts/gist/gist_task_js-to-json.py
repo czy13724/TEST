@@ -61,23 +61,18 @@ def generate_task_json():
                 # 添加 cron 表达式到 task_entry
                 task_entry["config"] += f"{cron_expression} "
 
-                # 寻找相似的配置文件名
-                conf_files = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
+                # 使用相似度匹配算法寻找相似的配置文件名
+                similar_js_files = get_close_matches(js_file["filename"], [file["filename"] for file in files.values() if file["filename"].endswith(".js")], n=1)
 
-                # 判断是否有配置文件，决定是否添加 addons 字段
-                if conf_files:
-                    # 如果有配置文件，则添加 addons 字段
-                    conf_filename = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-                    conf_raw_url = files[conf_filename]["raw_url"]
-                    conf_tag = f"tag={file_name_without_extension}"
+                if similar_js_files:
+                    # 如果有相似的配置文件，则添加 addons 字段
+                    similar_js_file = similar_js_files[0]  # 只取第一个相似的配置文件
+                    similar_conf_file = similar_js_file.replace(".js", ".conf")
 
-                    task_entry["addons"] = f"{conf_raw_url}, {conf_tag}"
+                    if similar_conf_file in files:
+                        task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file}, tag={file_name_without_extension}"
 
-                # 判断 addons 是否为空，若为空则移除 addons 字段
-                if not task_entry["addons"]:
-                    del task_entry["addons"]
-
-                # 寻找相似的图片文件名
+                # 使用相似度匹配算法寻找相似的图片文件名
                 similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
@@ -85,7 +80,7 @@ def generate_task_json():
                     image_filename = similar_images[0]
 
                 # 添加其余信息到 task_entry
-                task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
+                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
