@@ -4,19 +4,31 @@ import json
 import random
 from difflib import get_close_matches
 
+def get_gist_files(gist_id, github_token):
+    headers = {"Authorization": f"token {github_token}"}
+    api_url = f"https://api.github.com/gists/{gist_id}"
+
+    response = requests.get(api_url, headers=headers)
+
+    if response.status_code == 200:
+        files = response.json()["files"]
+        return files
+    else:
+        print(f"Failed to retrieve Gist files. Status code: {response.status_code}")
+        return None
+
 def generate_task_json():
     # GitHub 用户名
     github_username = "czy13724"
 
     # 获取 GitHub Token
     github_token = os.getenv("GETGISTID")
-    headers = {"Authorization": f"token {github_token}"}
 
     # 获取 Gist 列表的 API 地址
     api_url = f"https://api.github.com/users/{github_username}/gists"
 
     # 发送请求，获取 Gist 列表
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url)
 
     # 检查请求是否成功
     if response.status_code == 200:
@@ -33,7 +45,12 @@ def generate_task_json():
         # 遍历 Gist 列表
         for gist in gists:
             gist_id = gist["id"]
-            files = gist["files"]
+
+            # 获取文件列表
+            files = get_gist_files(gist_id, github_token)
+
+            if not files:
+                continue
 
             # 提取文件信息
             js_file = None
@@ -62,12 +79,13 @@ def generate_task_json():
                 task_entry["config"] += f"{cron_expression} "
 
                 # 寻找相似的配置文件名
-                similar_configs = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
+                if conf_file:
+                    similar_configs = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
 
-                # 如果找到相似的配置文件名，添加到 addons 字段
-                if similar_configs:
-                    similar_config = similar_configs[0]
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_config}, tag={file_name_without_extension}"
+                    # 如果找到相似的配置文件名，添加到 addons 字段
+                    if similar_configs:
+                        similar_config = similar_configs[0]
+                        task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_config}, tag={file_name_without_extension}"
 
                 # 寻找相似的图片文件名
                 similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
