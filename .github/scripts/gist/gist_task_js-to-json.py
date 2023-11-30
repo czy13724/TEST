@@ -35,53 +35,50 @@ def generate_task_json():
             gist_id = gist["id"]
             files = gist["files"]
 
-            # 遍历每个文件
+            # 提取文件信息
             js_file = None
             conf_file = None
+
             for filename, file_data in files.items():
-                # 获取文件后缀
                 file_extension = filename.split(".")[-1]
 
-                # 只处理后缀为 js 和 conf 的文件
                 if file_extension == "js":
-                    js_file = file_data
+                    js_file = {"filename": filename, "raw_url": file_data["raw_url"]}
                 elif file_extension == "conf":
-                    conf_file = file_data
+                    conf_file = {"filename": filename, "raw_url": file_data["raw_url"]}
 
-            # 创建一个 task_entry 字典，用于表示每个脚本的信息
-            task_entry = {"config": "", "addons": ""}
-
-            # 随机生成 cron 表达式
-            cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
-
-            # 添加 cron 表达式到 task_entry
-            task_entry["config"] += f"{cron_expression} "
-
+            # 如果存在 js 文件，创建 task_entry
             if js_file:
-                # JavaScript 文件，填充到 config 字段
-                task_entry["config"] += f"{js_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}, img-url="
+                # 获取文件名，不带后缀
+                file_name_without_extension = js_file["filename"].rsplit(".", 1)[0]
+
+                # 创建一个 task_entry 字典，用于表示每个脚本的信息
+                task_entry = {"config": "", "addons": ""}
+
+                # 随机生成 cron 表达式
+                cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
+
+                # 添加 cron 表达式到 task_entry
+                task_entry["config"] += f"{cron_expression} "
 
                 # 寻找相似的图片文件名
-                similar_images = get_close_matches(js_file['filename'].rsplit('.', 1)[0], os.listdir("image"), n=1)
+                similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
                     image_filename = similar_images[0]
                     task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}"
 
-                # 如果有配置文件，则添加 addons 字段
+                # 判断是否存在配置文件
                 if conf_file:
-                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}"
+                    # 如果存在配置文件，则添加到 addons 字段
+                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={file_name_without_extension}"
 
-            # 移除 addons 字段如果为空
-            if not task_entry["addons"]:
-                del task_entry["addons"]
+                # 添加其余信息到 task_entry
+                task_entry["config"] += f" {js_file['raw_url']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
-            # 添加其余信息到 task_entry
-            task_entry["config"] += f", enabled=false"
-
-            # 将 task_entry 添加到 result 字典中
-            result["task"].append(task_entry)
+                # 将 task_entry 添加到 result 字典中
+                result["task"].append(task_entry)
 
         # 将结果输出到 JSON 文件
         output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
