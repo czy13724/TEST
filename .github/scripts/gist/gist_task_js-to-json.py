@@ -35,7 +35,7 @@ def generate_task_json():
             gist_id = gist["id"]
             files = gist["files"]
 
-            # 用于存储当前 Gist 的 JavaScript 文件和配置文件
+            # 初始化 js_file 和 conf_file
             js_file = None
             conf_file = None
 
@@ -59,7 +59,6 @@ def generate_task_json():
             # 添加 cron 表达式到 task_entry
             task_entry["config"] += f"{cron_expression} "
 
-            # 如果有 JavaScript 文件
             if js_file:
                 # JavaScript 文件，填充到 config 字段
                 task_entry["config"] += f"{js_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}, img-url="
@@ -77,7 +76,7 @@ def generate_task_json():
                     task_entry["addons"] = f"{conf_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}"
 
             # 移除 addons 字段如果为空
-            if "addons" in task_entry and not task_entry["addons"]:
+            if not task_entry["addons"]:
                 del task_entry["addons"]
 
             # 添加其余信息到 task_entry
