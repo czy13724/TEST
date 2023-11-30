@@ -77,6 +77,10 @@ def generate_task_json():
                 # 添加其余信息到 task_entry
                 task_entry["config"] += f" {js_file['raw_url']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
+                # 移除空的 addons 字段
+                if not task_entry["addons"]:
+                    del task_entry["addons"]
+
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
 
