@@ -87,7 +87,7 @@ def generate_task_json():
                     matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 移除 addons 为空的字段
-                result["task"] = [entry for entry in result["task"] if entry.get("addons")]
+                    result["task"] = [entry for entry in result["task"] if entry.get("addons")]
 
         # 将结果输出到 JSON 文件
         output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
