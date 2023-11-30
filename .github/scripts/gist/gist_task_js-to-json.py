@@ -82,12 +82,12 @@ def generate_task_json():
                 # 查找相应的 task_entry
                 matching_entries = [entry for entry in result["task"] if file_name_without_extension in entry["config"]]
 
-                # 如果找到匹配的 task_entry，则添加对应的 addons 字段
-                for matching_entry in matching_entries:
-                    matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{conf_file['filename']}, tag={file_name_without_extension}"
+                # 查找相应的 ".conf" 文件
+                matching_conf_files = [conf for conf in conf_files if file_name_without_extension in conf["filename"]]
 
-                # 移除 addons 为空的字段
-                    result["task"] = [entry for entry in result["task"] if entry.get("addons")]
+                # 如果存在相应的 ".conf" 文件，添加 addons 字段
+                for matching_conf_file in matching_conf_files:
+                task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{matching_conf_file['filename']}, tag={file_name_without_extension}"
 
         # 将结果输出到 JSON 文件
         output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
