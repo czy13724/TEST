@@ -56,7 +56,7 @@ def generate_task_json():
                     cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
 
                     # 添加 cron 表达式到 task_entry
-                    task_entry["config"] += f"{cron_expression} {raw_url}, tag={file_name_without_extension}, img-url="
+                    task_entry["config"] += f"{cron_expression} "
 
                     # 寻找相似的图片文件名
                     similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
@@ -77,12 +77,11 @@ def generate_task_json():
                         conf_raw_url = files[conf_file]["raw_url"]
                         task_entry["addons"] = f"{conf_raw_url}, tag={file_name_without_extension}"
 
-                    # 判断 addons 是否为空，若为空则移除 addons 字段
-                    if not task_entry["addons"]:
-                        del task_entry["addons"]
-
-                    # 添加其余信息到 task_entry
-                    task_entry["config"] += f", enabled=false"
+                        # 添加 JavaScript 文件的链接到 config 字段
+                        task_entry["config"] += f"{raw_url}, tag={file_name_without_extension}, img-url="
+                    else:
+                        # 如果没有配置文件，直接将 JavaScript 文件的链接添加到 config 字段
+                        task_entry["config"] += f"{raw_url}, tag={file_name_without_extension}, img-url=, enabled=false"
 
                     # 将 task_entry 添加到 result 字典中
                     result["task"].append(task_entry)
