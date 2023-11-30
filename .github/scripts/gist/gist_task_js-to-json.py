@@ -3,80 +3,71 @@ import re
 import requests
 import json
 import random
-from github import Github  # 这里需要安装 PyGithub 库，可以使用 pip install PyGithub 安装
+from difflib import get_close_matches
 
-# GitHub Token，用于访问 Gist 仓库
-github_token = os.environ.get("GETGISTID")
-if not github_token:
-    raise ValueError("GETGISTID environment variable is not set.")
+def generate_task_json():
+    # GitHub 用户名和仓库名
+    github_username = "czy13724"
+    repository_name = "TEST"
 
-g = Github(github_token)
+    # GitHub Token
+    github_token = os.getenv("GETGISTID")
+    headers = {"Authorization": f"token {github_token}"}
 
-# 仓库根目录路径，包含上传的 JavaScript 和配置文件
-repo_root = os.path.join(os.getcwd(), "..")
+    # Gist API 地址
+    api_url = f"https://api.github.com/repos/{github_username}/{repository_name}/gists"
 
-# 文件夹路径，包含上传的 JavaScript 和配置文件
-scripts_folder = os.path.join(repo_root, "TEST", "javascript")
-image_folder = os.path.join(repo_root, "TEST", "image")
-conf_folder = os.path.join(repo_root, "TEST", "conf")
+    # 发送 GET 请求获取 Gist 列表
+    response = requests.get(api_url, headers=headers)
+    gists = response.json()
 
-# 获取 Gist 仓库
-gist_repo = g.get_user().get_repo("Gist仓库的名称")
-
-def fetch_script(script_url):
-    response = requests.get(script_url)
-    return response.text if response.status_code == 200 else None
-
-def fetch_gist_raw_url(gist_id, file_name):
-    gist = gist_repo.get_gist(gist_id)
-    if file_name in gist.files:
-        return gist.files[file_name].raw_url
-    return None
-
-def fetch_image_raw_url(file_name):
-    image_path = os.path.join(image_folder, f"{file_name[:-3]}.png")
-    if os.path.exists(image_path):
-        return f"https://raw.githubusercontent.com/czy13724/TEST/main/image/{file_name[:-3]}.png"
-    return None
-
-def execute_script(script_url):
-    script_content = fetch_script(script_url)
-    if script_content:
-        # 替换URL为注释，避免语法错误
-        script_content = script_content.replace("https://", "# https://")
-
-        # 在脚本开头添加导入语句
-        script_content = f"""
-import re
-import requests
-
-{script_content}
-"""
-
-        print(f"Executing script:\n{script_content}")
-        exec(script_content, globals(), {})
-
-def generate_task_json(gists):
+    # 创建一个 result 字典用于存放任务信息
     result = {
         "name": "Levi任务合集订阅",
         "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
         "task": []
     }
 
-    for gist_id, file_name in gists:
-        # 创建一个 task_entry 字典，用于表示每个脚本的信息
-        task_entry = {"config": "", "addons": ""}
+    # 遍历每个 Gist
+    for gist in gists:
+        gist_id = gist["id"]
+        files = gist["files"]
 
-        # 随机生成 cron 表达式
-        cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
+        # 遍历每个文件
+        for filename, file_data in files.items():
+            # 获取文件后缀
+            file_extension = filename.split(".")[-1]
 
-        # 添加 cron 表达式到 task_entry
-        raw_url = fetch_gist_raw_url(gist_id, file_name)
-        if raw_url:
-            task_entry["config"] += f"{cron_expression} {raw_url}, tag={file_name[:-3]}, img-url={fetch_image_raw_url(file_name)}, enabled=false"
+            # 只处理后缀为 js 和 conf 的文件
+            if file_extension in ["js", "conf"]:
+                # 获取文件的 raw 链接
+                raw_url = file_data["raw_url"]
 
-        # 将 task_entry 添加到 result 字典中
-        result["task"].append(task_entry)
+                # 获取文件名，不带后缀
+                file_name_without_extension = filename.rsplit(".", 1)[0]
+
+                # 创建一个 task_entry 字典，用于表示每个脚本的信息
+                task_entry = {"config": "", "addons": ""}
+
+                # 随机生成 cron 表达式
+                cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
+
+                # 添加 cron 表达式到 task_entry
+                task_entry["config"] += f"{cron_expression} {raw_url}, tag={file_name_without_extension}, img-url="
+
+                # 寻找相似的图片文件名
+                similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
+
+                # 如果找到相似的图片文件名，添加图片的 raw 链接
+                if similar_images:
+                    image_filename = similar_images[0]
+                    task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{repository_name}/main/image/{image_filename}"
+
+                # 添加其余信息到 task_entry
+                task_entry["config"] += f", enabled=false"
+
+                # 将 task_entry 添加到 result 字典中
+                result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
     output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
@@ -88,11 +79,4 @@ def generate_task_json(gists):
     print(f"File path: {output_file_path}")
 
 if __name__ == "__main__":
-    # 获取 Gist 仓库的文件列表
-    gists = []
-    for gist in gist_repo.get_gists():
-        for file_name in gist.files:
-            if file_name.endswith(('.js', '.conf')):
-                gists.append((gist.id, file_name))
-
-    generate_task_json(gists)
+    generate_task_json()
