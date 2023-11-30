@@ -1,32 +1,30 @@
 import os
 import requests
 
-def get_gist_id(token, gist_filename):
-    headers = {
-        "Authorization": f"token {token}"
-    }
+# 获取环境变量中的 PAT
+pat = os.environ.get("GETGISTID")
+if not pat:
+    raise ValueError("GETGISTID environment variable is not set.")
 
-    response = requests.get(f"https://api.github.com/gists/{gist_filename}", headers=headers)
+# 用户名
+username = "czy13724"
 
-    if response.status_code == 200:
-        gist_data = response.json()
-        return gist_data["id"]
-    else:
-        print(f"Failed to fetch Gist ID for {gist_filename}")
-        return None
+# 获取 Gist 列表的 API 地址
+api_url = f"https://api.github.com/users/{username}/gists"
 
-if __name__ == "__main__":
-    # 从环境变量中获取 PAT
-    pat_token = os.getenv("PAT_TOKEN")
+# 设置请求头，包含 PAT
+headers = {"Authorization": f"token {pat}"}
 
-    # Gist 文件名，假设为 gist_task.js
-    gist_filename = "gist_task.js"
+# 发送请求，获取 Gist 列表
+response = requests.get(api_url, headers=headers)
 
-    # 获取 Gist ID
-    gist_id = get_gist_id(pat_token, gist_filename)
-
-    # 输出结果
-    if gist_id:
-        print(f"Gist ID for {gist_filename}: {gist_id}")
-    else:
-        print("Gist ID retrieval failed.")
+# 检查请求是否成功
+if response.status_code == 200:
+    # 解析响应的 JSON
+    gists = response.json()
+    
+    # 遍历 Gist 列表，输出 Gist ID
+    for gist in gists:
+        print(f"Gist ID: {gist['id']}")
+else:
+    print(f"Failed to retrieve Gist list. Status code: {response.status_code}")
