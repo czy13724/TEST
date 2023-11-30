@@ -35,19 +35,11 @@ def generate_task_json():
             files = gist["files"]
 
             # 提取文件信息
-            js_file = None
-            conf_file = None
-
-            for filename, file_data in files.items():
-                file_extension = filename.split(".")[-1]
-
-                if file_extension == "js":
-                    js_file = {"filename": filename, "raw_url": file_data["raw_url"]}
-                elif file_extension == "conf":
-                    conf_file = {"filename": filename, "raw_url": file_data["raw_url"]}
+            js_files = [file_data for filename, file_data in files.items() if filename.endswith(".js")]
+            conf_files = [file_data for filename, file_data in files.items() if filename.endswith(".conf")]
 
             # 如果存在 js 文件，创建 task_entry
-            if js_file:
+            for js_file in js_files:
                 # 获取文件名，不带后缀
                 file_name_without_extension = js_file["filename"].rsplit(".", 1)[0]
 
@@ -61,12 +53,12 @@ def generate_task_json():
                 task_entry["config"] += f"{cron_expression} "
 
                 # 寻找对应的配置文件
-                conf_filename = f"{file_name_without_extension}.conf"
-
+                matching_conf_files = [conf_file for conf_file in conf_files if conf_file["filename"].startswith(file_name_without_extension)]
+                
                 # 判断是否有配置文件，决定是否添加 addons 字段
-                if conf_filename in files:
+                if matching_conf_files:
                     # 如果有配置文件，则添加 addons 字段
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_filename}, tag={file_name_without_extension}"
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{matching_conf_files[0]['filename']}, tag={file_name_without_extension}"
 
                 # 寻找对应的图片文件名
                 image_filename = f"{file_name_without_extension}.png"
