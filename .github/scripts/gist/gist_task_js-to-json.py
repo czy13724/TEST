@@ -41,6 +41,9 @@ def generate_task_json():
             # 查找以 ".js" 结尾的文件
             js_files = [file for file in files.values() if file["filename"].endswith(".js")]
 
+            # 查找以 ".conf" 结尾的文件
+            conf_files = [file for file in files.values() if file["filename"].endswith(".conf")]
+
             # 遍历每个 ".js" 文件
             for js_file in js_files:
                 # 获取文件名，不带后缀
@@ -55,15 +58,8 @@ def generate_task_json():
                 # 添加 cron 表达式到 task_entry
                 task_entry["config"] += f"{cron_expression} "
 
-                # 寻找相似的配置文件名
-                similar_conf_file = max(files.values(), key=lambda conf_file: similar(file_name_without_extension, os.path.splitext(conf_file["filename"])[0]))
-
                 # 使用相似度匹配算法寻找相似的图片文件名
                 similar_images = [image for image in os.listdir("image") if file_name_without_extension in image]
-
-                if similar_conf_file and similar_conf_file["filename"].endswith(".conf"):
-                    # 如果有相似的配置文件，则添加 addons 字段
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
@@ -74,6 +70,18 @@ def generate_task_json():
 
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
+
+            # 遍历每个 ".conf" 文件，整合到对应的 task_entry
+            for conf_file in conf_files:
+                # 获取文件名，不带后缀
+                file_name_without_extension = os.path.splitext(conf_file["filename"])[0]
+
+                # 查找相应的 task_entry
+                matching_entries = [entry for entry in result["task"] if file_name_without_extension in entry["config"]]
+
+                # 如果找到匹配的 task_entry，则添加对应的 addons 字段
+                for matching_entry in matching_entries:
+                    matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={file_name_without_extension}"
 
         # 将结果输出到 JSON 文件
         output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
