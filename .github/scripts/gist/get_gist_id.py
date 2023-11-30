@@ -15,6 +15,27 @@ github_username = "czy13724"
 # Gist Token
 gist_token = "GETGISTID"
 
+
+# 从环境变量中获取个人访问令牌
+token = os.environ.get("GETGISTID")
+
+# 设置请求头，包含个人访问令牌
+headers = {
+    "Authorization": f"Bearer {token}"
+}
+
+# 发送请求
+response = requests.get("https://api.github.com/user", headers=headers)
+
+# 检查响应状态码
+if response.status_code == 200:
+    # 请求成功，处理响应数据
+    data = response.json()
+    print(data)
+else:
+    # 请求失败，打印错误信息
+    print("请求失败:", response.status_code, response.text)
+
 def get_private_gist_id(username, token):
     headers = {
         "Authorization": f"token {token}"
