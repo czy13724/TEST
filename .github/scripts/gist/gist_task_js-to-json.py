@@ -72,10 +72,9 @@ def generate_task_json():
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
                     image_filename = similar_images[0]
-                    task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}"
 
                 # 添加其余信息到 task_entry
-                task_entry["config"] += f" {js_file['raw_url']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
+                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
                 # 移除空的 addons 字段
                 if not task_entry["addons"]:
