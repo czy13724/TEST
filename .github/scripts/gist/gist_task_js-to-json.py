@@ -1,5 +1,4 @@
 import os
-import re
 import requests
 import json
 import random
@@ -19,6 +18,12 @@ def generate_task_json():
 
     # 发送 GET 请求获取 Gist 列表
     response = requests.get(api_url, headers=headers)
+    
+    # 检查是否请求成功
+    if response.status_code != 200:
+        print(f"Failed to fetch Gists. Status code: {response.status_code}")
+        return
+
     gists = response.json()
 
     # 创建一个 result 字典用于存放任务信息
@@ -30,7 +35,6 @@ def generate_task_json():
 
     # 遍历每个 Gist
     for gist in gists:
-        gist_id = gist["id"]
         files = gist["files"]
 
         # 遍历每个文件
