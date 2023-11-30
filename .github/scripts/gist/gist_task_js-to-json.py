@@ -61,18 +61,15 @@ def generate_task_json():
                 # 添加 cron 表达式到 task_entry
                 task_entry["config"] += f"{cron_expression} "
 
-                # 寻找相似的配置文件名
-                conf_files = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
-
-                # 判断是否有配置文件，决定是否添加 addons 字段
-                if conf_files:
-                    # 如果有配置文件，则添加 addons 字段
-                    conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file}, tag={file_name_without_extension}"
+                # 判断是否存在配置文件
+                if conf_file:
+                    # 如果存在配置文件，则添加 addons 字段
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 判断 addons 是否为空，若为空则移除 addons 字段
                 if not task_entry["addons"]:
                     del task_entry["addons"]
+                    
                 # 寻找相似的图片文件名
                 similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
 
