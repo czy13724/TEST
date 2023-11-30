@@ -57,21 +57,16 @@ def generate_task_json():
                     # 添加 cron 表达式到 task_entry
                     task_entry["config"] += f"{cron_expression} "
 
-                    # 寻找相似的图片文件名
-                    similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
-
-                    # 如果找到相似的图片文件名，添加图片的 raw 链接
-                    if similar_images:
-                        image_filename = similar_images[0]
-                        task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}"
-
                     # 判断文件类型并填充 config 或 addons
                     if file_extension == "js":
                         # JavaScript 文件，填充到 config 字段
-                        task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{raw_url}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
+                        task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{file_name_without_extension}.png, {raw_url}, tag={file_name_without_extension}"
                     elif file_extension == "conf":
                         # 配置文件，填充到 addons 字段
-                        task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{raw_url}, tag={file_name_without_extension}"
+                        task_entry["addons"] = f"{raw_url}, tag={file_name_without_extension}"
+
+                    # 添加其余信息到 task_entry
+                    task_entry["config"] += f", enabled=false"
 
                     # 将 task_entry 添加到 result 字典中
                     result["task"].append(task_entry)
