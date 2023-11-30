@@ -50,4 +50,13 @@ if __name__ == "__main__":
 
     # 获取 conf 和 js 文件的 raw 链接
     conf_raw_links = get_gist_raw_links(github_username, github_token, repository_name, "conf")
-    js_raw_links = get_gist_raw_links(github_username, g
+    js_raw_links = get_gist_raw_links(github_username, github_token, repository_name, "js")
+
+    # 打印结果
+    print("Conf Raw Links:")
+    for link in conf_raw_links:
+        print(link)
+
+    print("\nJS Raw Links:")
+    for link in js_raw_links:
+        print(link)
