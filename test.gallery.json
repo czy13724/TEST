@@ -3,11 +3,17 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "2 11 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/e6ae241ea2b957d971e8ec1cdecebc9ac90ef559/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false"
+            "config": "26 18 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
         },
         {
-            "config": "27 10 * * * https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/1b188f39ae18e87e214439763b3069a69bc3aeea/hax.conf, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/main/image/hax.png, enabled=false",
-            "addons": "https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/1b188f39ae18e87e214439763b3069a69bc3aeea/hax.conf, tag=hax"
+            "config": "12 13 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
+        },
+        {
+            "config": "40 17 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
+        },
+        {
+            "config": "52 23 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
+            "addons": "https://raw.githubusercontent.com/czy13724/TEST/main/conf/youzan.conf, tag=youzan"
         }
     ]
 }
