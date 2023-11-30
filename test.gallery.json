@@ -3,20 +3,17 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "19 15 * * * https://gist.githubusercontent.com/czy13724/None, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false",
-            "addons": ""
+            "config": "37 21 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
         },
         {
-            "config": "41 0 * * * https://gist.githubusercontent.com/czy13724/None, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false",
-            "addons": ""
+            "config": "11 6 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
         },
         {
-            "config": "48 22 * * * https://gist.githubusercontent.com/czy13724/None, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false",
-            "addons": ""
+            "config": "55 6 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
         },
         {
-            "config": "27 22 * * * https://gist.githubusercontent.com/czy13724/None, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
-            "addons": "https://gist.githubusercontent.com/czy13724/None, tag=youzan"
+            "config": "53 8 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
+            "addons": "https://raw.githubusercontent.com/czy13724/TEST/main/conf/youzan.conf, tag=youzan"
         }
     ]
 }
