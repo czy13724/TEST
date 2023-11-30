@@ -87,7 +87,7 @@ def generate_task_json():
                     matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{conf_file['filename']}, tag={file_name_without_extension}"
 
         # 将结果输出到 JSON 文件
-        output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
+        output_file_path = os.path.join(os.getcwd(), "taskgist.gallery.json")
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             json.dump(result, output_file, indent=4, ensure_ascii=False)
 
