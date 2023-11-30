@@ -1,14 +1,5 @@
 {
     "name": "Levi任务合集订阅",
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
-    "task": [
-        {
-            "config": "23 21 * * * https://gist.githubusercontent.com/czy13724/2109622b2a4bc4fba4c07acb8c0a35f6/raw/hack.js, tag=hack, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/, enabled=false",
-            "addons": ""
-        },
-        {
-            "config": "26 15 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false",
-            "addons": "https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/hax.conf, tag=hax"
-        }
-    ]
+    "task": []
 }
