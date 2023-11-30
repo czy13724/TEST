@@ -1,65 +1,32 @@
-import requests
 import os
+import requests
 
-# 设置GitHub用户名和Gist访问令牌
-username = "czy13724"
-token = "GETGISTID"
-
-# 创建一个空的gist_ids.txt文件
-with open("gist_ids.txt", "w") as file:
-    pass
-
-# GitHub 用户名
-github_username = "czy13724"
-
-# Gist Token
-gist_token = "GETGISTID"
-
-
-# 从环境变量中获取个人访问令牌
-token = os.environ.get("GETGISTID")
-
-# 设置请求头，包含个人访问令牌
-headers = {
-    "Authorization": f"Bearer {token}"
-}
-
-# 发送请求
-response = requests.get("https://api.github.com/user", headers=headers)
-
-# 检查响应状态码
-if response.status_code == 200:
-    # 请求成功，处理响应数据
-    data = response.json()
-    print(data)
-else:
-    # 请求失败，打印错误信息
-    print("请求失败:", response.status_code, response.text)
-
-def get_private_gist_id(username, token):
+def get_gist_id(token, gist_filename):
     headers = {
         "Authorization": f"token {token}"
     }
 
-    # 获取用户的 Gists 列表
-    gists_url = f"https://api.github.com/users/{username}/gists"
-    response = requests.get(gists_url, headers=headers)
+    response = requests.get(f"https://api.github.com/gists/{gist_filename}", headers=headers)
 
-    if response.status_code != 200:
-        print(f"Failed to fetch Gists: {response.text}")
-        return
-
-    print(f"GitHub Token: {github_token}")
-    print(f"Fetching Gists from: {gists_url}")
-    
-    gists = response.json()
-
-    # 遍历 Gists，并将每个 Gist 的 ID 写入文件
-    with open("gist_ids.txt", "w") as id_file:
-        for gist in gists:
-            gist_id = gist["id"]
-            id_file.write(f"{gist_id}\n")
+    if response.status_code == 200:
+        gist_data = response.json()
+        return gist_data["id"]
+    else:
+        print(f"Failed to fetch Gist ID for {gist_filename}")
+        return None
 
 if __name__ == "__main__":
-    # 获取私有 Gist 的 ID
-    get_private_gist_id(github_username, gist_token)
+    # 从环境变量中获取 PAT
+    pat_token = os.getenv("PAT_TOKEN")
+
+    # Gist 文件名，假设为 gist_task.js
+    gist_filename = "gist_task.js"
+
+    # 获取 Gist ID
+    gist_id = get_gist_id(pat_token, gist_filename)
+
+    # 输出结果
+    if gist_id:
+        print(f"Gist ID for {gist_filename}: {gist_id}")
+    else:
+        print("Gist ID retrieval failed.")
