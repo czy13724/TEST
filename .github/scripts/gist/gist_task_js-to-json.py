@@ -66,7 +66,7 @@ def generate_task_json():
                     image_filename = similar_images[0]
 
                 # 添加其余信息到 task_entry
-                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/TEST/main/image/{image_filename}, enabled=false"
+                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/TEST/main/image/{image_filename}, enabled=false"
 
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
@@ -81,7 +81,7 @@ def generate_task_json():
 
                 # 如果找到匹配的 task_entry，则添加对应的 addons 字段
                 for matching_entry in matching_entries:
-                    matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={file_name_without_extension}"
+                    matching_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/{conf_file['filename']}, tag={file_name_without_extension}"
 
         # 将结果输出到 JSON 文件
         output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
