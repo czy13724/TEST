@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 
 def get_gist_raw_links(username, token, repository, file_extension):
     # GitHub API 地址
@@ -12,13 +13,21 @@ def get_gist_raw_links(username, token, repository, file_extension):
     response = requests.get(api_url, headers=headers)
     gists = response.json()
 
+    # 打印 gists 查看具体内容
+    print("Gists Response:")
+    print(json.dumps(gists, indent=2))
+
     # 存储符合条件的文件的 raw 链接
     raw_links = []
 
     # 遍历每个 Gist
     for gist in gists:
+        # 打印 gist 查看具体内容
+        print("Gist:")
+        print(json.dumps(gist, indent=2))
+        
         files = gist["files"]
-
+        
         # 遍历每个文件
         for filename, file_data in files.items():
             # 获取文件后缀
