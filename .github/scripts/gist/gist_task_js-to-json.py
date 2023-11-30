@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import random
+from difflib import get_close_matches
 
 def generate_task_json():
     # GitHub 用户名
