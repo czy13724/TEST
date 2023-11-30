@@ -24,6 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
         pip install python-dotenv
+        pip install PyGithub
 
     - name: Generate Task JSON
       run: python .github/scripts/gist/gist_task_js-to-json.py
