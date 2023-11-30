@@ -2,7 +2,10 @@ import os
 import requests
 import json
 import random
-from difflib import get_close_matches
+from difflib import SequenceMatcher
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 def generate_task_json():
     # GitHub 用户名
@@ -52,16 +55,15 @@ def generate_task_json():
                 # 添加 cron 表达式到 task_entry
                 task_entry["config"] += f"{cron_expression} "
 
-                # 使用相似度匹配算法寻找相似的配置文件名
-                similar_conf_files = get_close_matches(file_name_without_extension, [conf_file["filename"] for conf_file in files.values() if conf_file["filename"].endswith(".conf")], n=1)
-
-                if similar_conf_files:
-                    # 如果有相似的配置文件，则添加 addons 字段
-                    similar_conf_file = similar_conf_files[0]  # 只取第一个相似的配置文件
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file}, tag={file_name_without_extension}"
+                # 寻找相似的配置文件名
+                similar_conf_file = max(files.values(), key=lambda conf_file: similar(file_name_without_extension, os.path.splitext(conf_file["filename"])[0]))
 
                 # 使用相似度匹配算法寻找相似的图片文件名
                 similar_images = [image for image in os.listdir("image") if file_name_without_extension in image]
+
+                if similar_conf_file:
+                    # 如果有相似的配置文件，则添加 addons 字段
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
