@@ -2,8 +2,11 @@ name: Generate-gisttask-sub
 
 on:
   push:
-    branches:
-      - main
+    paths:
+    - 'image/**'
+  pull_request:
+    paths:
+    - 'image/**'
   workflow_dispatch:
 
 jobs:
