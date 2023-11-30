@@ -64,19 +64,14 @@ def generate_task_json():
                 # 寻找相似的配置文件名
                 conf_files = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
 
-                print("Debug info:")
-                print(f"Gist ID: {gist_id}")
-                print(f"JS File: {js_file}")
-                print(f"Conf Files: {conf_files}")
-
                 # 判断是否有配置文件，决定是否添加 addons 字段
                 if conf_files:
                     # 如果有配置文件，则添加 addons 字段
                     conf_filename = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
                     conf_raw_url = files[conf_filename]["raw_url"]
-                    conf_tag = conf_filename.rsplit(".", 1)[0]  # 使用配置文件名作为 tag
+                    conf_tag = f"tag={file_name_without_extension}"
 
-                    task_entry["addons"] = f"{conf_raw_url}, tag={conf_tag}"
+                    task_entry["addons"] = f"{conf_raw_url}, {conf_tag}"
 
                 # 判断 addons 是否为空，若为空则移除 addons 字段
                 if not task_entry["addons"]:
@@ -88,10 +83,9 @@ def generate_task_json():
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
                     image_filename = similar_images[0]
-                    print(f"Image Filename: {image_filename}")
 
                 # 添加其余信息到 task_entry
-                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
+                task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
