@@ -67,17 +67,17 @@ def generate_task_json():
                 # 判断是否存在配置文件
                 if conf_file:
                     # 如果存在配置文件，则添加 addons 字段
-                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={file_name_without_extension}"
-
-                # 判断 addons 是否为空，若为空则移除 addons 字段
-                if not task_entry["addons"]:
-                    del task_entry["addons"]
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={file_name_without_extension}"
 
                 # 使用智能匹配算法寻找相似的图片文件名
-                similar_images = max(os.listdir("image"), key=lambda image: similar(file_name_without_extension, image))
+                similar_images = [image for image in os.listdir("image") if image.startswith(file_name_without_extension)]
+
+                # 如果找到相似的图片文件名，添加图片的 raw 链接
+                if similar_images:
+                    image_filename = similar_images[0]
 
                 # 添加其余信息到 task_entry
-                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{similar_images}, enabled=false"
+                task_entry["config"] += f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{js_file['filename']}, tag={file_name_without_extension}, img-url=https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}, enabled=false"
 
                 # 将 task_entry 添加到 result 字典中
                 result["task"].append(task_entry)
