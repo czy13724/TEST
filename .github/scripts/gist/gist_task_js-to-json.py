@@ -2,7 +2,6 @@ import os
 import requests
 import json
 import random
-import re
 from difflib import get_close_matches
 
 def generate_task_json():
@@ -66,22 +65,16 @@ def generate_task_json():
                         image_filename = similar_images[0]
                         task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}"
 
-                    # 获取配置文件列表
-                    pattern = re.compile(f"{file_name_without_extension}.*\.conf")
-                    conf_files = [conf_file for conf_file in files.keys() if pattern.match(conf_file)]
+                    # 判断文件类型并填充 config 或 addons
+                    if file_extension == "js":
+                        # JavaScript 文件，填充到 config 字段
+                        task_entry["config"] += f" {raw_url}, tag={file_name_without_extension}, img-url="
+                    elif file_extension == "conf":
+                        # 配置文件，填充到 addons 字段
+                        task_entry["addons"] = f"{raw_url}, tag={file_name_without_extension}"
 
-                    # 判断是否有配置文件，决定是否添加 addons 字段
-                    if conf_files:
-                        # 如果有配置文件，则添加 addons 字段
-                        conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-                        conf_raw_url = files[conf_file]["raw_url"]
-                        task_entry["addons"] = f"{conf_raw_url}, tag={file_name_without_extension}"
-
-                        # 添加 JavaScript 文件的链接到 config 字段
-                        task_entry["config"] += f"{raw_url}, tag={file_name_without_extension}, img-url="
-                    else:
-                        # 如果没有配置文件，直接将 JavaScript 文件的链接添加到 config 字段
-                        task_entry["config"] += f"{raw_url}, tag={file_name_without_extension}, img-url=, enabled=false"
+                    # 添加其余信息到 task_entry
+                    task_entry["config"] += f", enabled=false"
 
                     # 将 task_entry 添加到 result 字典中
                     result["task"].append(task_entry)
