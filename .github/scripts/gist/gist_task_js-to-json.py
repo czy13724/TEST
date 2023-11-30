@@ -72,12 +72,12 @@ def generate_task_json():
                     image_filename = similar_images[0]
                     task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{gist_id}/main/image/{image_filename}"
 
-            # 如果有配置文件，则添加 addons 字段
-            if conf_file:
-                task_entry["addons"] = f"{conf_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}"
+                # 如果有配置文件，则添加 addons 字段
+                if conf_file:
+                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}"
 
             # 移除 addons 字段如果为空
-            if not task_entry["addons"]:
+            if "addons" in task_entry and not task_entry["addons"]:
                 del task_entry["addons"]
 
             # 添加其余信息到 task_entry
