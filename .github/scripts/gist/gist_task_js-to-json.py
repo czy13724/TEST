@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import random
+from difflib import get_close_matches
 
 def generate_task_json():
     # GitHub 用户名
@@ -60,13 +61,16 @@ def generate_task_json():
                 # 添加 cron 表达式到 task_entry
                 task_entry["config"] += f"{cron_expression} "
 
-                # 寻找相应的配置文件
-                if conf_file and file_name_without_extension in conf_file["filename"]:
-                    # 如果存在配置文件，则添加到 addons 字段
-                    task_entry["addons"] = f"{conf_file['raw_url']}, tag={file_name_without_extension}"
+                # 寻找相似的配置文件名
+                similar_configs = get_close_matches(file_name_without_extension, [conf["filename"] for conf in files.values() if conf["filename"].endswith(".conf")], n=1)
+
+                # 如果找到相似的配置文件名，添加到 addons 字段
+                if similar_configs:
+                    similar_config = similar_configs[0]
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_config}, tag={file_name_without_extension}"
 
                 # 寻找相似的图片文件名
-                similar_images = [img for img in os.listdir("image") if img.startswith(file_name_without_extension)]
+                similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
