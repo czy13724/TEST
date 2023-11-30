@@ -1,58 +1,26 @@
 import os
 import requests
 import json
+import random
 from difflib import get_close_matches
 
-# 获取环境变量中的 PAT
-pat = os.environ.get("GETGISTID")
-if not pat:
-    raise ValueError("GETGISTID environment variable is not set.")
+def get_gist_files(gist_id, github_username, repository_name, image_folder):
+    # Gist 文件列表的 API 地址
+    api_url = f"https://api.github.com/gists/{gist_id}"
 
-# 用户名
-username = "czy13724"
-
-# 获取 Gist 列表的 API 地址
-api_url = f"https://api.github.com/users/{username}/gists"
-
-# 设置请求头，包含 PAT
-headers = {"Authorization": f"token {pat}"}
-
-# 发送请求，获取 Gist 列表
-response = requests.get(api_url, headers=headers)
-
-# 存储 Gist ID
-gist_ids = []
-
-# 检查请求是否成功
-if response.status_code == 200:
-    # 解析响应的 JSON
-    gists = response.json()
-
-    # 遍历 Gist 列表，输出 Gist ID，并存储到列表中
-    for gist in gists:
-        gist_id = gist["id"]
-        gist_ids.append(gist_id)
-        print(f"Gist ID: {gist_id}")
-else:
-    print(f"Failed to retrieve Gist list. Status code: {response.status_code}")
-
-# 存储结果的列表
-result_data = []
-
-# 遍历每个 Gist ID
-for gist_id in gist_ids:
-    # 获取 Gist 详情的 API 地址
-    gist_detail_api_url = f"https://api.github.com/gists/{gist_id}"
-
-    # 发送请求，获取 Gist 详情
-    response_detail = requests.get(gist_detail_api_url, headers=headers)
-
+    # 发送请求，获取 Gist 文件列表
+    response = requests.get(api_url)
+    
     # 检查请求是否成功
-    if response_detail.status_code == 200:
+    if response.status_code == 200:
         # 解析响应的 JSON
-        gist_detail = response_detail.json()
+        gist_data = response.json()
 
-        files = gist_detail["files"]
+        # 获取 Gist 中的文件信息
+        files = gist_data["files"]
+
+        # 创建一个 task_entry 字典，用于表示每个脚本的信息
+        task_entry = {"config": "", "addons": ""}
 
         # 遍历每个文件
         for filename, file_data in files.items():
@@ -67,36 +35,81 @@ for gist_id in gist_ids:
                 # 获取文件名，不带后缀
                 file_name_without_extension = filename.rsplit(".", 1)[0]
 
-                # 查找相似的图片文件名
-                similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
+                # 随机生成 cron 表达式
+                cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
+
+                # 添加 cron 表达式到 task_entry
+                task_entry["config"] += f"{cron_expression} {raw_url}, tag={file_name_without_extension}, img-url="
+
+                # 寻找相似的图片文件名
+                similar_images = get_close_matches(file_name_without_extension, os.listdir(image_folder), n=1)
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
                     image_filename = similar_images[0]
-                    image_raw_url = f"https://raw.githubusercontent.com/{username}/{gist_id}/main/image/{image_filename}"
+                    task_entry["config"] += f"https://raw.githubusercontent.com/{github_username}/{repository_name}/main/image/{image_filename}"
 
-                    # 存储数据
-                    result_data.append({
-                        "gist_id": gist_id,
-                        "script_name": file_name_without_extension,
-                        "script_raw_url": raw_url,
-                        "image_raw_url": image_raw_url
-                    })
-                else:
-                    # 如果没有找到相似的图片文件名，只存储脚本的 raw 链接
-                    result_data.append({
-                        "gist_id": gist_id,
-                        "script_name": file_name_without_extension,
-                        "script_raw_url": raw_url,
-                        "image_raw_url": None
-                    })
+                # 添加其余信息到 task_entry
+                task_entry["config"] += f", enabled=false"
+
+        return task_entry
 
     else:
-        print(f"Failed to retrieve Gist details. Status code: {response_detail.status_code}")
+        print(f"Failed to retrieve Gist files. Status code: {response.status_code}")
+        return None
 
-# 将结果保存为 JSON 文件
-output_json_path = "result_data.json"
-with open(output_json_path, "w") as json_file:
-    json.dump(result_data, json_file, indent=2)
+def generate_task_json():
+    # GitHub 用户名和仓库名
+    github_username = "czy13724"
+    repository_name = "TEST"
 
-print(f"数据已保存到 {output_json_path}")
+    # GitHub Token
+    github_token = os.getenv("GETGISTID")
+    headers = {"Authorization": f"token {github_token}"}
+
+    # 获取 Gist ID 列表的 API 地址
+    api_url = f"https://api.github.com/users/{github_username}/gists"
+
+    # 发送 GET 请求获取 Gist ID 列表
+    response = requests.get(api_url, headers=headers)
+    
+    # 检查请求是否成功
+    if response.status_code == 200:
+        # 解析响应的 JSON
+        gists = response.json()
+
+        # 创建一个 result 字典用于存放任务信息
+        result = {
+            "name": "Levi任务合集订阅",
+            "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
+            "task": []
+        }
+
+        # 文件夹路径，包含上传的图片文件
+        image_folder = os.path.join(os.getcwd(), "image")
+
+        # 遍历每个 Gist
+        for gist in gists:
+            gist_id = gist["id"]
+            
+            # 获取 Gist 中的文件信息
+            task_entry = get_gist_files(gist_id, github_username, repository_name, image_folder)
+            
+            # 如果获取文件信息成功，将 task_entry 添加到 result 字典中
+            if task_entry:
+                result["task"].append(task_entry)
+
+        # 将结果输出到 JSON 文件
+        output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
+        with open(output_file_path, "w", encoding="utf-8") as output_file:
+            json.dump(result, output_file, indent=4, ensure_ascii=False)
+
+        # 打印文件是否存在以及路径
+        print(f"File exists: {os.path.exists(output_file_path)}")
+        print(f"File path: {output_file_path}")
+
+    else:
+        print(f"Failed to retrieve Gist list. Status code: {response.status_code}")
+
+if __name__ == "__main__":
+    generate_task_json()
