@@ -3,43 +3,11 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "5 15 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/e6ae241ea2b957d971e8ec1cdecebc9ac90ef559/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false"
+            "config": "2 11 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/e6ae241ea2b957d971e8ec1cdecebc9ac90ef559/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false"
         },
         {
-            "config": "8 20 * * * , enabled=false"
-        },
-        {
-            "config": "5 2 * * * , enabled=false"
-        },
-        {
-            "config": "36 7 * * * , enabled=false"
-        },
-        {
-            "config": "15 15 * * * , enabled=false"
-        },
-        {
-            "config": "36 5 * * * , enabled=false"
-        },
-        {
-            "config": "32 1 * * * , enabled=false"
-        },
-        {
-            "config": "17 4 * * * , enabled=false"
-        },
-        {
-            "config": "44 15 * * * , enabled=false"
-        },
-        {
-            "config": "13 13 * * * , enabled=false"
-        },
-        {
-            "config": "17 8 * * * , enabled=false"
-        },
-        {
-            "config": "36 10 * * * , enabled=false"
-        },
-        {
-            "config": "15 2 * * * , enabled=false"
+            "config": "27 10 * * * https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/1b188f39ae18e87e214439763b3069a69bc3aeea/hax.conf, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/main/image/hax.png, enabled=false",
+            "addons": "https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/1b188f39ae18e87e214439763b3069a69bc3aeea/hax.conf, tag=hax"
         }
     ]
 }
