@@ -25,6 +25,7 @@ jobs:
         pip install requests
         pip install python-dotenv
         pip install PyGithub
+        pip install fuzzywuzzy
 
     - name: Generate Task JSON
       run: python .github/scripts/gist/gist_task_js-to-json.py
