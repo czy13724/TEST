@@ -3,7 +3,6 @@ import re
 import requests
 import json
 import random
-from random import randint
 
 # 仓库根目录路径，包含上传的 JavaScript 和配置文件
 repo_root = os.path.join(os.getcwd(), "..")
@@ -51,26 +50,30 @@ def generate_task_json():
     js_files = [file for file in os.listdir(scripts_folder) if file.endswith(".js")]
 
     for js_file in js_files:
+        # 获取 Gist ID
+        js_gist_id = get_gist_id(js_file)
+
         pattern = re.compile(f"{os.path.splitext(js_file)[0]}.*\.conf")
         conf_files = [conf_file for conf_file in os.listdir(conf_folder) if pattern.match(conf_file)]
 
-    # 创建一个 task_entry 字典，用于表示每个脚本的信息
+        # 创建一个 task_entry 字典，用于表示每个脚本的信息
         task_entry = {"config": "", "addons": ""}
 
-    # 随机生成 cron 表达式
+        # 随机生成 cron 表达式
         cron_expression = f"{random.randint(0, 59)} {random.randint(0, 23)} * * *"
 
-    # 添加 cron 表达式到 task_entry
-        task_entry["config"] += f"{cron_expression} https://gist.githubusercontent.com/czy13724/{get_gist_id(js_file)}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
+        # 添加 cron 表达式到 task_entry
+        task_entry["config"] += f"{cron_expression} https://gist.githubusercontent.com/czy13724/{js_gist_id}, tag={js_file[:-3]}, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/{js_file[:-3]}.png, enabled=false"
 
-    # 判断是否有配置文件，决定是否添加 addons 字段
+        # 判断是否有配置文件，决定是否添加 addons 字段
         if conf_files:
-        # 如果有配置文件，则添加 addons 字段
+            # 如果有配置文件，则添加 addons 字段
             conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-            task_entry["addons"] = f"https://gist.githubusercontent.com/czy13724/{get_gist_id(conf_file)}, tag={js_file[:-3]}"
+            conf_gist_id = get_gist_id(conf_file)
+            task_entry["addons"] = f"https://gist.githubusercontent.com/czy13724/{conf_gist_id}, tag={js_file[:-3]}"
 
-    # 将 task_entry 添加到 result 字典中
-    result["task"].append(task_entry)
+        # 将 task_entry 添加到 result 字典中
+        result["task"].append(task_entry)
 
     # 将结果输出到 JSON 文件
     output_file_path = os.path.join(os.getcwd(), "test.gallery.json")
