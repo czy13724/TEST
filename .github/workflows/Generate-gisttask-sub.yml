@@ -31,6 +31,8 @@ jobs:
 
     - name: Generate Task JSON
       run: python .github/scripts/gist/gist_task_js-to-json.py
+      env:
+        GETGISTID: ${{ secrets.GETGISTID }}
 
     - name: Upload JSON to Artifacts
       uses: actions/upload-artifact@v2
