@@ -3,7 +3,8 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "2 12 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/main/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false"
+            "config": "58 7 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/main/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/main/image/hax.png, enabled=false",
+            "addons": ""
         }
     ]
 }
