@@ -63,7 +63,8 @@ def generate_task_json():
                 # 判断是否有配置文件，决定是否添加 addons 字段
                 if conf_file:
                     # 如果有配置文件，则添加 addons 字段
-                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={file_name_without_extension}"
+                    js_filename = js_file["filename"].rsplit(".", 1)[0]
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{conf_file['filename']}, tag={js_filename}"
 
                 # 寻找对应的图片文件名
                 image_filename = f"{file_name_without_extension}.png"
