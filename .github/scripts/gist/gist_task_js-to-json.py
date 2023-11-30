@@ -58,6 +58,10 @@ def generate_task_json():
                     # 添加 cron 表达式到 task_entry
                     task_entry["config"] += f"{cron_expression} {raw_url}, tag={file_name_without_extension}, img-url="
 
+                    if js_file:
+                    # JavaScript 文件，填充到 config 字段
+                    task_entry["config"] += f"{js_file['raw_url']}, tag={js_file['filename'].rsplit('.', 1)[0]}, img-url="
+                
                     # 寻找相似的图片文件名
                     similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
 
