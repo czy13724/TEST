@@ -35,22 +35,13 @@ def generate_task_json():
             gist_id = gist["id"]
             files = gist["files"]
 
-            # 提取文件信息
-            js_file = None
-            conf_file = None
+            # 查找以 ".js" 结尾的文件
+            js_files = [file for file in files.values() if file["filename"].endswith(".js")]
 
-            for filename, file_data in files.items():
-                file_extension = filename.split(".")[-1]
-
-                if file_extension == "js":
-                    js_file = {"filename": filename, "raw_url": file_data["raw_url"]}
-                elif file_extension == "conf":
-                    conf_file = {"filename": filename, "raw_url": file_data["raw_url"]}
-
-            # 如果存在 js 文件，创建 task_entry
-            if js_file:
+            # 遍历每个 ".js" 文件
+            for js_file in js_files:
                 # 获取文件名，不带后缀
-                file_name_without_extension = js_file["filename"].rsplit(".", 1)[0]
+                file_name_without_extension = os.path.splitext(js_file["filename"])[0]
 
                 # 创建一个 task_entry 字典，用于表示每个脚本的信息
                 task_entry = {"config": "", "addons": ""}
@@ -62,18 +53,15 @@ def generate_task_json():
                 task_entry["config"] += f"{cron_expression} "
 
                 # 使用相似度匹配算法寻找相似的配置文件名
-                similar_js_files = get_close_matches(js_file["filename"], [file["filename"] for file in files.values() if file["filename"].endswith(".js")], n=1)
+                similar_conf_files = get_close_matches(file_name_without_extension, [conf_file["filename"] for conf_file in files.values() if conf_file["filename"].endswith(".conf")])
 
-                if similar_js_files:
+                if similar_conf_files:
                     # 如果有相似的配置文件，则添加 addons 字段
-                    similar_js_file = similar_js_files[0]  # 只取第一个相似的配置文件
-                    similar_conf_file = similar_js_file.replace(".js", ".conf")
-
-                    if similar_conf_file in files:
-                        task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file}, tag={file_name_without_extension}"
+                    similar_conf_file = similar_conf_files[0]  # 只取第一个相似的配置文件
+                    task_entry["addons"] = f"https://gist.githubusercontent.com/{github_username}/{gist_id}/raw/main/{similar_conf_file}, tag={file_name_without_extension}"
 
                 # 使用相似度匹配算法寻找相似的图片文件名
-                similar_images = get_close_matches(file_name_without_extension, os.listdir("image"), n=1)
+                similar_images = [image for image in os.listdir("image") if file_name_without_extension in image]
 
                 # 如果找到相似的图片文件名，添加图片的 raw 链接
                 if similar_images:
