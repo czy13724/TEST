@@ -2,7 +2,6 @@ import os
 import requests
 import json
 import random
-import re
 from difflib import get_close_matches
 
 def generate_task_json():
@@ -74,12 +73,13 @@ def generate_task_json():
                     if conf_files:
                         # 如果有配置文件，则添加 addons 字段
                         conf_file = conf_files[0]  # 只取第一个配置文件，你的需求是一个脚本对应一个配置文件
-                        task_entry["addons"] = f"{raw_url}, tag={file_name_without_extension}"
+                        conf_raw_url = files[conf_file]["raw_url"]
+                        task_entry["addons"] = f"{conf_raw_url}, tag={file_name_without_extension}"
 
                     # 判断 addons 是否为空，若为空则移除 addons 字段
                     if not task_entry["addons"]:
                         del task_entry["addons"]
-                    
+
                     # 添加其余信息到 task_entry
                     task_entry["config"] += f", enabled=false"
 
