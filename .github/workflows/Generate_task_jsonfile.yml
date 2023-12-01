@@ -58,7 +58,7 @@ jobs:
         git config user.email "${{ github.actor }}@users.noreply.github.com"
         git add .
         git commit -m "Add generated task JSON file"
-        git push origin HEAD:main
+        git push origin HEAD:main -force
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
