@@ -3,12 +3,17 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "49 23 * * * https://gist.githubusercontent.com/czy13724/2109622b2a4bc4fba4c07acb8c0a35f6/raw/hack.js, tag=hack, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/, enabled=false",
-            "addons": ""
+            "config": "9 0 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
         },
         {
-            "config": "54 3 * * * https://gist.githubusercontent.com/czy13724/c42c38ca666d8f41131eccb446d7245b/raw/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false",
-            "addons": "https://gist.githubusercontent.com/czy13724/324147f8903708a14588c17fd93e8a3f/raw/hax.conf, tag=hax"
+            "config": "7 13 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
+        },
+        {
+            "config": "44 1 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
+        },
+        {
+            "config": "49 9 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
+            "addons": "https://raw.githubusercontent.com/czy13724/TEST/main/conf/youzan.conf, tag=youzan"
         }
     ]
 }
