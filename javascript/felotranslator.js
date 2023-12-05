@@ -6,8 +6,8 @@
 hostname = translator.felo.me
 */
 try {
-    var Q = JSON.parse(response.body);
-    Q = {
+    var responseBody = JSON.parse(response.body);
+    var modifiedResponse = {
         "status": 200,
         "data": {
             "active_time": "2023-12-05T00:56:04+0000",
@@ -29,7 +29,7 @@ try {
         },
         "code": "OK"
     };
-    $done({ body: JSON.stringify(Q) });
+    $done({ body: JSON.stringify(modifiedResponse) });
 } catch (e) {
     console.log("Error: " + e.message);
     $done({ body: JSON.stringify({ error: e.message }) });
