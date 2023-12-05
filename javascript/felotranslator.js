@@ -5,7 +5,7 @@
 [mitm]
 hostname = translator.felo.me
 */
-var objc = JSON.parse(response.body);
+var objc = JSON.parse($response.body);
   objc = {
     "status": 200,
     "data": {
