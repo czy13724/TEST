@@ -1,6 +1,6 @@
 /**********************************
 Felotranslator Configuration
-**********************************
+**********************************/
 [rewrite_local]
 ^https:\/\/translator\.felo\.me\/api\/plan\/current url script-response-body https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js
 
