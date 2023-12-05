@@ -3,7 +3,7 @@
 ^https:\/\/translator\.felo\.me\/api\/plan\/current$ url script-response-body https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js
 
 [mitm]
-hostname = translator\.felo\.me
+hostname = translator.felo.me
 */
 
 const url = `https://translator.felo.me/api/plan/current`;
