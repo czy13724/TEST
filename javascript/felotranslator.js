@@ -5,8 +5,8 @@
 [mitm]
 hostname = translator.felo.me
 */
-var Q = JSON.parse(response.body);
-  Q = {
+var objc = JSON.parse(response.body);
+  objc = {
     "status": 200,
     "data": {
       "active_time": "2023-12-05T00:56:04+0000",
@@ -28,5 +28,5 @@ var Q = JSON.parse(response.body);
     },
     "code": "OK"
   };
-$done({ body: JSON.stringify(Q) });
+$done({ body: JSON.stringify(objc) });
 
