@@ -34,10 +34,4 @@ hostname = translator.felo.me
     "code": "OK"
   };
 
-  console.log(response.statusCode + "\n\n" + JSON.stringify(Q));
-  $done();
-
-}, reason => {
-  console.log(reason.error);
-  $done();
-});
+  $done({body : JSON.stringify(Q)});
