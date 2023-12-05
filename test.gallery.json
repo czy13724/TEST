@@ -3,19 +3,19 @@
     "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
     "task": [
         {
-            "config": "9 10 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
+            "config": "17 6 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
         },
         {
-            "config": "34 19 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js, tag=felotranslator, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/felotranslator.png, enabled=false"
+            "config": "19 14 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js, tag=felotranslator, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/felotranslator.png, enabled=false"
         },
         {
-            "config": "56 17 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
+            "config": "53 10 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/weibotalk.js, tag=weibotalk, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/weibotalk.png, enabled=false"
         },
         {
-            "config": "3 6 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
+            "config": "18 3 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/hax.js, tag=hax, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/hax.png, enabled=false"
         },
         {
-            "config": "22 17 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
+            "config": "7 2 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js, tag=youzan, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/youzan.png, enabled=false",
             "addons": "https://raw.githubusercontent.com/czy13724/TEST/main/conf/youzan.conf, tag=youzan"
         }
     ]
