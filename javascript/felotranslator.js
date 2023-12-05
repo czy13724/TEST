@@ -27,6 +27,6 @@ var objc = JSON.parse($response.body);
       "pro": true
     },
     "code": "OK"
-  };
+  
 $done({ body: JSON.stringify(objc) });
 
