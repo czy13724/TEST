@@ -21,13 +21,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# 安装面板服务（这里使用 curl 安装 quick_start.sh 脚本）
-RUN curl -sSL https://resource.fit2cloud.com/1panel/package/quick_start.sh -o quick_start.sh && \
-    sudo bash quick_start.sh && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    rm quick_start.sh
-
 # 设置 root 用户的密码为 'levifree'，并添加sudo权限
 RUN echo 'root:levifree' | chpasswd && \
     usermod -aG sudo root
@@ -45,4 +38,4 @@ EXPOSE 4200
 EXPOSE 8080
 
 # 启动 SSH 服务、Shellinabox 和面板服务
-CMD service ssh start && /usr/bin/shellinaboxd -t -s "/:LOGIN" && service panel-service start
+CMD service ssh start && /usr/bin/shellinaboxd -t -s "/:LOGIN"
