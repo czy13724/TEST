@@ -67,8 +67,8 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           cp -r ../sgmodule/. sgmodule/
           git add sgmodule
-          git commit -m "Update Surge Modules"
-          git push "https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.GITHUB_TOKEN }}@github.com/czy13724/TEST.git" HEAD:main
+          git commit -m "Convert js TO sgmodule"
+          git push --force origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
