@@ -63,8 +63,8 @@ jobs:
       - name: Commit and Push Changes
         run: |
           cd TEST
-          git config user.name "${{ secrets.GITHUB_ACTOR }}"
           git config user.email "${{ secrets.GITHUB_ACTOR }}@users.noreply.github.com"
+          git config user.name "${{ secrets.GITHUB_ACTOR }}"
           git add sgmodule
           git commit -m "Update Surge Modules"
           git push origin main
