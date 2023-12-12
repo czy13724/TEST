@@ -25,13 +25,14 @@ hostname= %APPEND% {mitm_hostname}
 
 def extract_patterns(js_script):
     # 从 JavaScript 脚本中提取链接或正则表达式
+    # 这里使用正则表达式来匹配 url script-response-body 行前面的内容
     pattern_matches = re.findall(r'\burl\s+script-response-body\s+([^\n]+)', js_script)
     return [match.strip() for match in pattern_matches]
 
 def convert_pattern(pattern):
-    # 检查是否为正则表达式，如果不是，则转换为正则表达式
-    if not pattern.startswith('^'):
-        pattern = f'^{re.escape(pattern)}'
+    # 将链接转换为正则表达式
+    if re.match(r'^https?://', pattern):
+        return f'^{re.escape(pattern)}'
     return pattern
 
 def fetch_and_convert(remote_script_url):
@@ -45,7 +46,7 @@ def fetch_and_convert(remote_script_url):
 
 def process_repository(username, repo):
     base_remote_url = f'https://raw.githubusercontent.com/{username}/{repo}/main/javascript/'
-    target_folder = f'./{repo}/sgmodule'  # 更新目标保存路径
+    target_folder = f'../{repo}/sgmodule'  # 更新目标保存路径
 
     try:
         js_files = os.listdir('javascript')
@@ -71,7 +72,6 @@ def process_repository(username, repo):
                     surge_module_file.write(surge_module_script)
 
                 print(f'Converted and saved: {surge_module_path}')
-
     except OSError as e:
         print(f'Error reading javascript folder: {e}')
 
