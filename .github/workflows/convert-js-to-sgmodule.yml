@@ -55,7 +55,7 @@ jobs:
       - name: Move Surge Modules to TEST Repository
         run: |
           mkdir -p TEST/sgmodule
-          cp -r $GITHUB_WORKSPACE/TEST/artifacts/sgmodule/* TEST/sgmodule
+          cp -r $GITHUB_WORKSPACE/artifacts/sgmodule/* TEST/sgmodule
         if: always()
 
       - name: Commit and Push Changes to TEST Repository
