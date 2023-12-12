@@ -29,10 +29,10 @@ jobs:
           USERNAME: czy13724
           REPO: TEST
 
-      - name: Save Surge Modules to artifacts
+      - name: Save Surge Modules
         run: |
           mkdir -p $GITHUB_WORKSPACE/artifacts/sgmodule
-          cp -r javascript/* $GITHUB_WORKSPACE/artifacts/sgmodule
+          cp -r sgmodule/* $GITHUB_WORKSPACE/artifacts/sgmodule
         if: always()
 
   deploy:
@@ -49,14 +49,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: czy13724/TEST
-          path: TEST
           ref: main
 
-      - name: Move Surge Modules to TEST Repository
+      - name: Copy Surge Modules to TEST Repository
         run: |
           mkdir -p TEST/sgmodule
           cp -r $GITHUB_WORKSPACE/artifacts/sgmodule/* TEST/sgmodule
-        if: always()
 
       - name: Commit and Push Changes to TEST Repository
         run: |
@@ -65,4 +63,3 @@ jobs:
           git add TEST/sgmodule
           git commit -m "Update Surge Modules"
           git push
-        if: always()
