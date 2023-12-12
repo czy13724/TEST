@@ -29,12 +29,36 @@ jobs:
           USERNAME: czy13724
           REPO: TEST
 
-  deploy:
-    needs: convert
-    runs-on: ubuntu-latest
-    steps:
+      - name: Save Surge Modules
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/sgmodule
+          mv sgmodule/* $GITHUB_WORKSPACE/sgmodule
+        if: always()
+
       - name: Upload Surge Modules
         uses: actions/upload-artifact@v2
         with:
           name: sgmodule
-          path: sgmodule
+          path: $GITHUB_WORKSPACE/sgmodule
+
+  deploy:
+    needs: convert
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Extract Surge Modules
+        uses: actions/download-artifact@v2
+        with:
+          name: sgmodule
+          path: $GITHUB_WORKSPACE/sgmodule
+
+      - name: Commit and Push Changes
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config user.name "${{ secrets.GITHUB_ACTOR }}"
+          git config user.email "${{ secrets.GITHUB_ACTOR }}@users.noreply.github.com"
+          git add sgmodule
+          git commit -m "Add Surge Modules"
+          git push origin main
