@@ -26,11 +26,21 @@ jobs:
       - name: Run Conversion Script
         run: python .github/scripts/convert-js-to-sgmodule.py
         env:
-          USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          REPO: ${{ secrets.GITHUB_REPO }}
+          USERNAME: czy13724
+          REPO: TEST
 
       - name: Save Surge Modules
         run: |
           mkdir -p TEST/sgmodule
           mv sgmodule/* TEST/sgmodule
         if: always()
+
+  deploy:
+    needs: convert
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Surge Modules
+        uses: actions/upload-artifact@v2
+        with:
+          name: sgmodule
+          path: TEST/sgmodule
