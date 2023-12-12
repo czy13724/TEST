@@ -22,7 +22,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install requests
-
       - name: Run Conversion Script
         run: python .github/scripts/convert-js-to-sgmodule.py
         env:
@@ -47,7 +46,6 @@ jobs:
         run: |
           git config user.email "${{ secrets.GITHUB_ACTOR }}@users.noreply.github.com"
           git config user.name "${{ secrets.GITHUB_ACTOR }}"
-
       - name: Extract Surge Modules
         uses: actions/download-artifact@v2
         with:
@@ -56,7 +54,6 @@ jobs:
 
       - name: Copy Surge Modules to TEST/sgmodule
         run: |
-          mkdir -p TEST/sgmodule
           cp -r sgmodule/. TEST/sgmodule
         if: always()
 
