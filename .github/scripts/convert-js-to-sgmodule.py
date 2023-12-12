@@ -3,7 +3,19 @@ import requests
 from urllib.parse import urljoin
 import re
 
-def convert_to_surge_module(js_script, name, desc, pattern, script_path, mitm_hostname):
+def extract_pattern_from_js(js_script):
+    # 使用正则表达式提取 pattern 部分
+    pattern_match = re.search(r'pattern=(.*?)(?:,|$)', js_script)
+    if pattern_match:
+        return pattern_match.group(1)
+    return None
+
+def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
+    pattern = extract_pattern_from_js(js_script)
+    if not pattern:
+        print(f'Error extracting pattern from {name}.js')
+        return None
+
     surge_module_script = f'''\
 #!name={name}
 #!desc={desc}
@@ -39,21 +51,16 @@ def process_repository(username, repo):
             if js_script:
                 name = js_file.replace('.js', '')
                 desc = f'Description for {name}'  # 你可以自定义描述
-
-                # 从 JavaScript 脚本中提取正则表达式
-                pattern_match = re.search(r'pattern\s*=\s*(.*?)(?:,|\n|\r)', js_script)
-                pattern = pattern_match.group(1) if pattern_match else ''
-
                 script_path = remote_script_url
                 mitm_hostname = 'license.pdfexpert.com'  # 你的 MITM 主机名
 
-                surge_module_script = convert_to_surge_module(js_script, name, desc, pattern, script_path, mitm_hostname)
+                surge_module_script = convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname)
 
-                surge_module_path = os.path.join(target_folder, js_file.replace('.js', '.sgmodule'))
-                with open(surge_module_path, 'w') as surge_module_file:
-                    surge_module_file.write(surge_module_script)
-
-                print(f'Converted and saved: {surge_module_path}')
+                if surge_module_script:
+                    surge_module_path = os.path.join(target_folder, js_file.replace('.js', '.sgmodule'))
+                    with open(surge_module_path, 'w') as surge_module_file:
+                        surge_module_file.write(surge_module_script)
+                    print(f'Converted and saved: {surge_module_path}')
     except OSError as e:
         print(f'Error reading javascript folder: {e}')
 
