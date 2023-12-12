@@ -2,6 +2,6 @@
 #!desc=Description for youzan
 
 [Script]
-youzan = type=http-request,pattern=^https%3A//example.com|^https%3A//example2.com,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js
+youzan = type=http-request,pattern=^https://example\.com|^https://example2\.com,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/czy13724/TEST/main/javascript/youzan.js
 [MITM]
 hostname= %APPEND% license.pdfexpert.com
