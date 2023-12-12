@@ -29,15 +29,12 @@ jobs:
           USERNAME: czy13724
           REPO: TEST
 
-      - name: Save Surge Modules
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/sgmodule
-          mv sgmodule/* $GITHUB_WORKSPACE/sgmodule
-        if: always()
-
+  deploy:
+    needs: convert
+    runs-on: ubuntu-latest
+    steps:
       - name: Upload Surge Modules
         uses: actions/upload-artifact@v2
         with:
           name: sgmodule
-          path: $GITHUB_WORKSPACE/sgmodule
-
+          path: sgmodule
