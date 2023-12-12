@@ -1,14 +1,14 @@
 import os
 import requests
 import re
-from urllib.parse import urljoin, quote
+from urllib.parse import urljoin
 
 def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
-    # 提取 JavaScript 脚本中的链接
-    js_links = extract_links(js_script)
+    # 提取 JavaScript 脚本中的链接或正则表达式
+    js_patterns = extract_patterns(js_script)
 
-    # 将链接转换为 Surge Module 中的 pattern
-    patterns = [f'^{re.escape(link)}' if re.match(r'^https?://', link) else link for link in js_links]
+    # 将链接或正则表达式转换为 Surge Module 中的 pattern
+    patterns = [convert_pattern(pattern) for pattern in js_patterns]
 
     # 构建 Surge Module 脚本
     surge_module_script = f'''\
@@ -23,11 +23,17 @@ hostname= %APPEND% {mitm_hostname}
 
     return surge_module_script
 
-def extract_links(js_script):
-    # 这里简单示例，提取 JavaScript 中的链接
-    # 你可能需要使用正则表达式等更复杂的方法来提取实际的链接
-    # 修改为从 JavaScript 中提取链接的实际方法
-    return ['https://example.com', 'https://example2.com']
+def extract_patterns(js_script):
+    # 从 JavaScript 脚本中提取链接或正则表达式
+    # 这里使用正则表达式来匹配 url script-response-body 行前面的内容
+    pattern_matches = re.findall(r'\burl\s+script-response-body\s+([^\n]+)', js_script)
+    return [match.strip() for match in pattern_matches]
+
+def convert_pattern(pattern):
+    # 将链接转换为正则表达式
+    if re.match(r'^https?://', pattern):
+        return f'^{re.escape(pattern)}'
+    return pattern
 
 def fetch_and_convert(remote_script_url):
     try:
@@ -52,8 +58,12 @@ def process_repository(username, repo):
             if js_script:
                 name = js_file.replace('.js', '')
                 desc = f'Description for {name}'  # 你可以自定义描述
+
+                # 提取 MITM 主机名信息
+                mitm_matches = re.findall(r'\bhostname\s*=\s*([^\n]+)', js_script)
+                mitm_hostname = mitm_matches[0].strip() if mitm_matches else ''
+
                 script_path = remote_script_url
-                mitm_hostname = 'license.pdfexpert.com'  # 你的 MITM 主机名
 
                 surge_module_script = convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname)
 
