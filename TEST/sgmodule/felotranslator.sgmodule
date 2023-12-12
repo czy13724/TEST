@@ -2,6 +2,6 @@
 #!desc=Description for felotranslator
 
 [Script]
-felotranslator = type=http-request,pattern=https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js
+felotranslator = type=http-request,pattern=,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/czy13724/TEST/main/javascript/felotranslator.js
 [MITM]
 hostname= %APPEND% license.pdfexpert.com
