@@ -26,29 +26,11 @@ jobs:
       - name: Run Conversion Script
         run: python .github/scripts/convert-js-to-sgmodule.py
         env:
-          USERNAME: czy13724
-          REPO: TEST
+          USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          REPO: ${{ secrets.GITHUB_REPO }}
 
-  deploy:
-    needs: convert
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Surge Modules
-        uses: actions/download-artifact@v2
-        with:
-          name: sgmodule
-          path: ${{ github.workspace }}/sgmodule
-        # 注释：从 artifacts 下载 sgmodule 文件夹
-
-      - name: Copy Surge Modules to sgmodule
+      - name: Save Surge Modules
         run: |
-          mkdir -p $GITHUB_WORKSPACE/sgmodule
-          cp -r $GITHUB_WORKSPACE/sgmodule/* $GITHUB_WORKSPACE/sgmodule
-        # 注释：将下载的 sgmodule 文件夹复制到仓库根目录下的 sgmodule 文件夹中
-
-      - name: Deploy Surge Modules
-        uses: actions/upload-artifact@v2
-        with:
-          name: sgmodule
-          path: sgmodule
-        # 注释：将 sgmodule 文件夹上传为工作流的 artifacts
+          mkdir -p TEST/sgmodule
+          mv sgmodule/* TEST/sgmodule
+        if: always()
