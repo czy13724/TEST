@@ -24,15 +24,15 @@ jobs:
           pip install requests
 
       - name: Run Conversion Script
-        run: python $GITHUB_WORKSPACE/.github/scripts/convert-js-to-sgmodule.py
+        run: python .github/scripts/convert-js-to-sgmodule.py
         env:
           USERNAME: czy13724
           REPO: TEST
 
       - name: Save Surge Modules
         run: |
-          mkdir -p $GITHUB_WORKSPACE/TEST/sgmodule
-          mv $GITHUB_WORKSPACE/sgmodule/* $GITHUB_WORKSPACE/TEST/sgmodule
+          mkdir -p TEST/sgmodule
+          mv sgmodule/* TEST/sgmodule
         if: always()
 
   deploy:
@@ -43,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sgmodule
-          path: $GITHUB_WORKSPACE/TEST/sgmodule
+          path: TEST/sgmodule
