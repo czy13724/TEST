@@ -67,6 +67,7 @@ jobs:
           git config user.name "${{ secrets.GITHUB_ACTOR }}"
           git add sgmodule
           git commit -m "Update Surge Modules"
-          git push origin main
+          git push "https://${{ secrets.GITHUB_ACTOR }}:${{ secrets.GITHUB_TOKEN }}@github.com/czy13724/TEST.git" main
+
 
 
