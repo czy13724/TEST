@@ -1,21 +1,21 @@
 import os
+import re
 import requests
 from urllib.parse import urljoin
-import re
 
 def extract_pattern_from_js(js_script):
-    # 使用正则表达式提取 pattern 部分
-    pattern_match = re.search(r'pattern=(.*?)(?:,|$)', js_script)
+    # 这里是一个简单的示例，提取 JavaScript 脚本中的链接正则表达式
+    pattern_match = re.search(r'pattern\s*=\s*["\'](.*?)["\']', js_script)
     if pattern_match:
         return pattern_match.group(1)
-    return None
-
-def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
-    pattern = extract_pattern_from_js(js_script)
-    if not pattern:
-        print(f'Error extracting pattern from {name}.js')
+    else:
         return None
 
+def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
+    # 提取 JavaScript 脚本中的链接正则表达式
+    pattern = extract_pattern_from_js(js_script)
+
+    # 生成 Surge Module 配置
     surge_module_script = f'''\
 #!name={name}
 #!desc={desc}
@@ -56,11 +56,11 @@ def process_repository(username, repo):
 
                 surge_module_script = convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname)
 
-                if surge_module_script:
-                    surge_module_path = os.path.join(target_folder, js_file.replace('.js', '.sgmodule'))
-                    with open(surge_module_path, 'w') as surge_module_file:
-                        surge_module_file.write(surge_module_script)
-                    print(f'Converted and saved: {surge_module_path}')
+                surge_module_path = os.path.join(target_folder, js_file.replace('.js', '.sgmodule'))
+                with open(surge_module_path, 'w') as surge_module_file:
+                    surge_module_file.write(surge_module_script)
+
+                print(f'Converted and saved: {surge_module_path}')
     except OSError as e:
         print(f'Error reading javascript folder: {e}')
 
