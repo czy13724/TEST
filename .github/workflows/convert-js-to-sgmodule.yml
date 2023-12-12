@@ -32,8 +32,8 @@ jobs:
       - name: Save Surge Modules
         run: |
           rm -rf $GITHUB_WORKSPACE/sgmodule
-          mkdir -p $GITHUB_WORKSPACE/sgmodule
-          mv sgmodule/* $GITHUB_WORKSPACE/sgmodule
+          mkdir -p TEST/sgmodule
+          cp -r $GITHUB_WORKSPACE/sgmodule/. TEST/sgmodule
         if: always()
 
       - name: Upload Surge Modules
