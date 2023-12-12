@@ -1,5 +1,6 @@
 import os
 import requests
+import re
 from urllib.parse import urljoin, quote
 
 def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
@@ -7,7 +8,7 @@ def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
     js_links = extract_links(js_script)
 
     # 将链接转换为 Surge Module 中的 pattern
-    patterns = [f'^{quote(link)}' for link in js_links]
+    patterns = [f'^{re.escape(link)}' if re.match(r'^https?://', link) else link for link in js_links]
 
     # 构建 Surge Module 脚本
     surge_module_script = f'''\
@@ -25,6 +26,7 @@ hostname= %APPEND% {mitm_hostname}
 def extract_links(js_script):
     # 这里简单示例，提取 JavaScript 中的链接
     # 你可能需要使用正则表达式等更复杂的方法来提取实际的链接
+    # 修改为从 JavaScript 中提取链接的实际方法
     return ['https://example.com', 'https://example2.com']
 
 def fetch_and_convert(remote_script_url):
@@ -38,7 +40,7 @@ def fetch_and_convert(remote_script_url):
 
 def process_repository(username, repo):
     base_remote_url = f'https://raw.githubusercontent.com/{username}/{repo}/main/javascript/'
-    target_folder = '../TEST/sgmodule'
+    target_folder = f'../{repo}/sgmodule'  # 更新目标保存路径
 
     try:
         js_files = os.listdir('javascript')
