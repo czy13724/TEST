@@ -1,32 +1,31 @@
 import os
-import re
 import requests
-from urllib.parse import urljoin
-
-def extract_pattern_from_js(js_script):
-    # 这里是一个简单的示例，提取 JavaScript 脚本中的链接正则表达式
-    pattern_match = re.search(r'pattern\s*=\s*["\'](.*?)["\']', js_script)
-    if pattern_match:
-        return pattern_match.group(1)
-    else:
-        return None
+from urllib.parse import urljoin, quote
 
 def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
-    # 提取 JavaScript 脚本中的链接正则表达式
-    pattern = extract_pattern_from_js(js_script)
+    # 提取 JavaScript 脚本中的链接
+    js_links = extract_links(js_script)
 
-    # 生成 Surge Module 配置
+    # 将链接转换为 Surge Module 中的 pattern
+    patterns = [f'^{quote(link)}' for link in js_links]
+
+    # 构建 Surge Module 脚本
     surge_module_script = f'''\
 #!name={name}
 #!desc={desc}
 
 [Script]
-{name} = type=http-request,pattern={pattern},requires-body=1,max-size=0,script-path={script_path}
+{name} = type=http-request,pattern={'|'.join(patterns)},requires-body=1,max-size=0,script-path={script_path}
 [MITM]
 hostname= %APPEND% {mitm_hostname}
 '''
 
     return surge_module_script
+
+def extract_links(js_script):
+    # 这里简单示例，提取 JavaScript 中的链接
+    # 你可能需要使用正则表达式等更复杂的方法来提取实际的链接
+    return ['https://example.com', 'https://example2.com']
 
 def fetch_and_convert(remote_script_url):
     try:
