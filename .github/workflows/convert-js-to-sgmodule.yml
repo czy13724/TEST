@@ -31,6 +31,7 @@ jobs:
 
       - name: Save Surge Modules
         run: |
+          rm -rf $GITHUB_WORKSPACE/sgmodule
           mkdir -p $GITHUB_WORKSPACE/sgmodule
           mv sgmodule/* $GITHUB_WORKSPACE/sgmodule
         if: always()
