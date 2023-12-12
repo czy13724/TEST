@@ -25,17 +25,19 @@ hostname= %APPEND% {mitm_hostname}
 
 def extract_patterns(js_script):
     # 从 JavaScript 脚本中提取链接或正则表达式
+    # 这里使用正则表达式来匹配 url script-response-body 行前面的内容
     pattern_matches = re.findall(r'\burl\s+script-response-body\s+([^\n]+)', js_script)
     return [match.strip() for match in pattern_matches]
 
 def convert_pattern(pattern):
-    # 将链接转换为正则表达式
-    if not re.match(r'^https?://', pattern):
-        # 如果不是以 http:// 或 https:// 开头，则认为是正则表达式
-        return pattern
+    # 复制链接或正则表达式到 pattern
+    converted_pattern = pattern
 
-    # 如果以 http:// 或 https:// 开头，则转换为正则表达式
-    return f'^{re.escape(pattern)}'
+    # 如果不是正则表达式，则转换为正则表达式
+    if not re.match(r'^https?://', pattern):
+        converted_pattern = f'^{re.escape(pattern)}'
+
+    return converted_pattern
 
 def fetch_and_convert(remote_script_url):
     try:
