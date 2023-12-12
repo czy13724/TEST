@@ -33,7 +33,7 @@ jobs:
         run: |
           rm -rf $GITHUB_WORKSPACE/sgmodule
           mkdir -p TEST/sgmodule
-          cp -r $GITHUB_WORKSPACE/sgmodule/. TEST/sgmodule
+          mv $GITHUB_WORKSPACE/sgmodule/* TEST/sgmodule/
         if: always()
 
       - name: Upload Surge Modules
