@@ -30,17 +30,11 @@ jobs:
           REPO: TEST
 
       - name: Save Surge Modules
-        run: |
-          rm -rf $GITHUB_WORKSPACE/sgmodule
-          mkdir -p TEST/sgmodule
-          mv $GITHUB_WORKSPACE/sgmodule/* TEST/sgmodule/
-        if: always()
-
-      - name: Upload Surge Modules
         uses: actions/upload-artifact@v2
         with:
           name: sgmodule
-          path: $GITHUB_WORKSPACE/sgmodule
+          path: sgmodule
+        if: always()
 
   deploy:
     needs: convert
@@ -53,12 +47,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: sgmodule
-          path: $GITHUB_WORKSPACE/sgmodule
+          path: sgmodule
 
       - name: Copy Surge Modules to TEST/sgmodule
         run: |
           mkdir -p TEST/sgmodule
-          cp -r $GITHUB_WORKSPACE/sgmodule/* TEST/sgmodule
+          cp -r sgmodule/. TEST/sgmodule
         if: always()
 
       - name: Commit and Push Changes
