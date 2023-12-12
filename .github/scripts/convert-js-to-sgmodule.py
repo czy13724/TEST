@@ -45,7 +45,7 @@ def fetch_and_convert(remote_script_url):
 
 def process_repository(username, repo):
     base_remote_url = f'https://raw.githubusercontent.com/{username}/{repo}/main/javascript/'
-    target_folder = f'../{repo}/sgmodule'  # 更新目标保存路径
+    target_folder = f'./{repo}/sgmodule'  # 更新目标保存路径
 
     try:
         js_files = os.listdir('javascript')
