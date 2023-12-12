@@ -56,7 +56,6 @@ jobs:
 
       - name: Copy Surge Modules to TEST/sgmodule
         run: |
-          mkdir -p TEST/sgmodule
           cp -r sgmodule/. TEST/sgmodule
         if: always()
 
