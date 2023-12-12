@@ -1,14 +1,15 @@
 import os
 import requests
 from urllib.parse import urljoin
+import re
 
-def convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname):
+def convert_to_surge_module(js_script, name, desc, pattern, script_path, mitm_hostname):
     surge_module_script = f'''\
 #!name={name}
 #!desc={desc}
 
 [Script]
-{name} = type=http-request,pattern={script_path},requires-body=1,max-size=0,script-path={script_path}
+{name} = type=http-request,pattern={pattern},requires-body=1,max-size=0,script-path={script_path}
 [MITM]
 hostname= %APPEND% {mitm_hostname}
 '''
@@ -38,10 +39,15 @@ def process_repository(username, repo):
             if js_script:
                 name = js_file.replace('.js', '')
                 desc = f'Description for {name}'  # 你可以自定义描述
+
+                # 从 JavaScript 脚本中提取正则表达式
+                pattern_match = re.search(r'pattern\s*=\s*(.*?)(?:,|\n|\r)', js_script)
+                pattern = pattern_match.group(1) if pattern_match else ''
+
                 script_path = remote_script_url
                 mitm_hostname = 'license.pdfexpert.com'  # 你的 MITM 主机名
 
-                surge_module_script = convert_to_surge_module(js_script, name, desc, script_path, mitm_hostname)
+                surge_module_script = convert_to_surge_module(js_script, name, desc, pattern, script_path, mitm_hostname)
 
                 surge_module_path = os.path.join(target_folder, js_file.replace('.js', '.sgmodule'))
                 with open(surge_module_path, 'w') as surge_module_file:
