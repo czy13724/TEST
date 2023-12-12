@@ -31,9 +31,8 @@ jobs:
 
       - name: Save Surge Modules
         run: |
-          rm -rf $GITHUB_WORKSPACE/sgmodule
           mkdir -p $GITHUB_WORKSPACE/sgmodule
-          mv $GITHUB_WORKSPACE/../TEST/sgmodule/* $GITHUB_WORKSPACE/sgmodule
+          mv sgmodule/* $GITHUB_WORKSPACE/sgmodule
         if: always()
 
       - name: Upload Surge Modules
@@ -55,11 +54,17 @@ jobs:
           name: sgmodule
           path: $GITHUB_WORKSPACE/sgmodule
 
+      - name: Copy Surge Modules to TEST/sgmodule
+        run: |
+          mkdir -p TEST/sgmodule
+          cp -r $GITHUB_WORKSPACE/sgmodule/* TEST/sgmodule
+        if: always()
+
       - name: Commit and Push Changes
         run: |
-          cd $GITHUB_WORKSPACE
+          cd TEST
           git config user.name "${{ secrets.GITHUB_ACTOR }}"
           git config user.email "${{ secrets.GITHUB_ACTOR }}@users.noreply.github.com"
           git add sgmodule
-          git commit -m "Add Surge Modules"
+          git commit -m "Update Surge Modules"
           git push origin main
