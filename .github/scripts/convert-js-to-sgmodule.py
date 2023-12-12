@@ -71,6 +71,7 @@ def process_repository(username, repo):
                     surge_module_file.write(surge_module_script)
 
                 print(f'Converted and saved: {surge_module_path}')
+
     except OSError as e:
         print(f'Error reading javascript folder: {e}')
 
