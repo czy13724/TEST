@@ -29,7 +29,7 @@ jobs:
           USERNAME: czy13724
           REPO: TEST
 
-      - name: Save Surge Modules
+      - name: Save Surge Modules to artifacts
         run: |
           mkdir -p $GITHUB_WORKSPACE/artifacts/sgmodule
           cp -r sgmodule/* $GITHUB_WORKSPACE/artifacts/sgmodule
@@ -51,15 +51,17 @@ jobs:
           repository: czy13724/TEST
           ref: main
 
-      - name: Copy Surge Modules to TEST Repository
+      - name: Move Surge Modules to TEST Repository
         run: |
           mkdir -p TEST/sgmodule
           cp -r $GITHUB_WORKSPACE/artifacts/sgmodule/* TEST/sgmodule
+        if: always()
 
       - name: Commit and Push Changes to TEST Repository
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add TEST/sgmodule
-          git commit -m "convert js files"
+          git commit -m "Update Surge Modules"
           git push
+        if: always()
