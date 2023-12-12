@@ -29,7 +29,9 @@ def extract_patterns(js_script):
     return [match.strip() for match in pattern_matches]
 
 def convert_pattern(pattern):
-    # 直接使用链接或正则表达式
+    # 检查是否为正则表达式，如果不是，则转换为正则表达式
+    if not pattern.startswith('^'):
+        pattern = f'^{re.escape(pattern)}'
     return pattern
 
 def fetch_and_convert(remote_script_url):
