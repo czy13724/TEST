@@ -56,6 +56,7 @@ jobs:
 
       - name: Copy Surge Modules to TEST/sgmodule
         run: |
+          mkdir -p TEST/sgmodule
           cp -r sgmodule/. TEST/sgmodule
         if: always()
 
@@ -71,4 +72,3 @@ jobs:
           git push --force origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
