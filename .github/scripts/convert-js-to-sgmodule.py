@@ -30,14 +30,13 @@ def extract_patterns(js_script):
     return [match.strip() for match in pattern_matches]
 
 def convert_pattern(pattern):
-    # 复制链接或正则表达式到 pattern
-    converted_pattern = pattern
-
-    # 如果不是正则表达式，则转换为正则表达式
+    # 复制到 pattern 后再判断是否为正则表达式
     if not re.match(r'^https?://', pattern):
-        converted_pattern = f'^{re.escape(pattern)}'
+        # 如果不是以 http:// 或 https:// 开头，则认为是正则表达式
+        return pattern
 
-    return converted_pattern
+    # 如果以 http:// 或 https:// 开头，则转换为正则表达式
+    return f'^{re.escape(pattern)}'
 
 def fetch_and_convert(remote_script_url):
     try:
