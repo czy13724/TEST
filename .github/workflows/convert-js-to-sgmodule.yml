@@ -1,3 +1,6 @@
+# 由于脚本不完善，禁止直接使用。支持修改代码或使用scripthub
+# 作者: Levi
+
 name: Convert JS to SGModule
 
 on:
@@ -5,6 +8,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+      inputs:
+      reason:
+        description: 'Reason for manual run'
+        required: true
 
 jobs:
   convert:
