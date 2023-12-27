@@ -1,3 +1,6 @@
+# 作者: Levi
+# 功能: 每日提交一次空的commit
+
 name: Daily Commit
 
 on:
