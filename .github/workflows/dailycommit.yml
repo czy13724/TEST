@@ -3,6 +3,7 @@ name: Daily Commit
 on:
   schedule:
     - cron: '0 0 * * *' # 设置每天的定时任务
+  workflow_dispatch:
 
 jobs:
   build:
