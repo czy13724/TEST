@@ -1,3 +1,6 @@
+# 作者: Levi
+# 功能: 生成仓库内里的任务脚本，方便qx引用。需要搭配scripts文件夹下的Generate_task_jsonfile.py使用。js放置在javascript，png放置在image，conf放置在conf。
+
 name: Generate_task_jsonfile
 
 on:
