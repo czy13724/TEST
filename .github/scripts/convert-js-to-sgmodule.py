@@ -1,3 +1,7 @@
+# 脚本不完全使用，禁止直接使用。支持修改代码或使用scripthub
+# 作者: Levi
+
+
 import os
 import requests
 import re
