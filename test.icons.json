@@ -3,64 +3,64 @@
   "description": "收集一些自己常用的图标",
   "icons": [
     {
-      "name": "sp.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/sp.png"
-    },
-    {
-      "name": "Japan.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/Japan.png"
-    },
-    {
-      "name": "youzan.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/youzan.png"
-    },
-    {
       "name": "ru.png",
       "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/ru.png"
     },
     {
-      "name": "tw.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/tw.png"
-    },
-    {
-      "name": "un.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/un.png"
-    },
-    {
-      "name": "Hongkong.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/Hongkong.png"
-    },
-    {
-      "name": "singapore.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/singapore.png"
-    },
-    {
-      "name": "jdjoy.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/jdjoy.png"
-    },
-    {
-      "name": "china.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/china.png"
-    },
-    {
-      "name": "china_telecom.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/china_telecom.png"
-    },
-    {
-      "name": "us.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/us.png"
+      "name": "iMaoTai.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/iMaoTai.png"
     },
     {
       "name": "hk.png",
       "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/hk.png"
     },
     {
-      "name": "US.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/US.png"
+      "name": "sp.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/sp.png"
     },
     {
-      "name": "iMaoTai.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/iMaoTai.png"
+      "name": "Hongkong.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/Hongkong.png"
+    },
+    {
+      "name": "jp.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/jp.png"
+    },
+    {
+      "name": "youzan.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/youzan.png"
+    },
+    {
+      "name": "singapore.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/singapore.png"
+    },
+    {
+      "name": "un.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/un.png"
+    },
+    {
+      "name": "jdjoy.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/jdjoy.png"
+    },
+    {
+      "name": "uk.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/uk.png"
+    },
+    {
+      "name": "tw.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/tw.png"
+    },
+    {
+      "name": "china.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/china.png"
+    },
+    {
+      "name": "Japan.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/Japan.png"
+    },
+    {
+      "name": "china_telecom.png",
+      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/china_telecom.png"
     },
     {
       "name": "Korea.png",
@@ -69,14 +69,6 @@
     {
       "name": "kor.png",
       "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/kor.png"
-    },
-    {
-      "name": "jp.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/jp.png"
-    },
-    {
-      "name": "uk.png",
-      "url": "https://raw.githubusercontent.com/czy13724/TEST/main/test/uk.png"
     }
   ]
 }
