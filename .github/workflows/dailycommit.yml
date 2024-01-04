@@ -8,20 +8,14 @@ on:
     schedule:
         - cron:  '0 0 * * *'  # 每天在北京时间8:00运行
     workflow_dispatch:  # 这一行是启用手动触发
-    
+
 jobs:
-  build:
+  single-commit:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Git
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-      - name: Create Empty Commit
-        run: |
-          git commit --allow-empty -m "Daily empty commit"
-          git push
+    - uses: bcanseco/github-contribution-graph-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GIT_EMAIL: you@youremail.com # replace me
