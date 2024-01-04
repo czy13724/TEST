@@ -1,27 +1,25 @@
 # 作者: Levi
 # 功能: 每日提交一次空的commit
+使用方法：复制所有代码找一个仓库新建一个工作流放入即可。使用时最好做几次手动测试。
 
-name: Daily Commit
+name: Empty Commit
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # 设置每天的定时任务
-  workflow_dispatch:
+    schedule:
+        - cron:  '0 0 * * *'  # 每天在北京时间8:00运行
+    workflow_dispatch:  # 这一行是启用手动触发
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+        steps:
+        - name: Checkout code
+            uses: actions/checkout@v2
 
-      - name: Set up Git
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-
-      - name: Create Empty Commit
-        run: |
-          git commit --allow-empty -m "Daily empty commit"
-          git push
+        - name: Create empty commit
+            run: |
+                git config --global user.name 'GitHub Actions'
+                git config --global user.email 'actions@github.com'
+                git commit --allow-empty -m "Empty commit"
+                git push
