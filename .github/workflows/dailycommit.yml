@@ -1,5 +1,5 @@
 # 作者: Levi
-# 功能: 每日提交一次空的commit
+# 功能: 每日提交一次空的commit（没什么用，工作流运行的不记为contributions）
 使用方法：复制所有代码找一个仓库新建一个工作流放入即可。使用时最好做几次手动测试。
 
 name: Empty Commit
@@ -8,18 +8,21 @@ on:
     schedule:
         - cron:  '0 0 * * *'  # 每天在北京时间8:00运行
     workflow_dispatch:  # 这一行是启用手动触发
-
+    
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-        - name: Create empty commit
-            run: |
-                git config --global user.name 'GitHub Actions'
-                git config --global user.email 'actions@github.com'
-                git commit --allow-empty -m "Empty commit"
-                git push
+    - name: Set up Git
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+
+    - name: Create Empty Commit
+      run: |
+        git commit --allow-empty -m "Automated empty commit"
+        git push origin HEAD
