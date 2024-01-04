@@ -14,15 +14,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up Git
-      run: |
-        git config user.email "actions@github.com"
-        git config user.name "GitHub Actions"
-
-    - name: Create Empty Commit
-      run: |
-        git commit --allow-empty -m "Automated empty commit"
-        git push origin HEAD
+      - name: Set up Git
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+      - name: Create Empty Commit
+        run: |
+          git commit --allow-empty -m "Daily empty commit"
+          git push
