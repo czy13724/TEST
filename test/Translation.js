@@ -1,6 +1,6 @@
 /*
 translator
-功能未测试
+功能未测试 无效果 弃用
 2024.01.08
 
 [rewrite_local]
