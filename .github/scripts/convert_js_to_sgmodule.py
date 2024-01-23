@@ -6,7 +6,7 @@ import re
 
 def insert_append(content):
     # Insert %APPEND% after the first '=' sign
-    return re.sub(r'=', '= %APPEND% ', content, count=1)
+    return re.sub(r'=', '= %APPEND%', content, count=1)
 
 def js_to_sgmodule(js_content):
     # Extract information from the JS content
