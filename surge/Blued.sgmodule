@@ -1,0 +1,9 @@
+#!name=blued
+#!desc=Generated from blued
+
+[MITM]
+hostname = %APPEND% social.blued.cn
+[Script]
+blued = type=http-response,pattern=^https:\/\/social\.blued\.cn\/users\/.*\/setting,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/anyehttp/quantumult-x/main/Adguard/blued.js
+blued = type=http-response,pattern=^https:\/\/social\.blued\.cn\/users\/shadow,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/anyehttp/quantumult-x/main/Adguard/blued.js
+blued = type=http-response,pattern=^https:\/\/social\.blued\.cn\/users\/.*\/basi,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/anyehttp/quantumult-x/main/Adguard/blued.js
