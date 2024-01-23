@@ -6,7 +6,7 @@ name: convert_js_to_sgmodule
 on:
   push:
     paths:
-      - 'qx/**' # Trigger on changes in qx folder
+      - 'qxjs/**' # Trigger on changes in qxjs folder
   pull_request:
     paths:
       - 'surge/**' # Trigger on changes in surge folder
