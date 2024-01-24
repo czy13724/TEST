@@ -1,5 +1,5 @@
 #!name=Anki
-#!desc=Generated from Anki
+#!desc=Anki is automatically converted by levi script. If not available, please use script-hub.
 
 [MITM]
 hostname = %APPEND% api.ankichinas.com

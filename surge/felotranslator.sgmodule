@@ -1,5 +1,5 @@
 #!name=felotranslator
-#!desc=Generated from felotranslator
+#!desc=felotranslator is automatically converted by levi script. If not available, please use script-hub.
 
 [MITM]
 hostname = %APPEND% translator.felo.me

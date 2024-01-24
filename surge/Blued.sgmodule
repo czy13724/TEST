@@ -1,5 +1,5 @@
 #!name=blued
-#!desc=Generated from blued
+#!desc=blued is automatically converted by levi script. If not available, please use script-hub.
 
 [MITM]
 hostname = %APPEND% social.blued.cn
