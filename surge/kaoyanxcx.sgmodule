@@ -2,5 +2,7 @@
 #!desc=脚本作者ios15 9.22更新，感谢@苍井灰灰 AES源代码
 [MITM]
 hostname = %APPEND% api.tumukaoyan.com
+
+[Script]
 微信小程序考研数学欧几里得 = type=http-response,pattern=#^https?:\/\/api\.tumukaoyan\.com\/api\/headimg_list\/GetListByAll,script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/kaoyanxcx.js
 微信小程序考研数学欧几里得 = type=http-response,pattern=^https?:\/\/api\.tumukaoyan\.com\/api\/wx\/CheckCodeV2?,script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/kaoyanxcx.js

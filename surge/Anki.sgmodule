@@ -2,4 +2,6 @@
 #!desc=Generated from Anki
 [MITM]
 hostname = %APPEND% api.ankichinas.com
+
+[Script]
 Anki = type=http-response,pattern=^https:\/\/api\.ankichinas\.com\/api\/v1\/users\/vipInfo,script-path=https://raw.githubusercontent.com/Yu9191/Rewrite/main/Anki.js
