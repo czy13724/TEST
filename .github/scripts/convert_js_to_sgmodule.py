@@ -41,6 +41,8 @@ def js_to_sgmodule(js_content):
 #!desc={project_desc}
 [MITM]
 {mitm_content_with_append}
+
+[Script]
 """
 
     # Regex pattern to find rewrite_local
