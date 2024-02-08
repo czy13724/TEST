@@ -35,7 +35,7 @@ Levi= {
         "is_trial_period": "true",
         "original_transaction_id": "320001715396819",
         "purchase_date": "2024-02-08 03:39:17 Etc\/GMT",
-        "product_id": "com.macpaw.iosgemini.lifetime",
+        "product_id": "com.macpaw.iosgemini.year.trial",
         "original_purchase_date_pst": "2024-02-07 19:39:18 America\/Los_Angeles",
         "in_app_ownership_type": "PURCHASED",
         "original_purchase_date_ms": "1707363558000",
@@ -60,9 +60,9 @@ Levi= {
   },
   "pending_renewal_info": [
     {
-      "product_id": "com.macpaw.iosgemini.lifetime",
+      "product_id": "com.macpaw.iosgemini.year.trial",
       "original_transaction_id": "320001715396819",
-      "auto_renew_product_id": "com.macpaw.iosgemini.lifetime",
+      "auto_renew_product_id": "com.macpaw.iosgemini.year.trial",
       "auto_renew_status": "1"
     }
   ],
@@ -78,7 +78,7 @@ Levi= {
       "is_trial_period": "true",
       "original_transaction_id": "320001715396819",
       "purchase_date": "2024-02-08 03:39:17 Etc\/GMT",
-      "product_id": "com.macpaw.iosgemini.lifetime",
+      "product_id": "com.macpaw.iosgemini.year.trial",
       "original_purchase_date_pst": "2024-02-07 19:39:18 America\/Los_Angeles",
       "in_app_ownership_type": "PURCHASED",
       "subscription_group_identifier": "20443598",
