@@ -14,49 +14,33 @@
 hostname = client-alphant.xback.io
 */
 
-// 提取 URL 中的查询参数
-const url = $request.url;
-const reqUrl = new URL(url);
-const deviceCode = reqUrl.searchParams.get("deviceCode");
+let body = JSON.parse($response.body);
+let url = $request.url;
+const BoxJSData = $persistentStore.read("XbackVPN_newToken");
 
-// BoxJS 配置的 key 名称
-const BOXJS_KEY = "xbackvpn_newToken";
-
-if (deviceCode) {
-    // 长链接，提取 token 并保存到 BoxJS
-    const response = JSON.parse($response.body);
-
-    if (response.data && response.data.newToken) {
-        // 使用 BoxJS 或者相关持久化存储 API 保存 newToken
-        $persistentStore.write(response.data.newToken, BOXJS_KEY);
-        console.log("New token saved: " + response.data.newToken);
-    }
-
-    $done({ body: JSON.stringify(response) });
-} else {
-    // 当 URL 不包含 `deviceCode`，从 BoxJS 获取之前保存的token
-    let storedToken = $persistentStore.read(BOXJS_KEY);
-
-    if (storedToken) {
-        // 替换 newToken
-        response.data.newToken = storedToken;
-
-        // 确保响应体中的其他属性也被正确设置
-        response.data.expireUnix = 4000103307;
-        response.data.appleSub = "apple_pay";
-        response.data.id = "4";
-        response.data.productNo = "com.xback.subscription.1year";
-        response.data.limited_offer = false;
-        response.data.duration = 99999999; 
-        response.data.type = "yearly";
-        response.data.isEnable = true;
-        response.data.desc = "Yearly";
-        response.data.vipNo = "1";
-        response.data.paypalSub = "";
-        response.data.isPaySinceRegister = true;
-    }
+if (url.indexOf('?') !== -1 && body.data && body.data.newToken) {
+    // 长链接含有查询参数，提供新的token
+    $persistentStore.write(body.data.newToken, "XbackVPN_newToken");
+    console.log("New token saved: " + body.data.newToken);
+} else if (url.indexOf('?') === -1 && BoxJSData) {
+    // 短链接没有查询参数，使用boxjs的token
+    body.data.newToken = BoxJSData;
+    console.log("Token replaced: " + BoxJSData);
 }
 
-$done({ body: JSON.stringify(response) });
+// 确保其他字段也被包含在修改的响应体中
+body.data.expireUnix = 4000103307;
+body.data.appleSub = "apple_pay";
+body.data.id = "4";
+body.data.productNo = "com.xback.subscription.1year";
+body.data.limited_offer = false;
+body.data.duration = 366; 
+body.data.type = "yearly";
+body.data.isEnable = true;
+body.data.desc = "Yearly";
+body.data.vipNo = "1";
+body.data.duration = 99999999; 
+body.data.paypalSub = "";
+body.data.isPaySinceRegister = true;
 
-// Adding a dummy change to trigger git commit
+$done({body: JSON.stringify(body)});
