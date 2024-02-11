@@ -13,8 +13,7 @@
 [mitm]
 hostname = client-alphant.xback.io
 */
-// 自定义响应体
-const customResponseBody = {
+let modifiedBody = {
     "code": "SUCCESS",
     "success": true,
     "data": {
@@ -25,7 +24,7 @@ const customResponseBody = {
         "limited_offer": false,
         "duration": 366,
         "type": "yearly",
-        "newToken": "", 
+        "newToken": "your_modified_token", // 这里应用自己生成的token或逻辑
         "isEnable": true,
         "desc": "Yearly",
         "vipNo": "1",
@@ -37,37 +36,33 @@ const customResponseBody = {
     "requestId": "2f2bfc10df558190db386c141b24d1a1"
 };
 
-// 检查我们是否能获取请求的headers，如果能的话，提取 'x-token'
-if ($request && $request.headers && $request.headers['x-token']) {
-    customResponseBody.data.newToken = $request.headers['x-token'];
+// 用于在不同工具下完成操作的函数
+function done(responseBody) {
+    if (typeof $done !== 'undefined') {
+        // Quantumult X 和 Surge
+        $done({ body: JSON.stringify(responseBody) });
+    } else if (typeof $task !== 'undefined') {
+        // Surge（带有Task API）、Loon、Shadowrocket
+        $task.fetch({ body: JSON.stringify(responseBody) });
+    } else if (typeof $httpClient !== 'undefined') {
+        // Shadowrocket
+        $httpClient.post({ body: JSON.stringify(responseBody) }, (error, response, body) => {});
+    } else {
+        // Stash（目前暂未支持）
+        console.log("Platform not supported");
+    }
 }
 
-// 根据运行环境返回修改后的响应体
-let bodyString = JSON.stringify(customResponseBody);
-
-// Quantumult X
-if (typeof $done !== "undefined") {
-    $done({body: bodyString});
+// 针对不同平台判断和处理请求和响应
+if (typeof $request !== 'undefined' && $request.url === 'https://client-alphant.xback.io/alphant/api/member/getInfo') {
+    // 这里可以添加逻辑判断是否包含查询字符串
+    if ($request.url.indexOf('?') === -1) {
+        done(modifiedBody);
+    }
+    else {
+        done($response.body); // 或者返回原始响应
+    }
+} else {
+    // 如果不是需要处理的请求，返回原始响应
+    done($response.body);
 }
-
-// Surge & Loon
-else if (typeof $httpClient !== "undefined" && typeof $response !== "undefined") {
-    $done({response: {body: bodyString}});
-}
-
-// Shadowrocket
-else if (typeof $rocket !== "undefined") {
-    $done({body: bodyString});
-}
-
-// Stash 或其他未知的代理软件处理
-else if (typeof $task !== "undefined") {
-    $done({response: {body: bodyString}});
-}
-
-// 如果不在以上任何代理工具中运行，则不支持
-else {
-    console.log("This script does not support the current platform.");
-}
-
-// Adding a dummy change to trigger git commit
