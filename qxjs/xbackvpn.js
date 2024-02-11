@@ -15,46 +15,66 @@ hostname = client-alphant.xback.io
 */
 
 
-// 定义修改后的响应体
-const modifiedResponse = {
-  "code": "SUCCESS",
-  "success": true,
-  "data": {
-        "code": "SUCCESS",
-        "success": true,
-        "data": {
-            "expireUnix": 4000103307,
-            "appleSub": "apple_pay",
-            "id": "4",
-            "productNo": "com.xback.subscription.1year",
-            "limited_offer": false,
-            "duration": 366,
-            "type": "yearly",
-            "newToken": "{x-token-placeholder}", 
-            "isEnable": true,
-            "desc": "Yearly",
-            "vipNo": "1",
-            "duration": 99999999,
-            "paypalSub": "",
-            "isPaySinceRegister": true
-        },
-        "msg": "success",
-        "requestId": "2f2bfc10df558190db386c141b24d1a1"
-    };
+// 设置通用数据结构
+const modifiedBody = {
+    "code": "SUCCESS",
+    "success": true,
+    "data": {
+        "expireUnix": 4000103307,
+        "appleSub": "apple_pay",
+        "id": "4",
+        "productNo": "com.xback.subscription.1year",
+        "limited_offer": false,
+        "duration": 366,
+        "type": "yearly",
+        "isEnable": true,
+        "desc": "Yearly",
+        "vipNo": "1",
+        "duration": 99999999,
+        "paypalSub": "",
+        "isPaySinceRegister": true,
+        "newToken": ""  
+    },
+    "msg": "success",
+    "requestId": "2f2bfc10df558190db386c141b24d1a1"
+};
 
-// 根据环境替换占位符并设置响应体
-if (typeof $response !== "undefined") {
+// 兼容各个平台的通用方法来处理请求和响应
+function handleResponse(request, response) {
+    const url = request.url;
+    const baseUrl = 'https://client-alphant.xback.io/alphant/api/member/getInfo';
 
-    if ($request.headers.hasOwnProperty('x-token')) {
-        modifiedResponse.data.newToken = $request.headers['x-token'];
+    if (url === baseUrl) {
+        if (request.headers && request.headers["x-token"]) {
+            modifiedBody.data.newToken = request.headers["x-token"];
+        }
+        response.body = JSON.stringify(modifiedBody);
     }
-    $done({ body: JSON.stringify(modifiedResponse) });
-} else if (typeof $done !== "undefined") {
-
-    $done({ body: JSON.stringify(modifiedResponse) });
-} else {
-    console.log("Unsupported environment");
-    $done({});
+    return response;
 }
 
-// Adding a dummy change to trigger git commit
+// Quantumult X 兼容
+if (typeof $response !== "undefined") {
+    $done(handleResponse($request, $response));
+}
+
+// Surge & Loon 兼容
+if (typeof $done !== "undefined") {
+    $httpClient.get($request, function(error, response, data) {
+        if (error) {
+            console.log(error);
+            $done({});
+        } else {
+            $done(handleResponse($request, response, data));
+        }
+    });
+}
+
+// Shadowrocket 兼容
+if (typeof $httpClient !== "undefined" && typeof $request === "undefined") {
+    $httpClient.get($request, function(error, response, data) {
+        $done(handleResponse($request, {headers: response.headers, body: data}));
+    });
+}
+
+// Stash 兼容性未知，可能需要其他方法
