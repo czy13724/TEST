@@ -13,10 +13,8 @@
 [mitm]
 hostname = client-alphant.xback.io
 */
-
-
-// 设置通用数据结构
-const modifiedBody = {
+// 自定义响应体
+const customResponseBody = {
     "code": "SUCCESS",
     "success": true,
     "data": {
@@ -27,56 +25,47 @@ const modifiedBody = {
         "limited_offer": false,
         "duration": 366,
         "type": "yearly",
+        "newToken": "", 
         "isEnable": true,
         "desc": "Yearly",
         "vipNo": "1",
         "duration": 99999999,
         "paypalSub": "",
-        "isPaySinceRegister": true,
-        "newToken": ""  
+        "isPaySinceRegister": true
     },
     "msg": "success",
     "requestId": "2f2bfc10df558190db386c141b24d1a1"
 };
 
-// 兼容各个平台的通用方法来处理请求和响应
-function handleResponse(request, response) {
-    const url = request.url;
-    const baseUrl = 'https://client-alphant.xback.io/alphant/api/member/getInfo';
-
-    if (url === baseUrl) {
-        if (request.headers && request.headers["x-token"]) {
-            modifiedBody.data.newToken = request.headers["x-token"];
-        }
-        response.body = JSON.stringify(modifiedBody);
-    }
-    return response;
+// 检查我们是否能获取请求的headers，如果能的话，提取 'x-token'
+if ($request && $request.headers && $request.headers['x-token']) {
+    customResponseBody.data.newToken = $request.headers['x-token'];
 }
 
-// Quantumult X 兼容
-if (typeof $response !== "undefined") {
-    $done(handleResponse($request, $response));
-}
+// 根据运行环境返回修改后的响应体
+let bodyString = JSON.stringify(customResponseBody);
 
-// Surge & Loon 兼容
+// Quantumult X
 if (typeof $done !== "undefined") {
-    $httpClient.get($request, function(error, response, data) {
-        if (error) {
-            console.log(error);
-            $done({});
-        } else {
-            $done(handleResponse($request, response, data));
-        }
-    });
+    $done({body: bodyString});
 }
 
-// Shadowrocket 兼容
-if (typeof $httpClient !== "undefined" && typeof $request === "undefined") {
-    $httpClient.get($request, function(error, response, data) {
-        $done(handleResponse($request, {headers: response.headers, body: data}));
-    });
+// Surge & Loon
+else if (typeof $httpClient !== "undefined" && typeof $response !== "undefined") {
+    $done({response: {body: bodyString}});
 }
 
-// Stash 兼容性未知，可能需要其他方法
+// Shadowrocket
+else if (typeof $rocket !== "undefined") {
+    $done({body: bodyString});
+}
 
-// Adding a dummy change to trigger git commit
+// Stash 或其他未知的代理软件处理
+else if (typeof $task !== "undefined") {
+    $done({response: {body: bodyString}});
+}
+
+// 如果不在以上任何代理工具中运行，则不支持
+else {
+    console.log("This script does not support the current platform.");
+}
