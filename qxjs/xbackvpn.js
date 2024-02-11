@@ -8,7 +8,7 @@
 
 [rewrite_local]
 
-^https:\/\/client-alphant\.xback\.io\/alphant\/api\/member\/getInfo\?.*$ url script-response-body https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/xbackvpn.js
+^https:\/\/client-alphant\.xback\.io\/alphant\/api\/member\/getInfo$ url script-response-body https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/xbackvpn.js
 
 [mitm]
 hostname = client-alphant.xback.io
@@ -42,5 +42,3 @@ if (url.indexOf(path) != -1) {
 
 // 用修改后的响应体完成请求
 $done({body});
-
-// Adding a dummy change to trigger git commit
