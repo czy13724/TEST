@@ -13,34 +13,48 @@
 [mitm]
 hostname = client-alphant.xback.io
 */
-let body = $response.body;
-let url = $request.url;
-const path = "/alphant/api/member/getInfo";
 
-if (url.indexOf(path) != -1) {
-    // 检测到获取会员信息的请求
-    let obj = JSON.parse(body);
-    obj.data["expireUnix"] = 4000103307;
-    obj.data["appleSub"] = "apple_pay";
-    obj.data["id"] = "4";
-    obj.data["productNo"] = "com.xback.subscription.1year";
-    obj.data["limited_offer"] = false;
-    obj.data["duration"] = 366;
-    obj.data["type"] = "yearly";
-    // 从请求头中提取newToken，并替换响应内容的newToken值
-    obj.data["newToken"] = $request.headers["x-token"];
-    obj.data["isEnable"] = true;
-    obj.data["desc"] = "Yearly";
-    obj.data["vipNo"] = "1";
-    obj.data["duration"] = 99999999; 
-    obj.data["paypalSub"] = "";
-    obj.data["isPaySinceRegister"] = true;
-    
-    // 将修改后的对象转换回JSON字符串作为响应体
-    body = JSON.stringify(obj);  
+// 提取 URL 中的查询参数
+const url = $request.url;
+const reqUrl = new URL(url);
+const deviceCode = reqUrl.searchParams.get("deviceCode");
+
+// BoxJS 配置的 key 名称
+const BOXJS_KEY = "xbackvpn_newToken";
+
+if (deviceCode) {
+    // 长链接，提取 token 并保存到 BoxJS
+    const response = JSON.parse($response.body);
+
+    if (response.data && response.data.newToken) {
+        // 使用 BoxJS 或者相关持久化存储 API 保存 newToken
+        $persistentStore.write(response.data.newToken, BOXJS_KEY);
+        console.log("New token saved: " + response.data.newToken);
+    }
+
+    $done({ body: JSON.stringify(response) });
+} else {
+    // 当 URL 不包含 `deviceCode`，从 BoxJS 获取之前保存的token
+    let storedToken = $persistentStore.read(BOXJS_KEY);
+
+    if (storedToken) {
+        // 替换 newToken
+        response.data.newToken = storedToken;
+
+        // 确保响应体中的其他属性也被正确设置
+        response.data.expireUnix = 4000103307;
+        response.data.appleSub = "apple_pay";
+        response.data.id = "4";
+        response.data.productNo = "com.xback.subscription.1year";
+        response.data.limited_offer = false;
+        response.data.duration = 99999999; 
+        response.data.type = "yearly";
+        response.data.isEnable = true;
+        response.data.desc = "Yearly";
+        response.data.vipNo = "1";
+        response.data.paypalSub = "";
+        response.data.isPaySinceRegister = true;
+    }
 }
 
-// 用修改后的响应体完成请求
-$done({body});
-
-// Adding a dummy change to trigger git commit
+$done({ body: JSON.stringify(response) });
