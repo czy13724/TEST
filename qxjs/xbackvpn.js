@@ -13,20 +13,18 @@
 [mitm]
 hostname = client-alphant.xback.io
 */
-// 假设工具支持$notify和$http API来与BoxJS通信
-
 // 提取newToken并保存到BoxJS
 function extractAndSaveToken(body) {
     if (body.data && body.data.newToken) {
         const newToken = body.data.newToken;
         
-        // 这里我们发送一个HTTP请求到BoxJS的存储API来保存token
+        // 这里发送一个HTTP请求到BoxJS的存储API来保存token
         const boxjsSaveApi = `http://boxjs.com/save?app.xbackvpn.token=${encodeURIComponent(newToken)}`;
         $http.get(boxjsSaveApi, function(error, response, data) {
             if (error) {
-                console.error(`Error saving token to BoxJS: ${error}`);
+                console.error(`保存到BoxJS出错: ${error}`);
             } else {
-                $notify("XbackVPN", "Token Updated", `New token saved to BoxJS: ${newToken}`);
+                $notify("XbackVPN", "Token 已更新", `新的Token已保存至BoxJS: ${newToken}`);
             }
         });
     }
@@ -37,7 +35,7 @@ function fetchTokenFromBoxJs(callback) {
     const boxjsQueryApi = "http://boxjs.com/query?app.xbackvpn.token";
     $http.get(boxjsQueryApi, function(error, response, data) {
         if (error) {
-            console.error(`Error fetching token from BoxJS: ${error}`);
+            console.error(`不能从BoxJS获取Token: ${error}`);
             callback(null);
         } else {
             try {
@@ -92,5 +90,3 @@ const resultBody = handleResponse(url, body);
 
 // 结束脚本，返回修改后的响应体
 $done({body: resultBody});
-
-// Adding a dummy change to trigger git commit
