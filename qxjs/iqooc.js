@@ -33,6 +33,13 @@ https://raw.githubusercontent.com/czy13724/TEST/main/surge/iqooc.sgmodule
 [Script]
 # （默认上午9点 执行，如需更改请自行修改cron表达式）
 IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
+
+Qx
+[rewrite_local]
+^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/sign$ url script-request-body https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
+
+[mitm]
+hostname = bbs-api.iqoo.com
 -----------------------------------------------
 *************************
 【 签到脚本使用教程 】:
