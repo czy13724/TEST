@@ -91,7 +91,7 @@ const resultBody = handleResponse(url, body);
 // 结束脚本，返回修改后的响应体
 $done({body: resultBody});
 
-// Adding a dummy sgmodule commit
+// Adding a dummy sgmodule commit()
 
 // Adding a dummy sgmodule commit(4782354)
 
