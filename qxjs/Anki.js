@@ -25,4 +25,4 @@ body.data.vip_day = 999;
 
 $done({ body: JSON.stringify(body) });
 
-// Adding a dummy sgmodule change to trigger git commit(1)// Adding a dummy sgmodule change to trigger git commit(1)
+// Adding a dummy sgmodule change to trigger git commit(1)
