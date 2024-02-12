@@ -103,10 +103,10 @@ def update_commit_count(file_path):
             new_count = current_count + 1
             # 替换现有注释
             updated_content = pattern.sub('', content)
-            updated_content = updated_content.strip() + f'\n// Adding a dummy sgmodule change to trigger git commit({new_count})\n'
+            updated_content = updated_content.strip() + f'\n// Adding a dummy sgmodule commit({new_count})\n'
         else:
             # 如果没有找到注释，则添加一个初始注释
-            updated_content = content.strip() + '\n// Adding a dummy sgmodule change to trigger git commit(1)\n'
+            updated_content = content.strip() + '\n// Adding a dummy sgmodule commit(1)\n'
 
         # 将新内容写回文件
         file.seek(0)
