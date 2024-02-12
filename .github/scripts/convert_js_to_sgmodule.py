@@ -82,12 +82,18 @@ def main():
 
                 print(f"Generated {sgmodule_file_path}")
 
-                # Add a dummy change and commit
-                with open(file_path, 'a', encoding='utf-8') as js_file:
-                    js_file.write("\n// Adding a dummy change to trigger git commit\n")
 
-                os.system(f'git add {file_path}')
-                os.system('git commit -m "Trigger update"')
+            # 获取文件的提交次数
+            commit_count_cmd = f'git rev-list --count HEAD "{file_path}"'
+            commit_count = subprocess.check_output(commit_count_cmd, shell=True).decode('utf-8').strip()
+
+            # 在文件末尾添加提交次数注释
+            with open(file_path, 'a', encoding='utf-8') as file:
+                file.write(f"\n// Adding a dummy sgmodule change to trigger git commit({commit_count})\n")
+
+            # 添加文件到Git并提交
+            os.system(f'git add "{file_path}"')
+            os.system(f'git commit -m "Update file with commit count {commit_count}"')
 
 if __name__ == "__main__":
     main()
