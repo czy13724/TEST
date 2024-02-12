@@ -32,7 +32,7 @@ https://raw.githubusercontent.com/czy13724/TEST/main/surge/iqooc.sgmodule
 本地-Script定时任务
 [Script]
 # （默认上午9点 执行，如需更改请自行修改cron表达式）
-欧莱雅LOREAL签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
+IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
 -----------------------------------------------
 *************************
 【 签到脚本使用教程 】:
