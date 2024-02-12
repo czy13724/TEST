@@ -93,12 +93,12 @@ def get_new_commit_count(existing_count):
 def update_commit_annotation(file_path):
     with open(file_path, 'r+', encoding='utf-8') as file:
         content = file.read()
-        existing_count = re.search(r'// Adding a dummy sgmodule change to trigger git commit\((\d+)\)', content)
+        existing_count = re.search(r'// Adding a dummy sgmodule commit\((\d+)\)', content)
         
         # 将文件中现有注释更新或添加新注释
         new_count = get_new_commit_count(existing_count)
-        new_annotation = f'// Adding a dummy sgmodule change to trigger git commit({new_count})\n'
-        updated_content = re.sub(r'// Adding a dummy sgmodule change to trigger git commit\(\d+\)\n', '', content)
+        new_annotation = f'// Adding a dummy sgmodule commit({new_count})\n'
+        updated_content = re.sub(r'// Adding a dummy sgmodule commit\(\d+\)\n', '', content)
         updated_content = updated_content.strip() + '\n' + new_annotation
         
         file.seek(0)  # 回到文件开头
