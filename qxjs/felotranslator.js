@@ -18,4 +18,3 @@ let obj = JSON.parse($response.body);
     });
 
 
-// Adding a dummy sgmodule change to trigger git commit(1)
