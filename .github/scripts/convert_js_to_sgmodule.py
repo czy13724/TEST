@@ -84,17 +84,28 @@ def main():
                 print(f"Generated {sgmodule_file_path}")
 
 
-            # 获取文件的提交次数
-            commit_count_cmd = f'git rev-list --count HEAD "{file_path}"'
-            commit_count = subprocess.check_output(commit_count_cmd, shell=True).decode('utf-8').strip()
+        # 获取文件的提交次数
+        repo_path = 'TEST/qxjs/**' # 请替换为实际的git仓库路径
+        os.chdir(repo_path) # 切换当前工作目录到git仓库路径
+        commit_count_cmd = f'git rev-list --count HEAD "{file_path}"'
+        commit_count = subprocess.check_output(commit_count_cmd, shell=True).decode('utf-8').strip()
 
-            # 在文件末尾添加提交次数注释
-            with open(file_path, 'a', encoding='utf-8') as file:
-                file.write(f"\n// Adding a dummy sgmodule change to trigger git commit({commit_count})\n")
+        # 在文件末尾添加/更新提交次数注释
+        new_line = f"// Adding a dummy sgmodule change to trigger git commit({commit_count})"
+        regex_pattern = r"// Adding a dummy sgmodule change to trigger git commit\(\d+\)"
 
-            # 添加文件到Git并提交
-            os.system(f'git add "{file_path}"')
-            os.system(f'git commit -m "Update file with commit count {commit_count}"')
+        # 判断是否存在提交次数注释，如果存在则更新，如果不存在则添加
+        if re.search(regex_pattern, js_content):
+            updated_js_content = re.sub(regex_pattern, new_line, js_content)
+        else:
+            updated_js_content = js_content + f"\n{new_line}"
+
+        with open(file_path, 'w', encoding='utf-8') as js_file:
+            js_file.write(updated_js_content)
+
+        # 添加文件到Git并提交
+        os.system(f'git add "{file_path}"')
+        os.system('git commit -m "Trigger update"')
 
 if __name__ == "__main__":
     main()
