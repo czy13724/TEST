@@ -92,10 +92,4 @@ const resultBody = handleResponse(url, body);
 $done({body: resultBody});
 
 // Adding a dummy sgmodule commit()
-
-// Adding a dummy sgmodule commit(4782354)
-
-// Adding a dummy sgmodule commit(123751674823)
-// Adding a dummy sgmodule commit(5)
-// Adding a dummy sgmodule commit(1)
-// Adding a dummy sgmodule commit(1)
+// Adding a dummy sgmodule commit(4782355)
