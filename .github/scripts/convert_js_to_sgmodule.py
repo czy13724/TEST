@@ -85,7 +85,7 @@ def main():
 
 
         # 获取文件的提交次数
-        repo_path = 'TEST' # 请替换为实际的git仓库路径
+        repo_path = '/home/runner/work/TEST/TEST' # 请替换为实际的git仓库路径
         os.chdir(repo_path) # 切换当前工作目录到git仓库路径
         commit_count_cmd = f'git rev-list --count HEAD "{file_path}"'
         commit_count = subprocess.check_output(commit_count_cmd, shell=True).decode('utf-8').strip()
