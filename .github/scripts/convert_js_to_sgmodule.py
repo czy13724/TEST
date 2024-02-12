@@ -85,55 +85,47 @@ def main():
 
 
 
-import os
-import re
-import subprocess
 
-# 从Git中获取文件的提交次数
-def get_commit_count(file_name):
-    # Git命令获取提交次数
-    cmd = ['git', 'rev-list', '--count', 'HEAD', file_name]
-    commit_count = subprocess.run(cmd, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+def get_commit_count(file_path):
+    # 获取指定文件的提交次数
+    command = ['git', 'rev-list', '--count', 'HEAD', file_path]
+    commit_count = subprocess.run(command, capture_output=True, text=True).stdout.strip()
     return commit_count
 
-# 更新文件的提交计数注释
-def update_commit_count(file_name, commit_count):
-    # 正则表达式匹配提交计数注释
+
+def update_file_commit_count(file_path, commit_count):
+    # 更新文件中的提交次数注释
     commit_count_pattern = re.compile(r'// Adding a dummy sgmodule change to trigger git commit\(\d+\)\n')
 
-    # 读取原始文件内容
-    with open(file_name, 'r', encoding='utf-8') as file:
-        file_content = file.read()
+    with open(file_path, 'r+', encoding='utf-8') as file:
+        content = file.read()
 
-    # 如果文件中已经有注释，则更新第一个注释并删除其余的注释
-    if commit_count_pattern.search(file_content):
-        # 替换第一个注释的计数，并删除后续所有匹配的注释
-        updated_content, _ = commit_count_pattern.subn(f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n', file_content, count=1)
-        updated_content = commit_count_pattern.sub('', updated_content)
-    else:
-        # 如果没有找到注释，追加一个新的注释到文件的末尾
-        updated_content = file_content + f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n'
+        if commit_count_pattern.search(content):
+            new_content = commit_count_pattern.sub(f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n', content)
+        else:
+            new_content = content + f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n'
 
-    # 将更新后的内容写回文件
-    with open(file_name, 'w', encoding='utf-8') as file:
-        file.write(updated_content)
+        file.seek(0)
+        file.write(new_content)
+        file.truncate()
 
-# 主函数
+
 def main():
-    # 设定目录
-    qx_dir = 'qxjs'
-    os.chdir(qx_dir)
+    # 设置要处理的文件夹路径
+    folder_path = 'qxjs'
 
-    # 处理所有.js文件
-    for file_name in os.listdir('.'):
+    # 遍历文件夹中的所有.js文件
+    for file_name in os.listdir(folder_path):
         if file_name.endswith('.js'):
-            commit_count = get_commit_count(file_name)
-            update_commit_count(file_name, commit_count)
-            # 添加改动到Git
-            os.system(f'git add {file_name}')
+            full_path = os.path.join(folder_path, file_name)
+            commit_count = get_commit_count(full_path)
+            update_file_commit_count(full_path, commit_count)
+            os.system(f'git add {full_path}')
 
-    # 提交所有改动
-    os.system('git commit -m "Updated commit counts in comments"')
+    # Git提交更改
+    os.system('git commit -m "Updated commit count in files"')
+
 
 if __name__ == "__main__":
     main()
