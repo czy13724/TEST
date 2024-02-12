@@ -17,5 +17,5 @@ let obj = JSON.parse($response.body);
         body: JSON.stringify(obj)
     });
 
-// Adding a dummy change to trigge
-// Adding a dummy sgmodule change to trigger git commit(1)
+
+// Adding a dummy sgmodule change to trigger git commit(4)
