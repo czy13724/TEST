@@ -24,12 +24,4 @@ body.data.vip_end_at = 4102403992;
 body.data.vip_day = 999; 
 
 $done({ body: JSON.stringify(body) });
-// Adding a dummy sgmodule commit(811)
-
-// Adding a dummy sgmodule commit(84124)
-
-// Adding a dummy sgmodule commit(84124)
-
-// Adding a dummy sgmodule commit(8412)
-
-// Adding a dummy sgmodule commit(123)
+// Adding a dummy sgmodule commit(812)
