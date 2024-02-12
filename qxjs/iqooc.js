@@ -139,8 +139,8 @@ async signin() {
                 $.signMsg = `✅签到成功(${result.Meta?.tips?.message})`;
             }
         } else {
-           // $.log(`❌签到失败！`);
-            $.signMsg = `❌签到失败(${result?.Message})`;
+          
+            $.signMsg = `${result?.Message}`;
         }
     } catch (e) {
         console.log(e);
@@ -168,7 +168,7 @@ async point() {
             
             if (result?.Code === 0) {
                     $.log(`✅查询成功！`);
-                    $.pointMsg = `✅积分:${result?.Data?.score}个`;
+                    $.pointMsg = `✅当前积分:${result?.Data?.score}个`;
             } else {
                 $.log(`❌查询失败！`);
                 $.pointMsg = `❌查询失败`;
