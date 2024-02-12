@@ -156,7 +156,7 @@ async point() {
         try {
             const options = {
                 //签到任务调用签到接口
-                url: `https://bbs-api.iqoo.com/api/v3/user?userId=1435970,`
+                url: `https://bbs-api.iqoo.com/api/v3/user?userId=1435970`,
                 //请求头, 所有接口通用
                 headers: {
                     "content-type": "application/json",
