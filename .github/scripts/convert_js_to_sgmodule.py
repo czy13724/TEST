@@ -84,28 +84,44 @@ def main():
                 print(f"Generated {sgmodule_file_path}")
 
 
-        # 获取文件的提交次数
-        repo_path = os.getenv('GITHUB_WORKSPACE')
-        os.chdir(repo_path) # 切换当前工作目录到git仓库路径
-        commit_count_cmd = f'git rev-list --count HEAD "{file_path}"'
-        commit_count = subprocess.check_output(commit_count_cmd, shell=True).decode('utf-8').strip()
+def update_commit_count(file_path):
+    # 获取文件当前的提交次数
+    cmd = f'git rev-list --count HEAD "{file_path}"'
+    commit_count = int(subprocess.check_output(cmd, shell=True).strip())
 
-        # 在文件末尾添加/更新提交次数注释
-        new_line = f"// Adding a dummy sgmodule change to trigger git commit({commit_count})"
-        regex_pattern = r"// Adding a dummy sgmodule change to trigger git commit\(\d+\)"
+    # 读取文件内容并使用正则表达式查找现有的提交次数注释
+    with open(file_path, 'r+', encoding='utf-8') as file:
+        content = file.read()
+        # 寻找现有的提交计数注释
+        pattern = re.compile(r'// Adding a dummy sgmodule change to trigger git commit\((\d+)\)\n')
+        match = pattern.search(content)
 
-        # 判断是否存在提交次数注释，如果存在则更新，如果不存在则添加
-        if re.search(regex_pattern, js_content):
-            updated_js_content = re.sub(regex_pattern, new_line, js_content)
+        # 如果找到了现有的注释，则更新计数器
+        if match:
+            new_content = pattern.sub(f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n', content)
         else:
-            updated_js_content = js_content + f"\n{new_line}"
+            # 如果没有找到注释，就在文件末尾添加它
+            new_content = content + f'// Adding a dummy sgmodule change to trigger git commit({commit_count})\n'
 
-        with open(file_path, 'w', encoding='utf-8') as js_file:
-            js_file.write(updated_js_content)
+        # 回到文件开头，写入新内容，然后截断剩余的旧内容
+        file.seek(0)
+        file.write(new_content)
+        file.truncate()
 
-        # 添加文件到Git并提交
-        os.system(f'git add "{file_path}"')
-        os.system('git commit -m "Trigger update"')
+def main():
+    # 假设所有文件都在'qxjs'文件夹内
+    qx_folder_path = 'qxjs'
+    # 遍历文件夹下的所有js文件
+    for file_name in os.listdir(qx_folder_path):
+        if file_name.endswith('.js'):
+            file_path = os.path.join(qx_folder_path, file_name)
+            update_commit_count(file_path)
+
+            # 添加文件到Git并提交更新
+            os.system(f'git add "{file_path}"')
+    
+    # 批量提交所有更新
+    os.system('git commit -m "Update commit counts"')
 
 if __name__ == "__main__":
     main()
