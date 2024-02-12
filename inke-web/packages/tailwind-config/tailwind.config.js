@@ -37,3 +37,5 @@ module.exports = {
     require("tailwindcss-animate"),
   ],
 };
+
+// Adding a dummy sgmodule commit(1)

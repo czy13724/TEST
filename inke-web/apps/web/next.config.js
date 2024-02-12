@@ -43,3 +43,5 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+// Adding a dummy sgmodule commit(1)
