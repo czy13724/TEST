@@ -1,49 +1,47 @@
 /**************************************
-by-
-@Levi
-感谢樱花大佬的脚本框架
-@sliverkiss
 
-@Date:2024-02-12完成脚本编写
-
-适用于微信小程序IQOO社区签到
-
-樱花佬频道 https://t.me/sliverkiss
+项目名称：IQOO社区
+项目作者：Levi(@czy13724)
+使用说明：微信小程序IQOO社区签到，获取到ck可用。
+ // 感谢樱花大佬的脚本框架@sliverkiss 樱花频道 https://t.me/sliverkiss
+更新日期：02/12/2024
 
 反馈群
 群组：https://t.me/IPAs_Dd
 频道：https://t.me/IPAs_share
-
-脚本默认 上午9点
+⚠️可复制本脚本头部链接进行远程引用，无需借助Script-Hub进行转换。其他应用配置请参考该配置。
 -----------------------------------------------
-============== 
-|    Surge   |
-==============
-|    小火箭   |
-==============
-|   LanceX   |
-==============
-远程-模块(包括获取Cookie和定时任务)
-https://raw.githubusercontent.com/czy13724/TEST/main/surge/iqooc.sgmodule
+***************
+【签到脚本配置】：
+***************
 
+Surge, ShadowRocket配置如下：
 本地-Script定时任务
 [Script]
 # （默认上午9点 执行，如需更改请自行修改cron表达式）
-IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
+IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js
 
-Qx
+*********
+Quantumult X配置如下：
 [rewrite_local]
-^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/sign$ url script-request-body https://raw.githubusercontent.com/czy13724/TEST/main/qxjs/iqooc.js
+^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/sign$ url script-request-body https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js
 
 [mitm]
 hostname = bbs-api.iqoo.com
+
+[task_local]
+0 9 * * * https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, tag=IQOO社区签到, img-url=, enabled=true
 -----------------------------------------------
 *************************
 【 签到脚本使用教程 】:
 *************************
 单账号：
 1.将签到脚本拉取到本地
-2.打开网站，随便逛逛，提示获取cookie成功则可以使用该脚本
+2.打开小程序随便逛逛，提示获取cookie成功则可以使用该脚本
+(方法一：
+如无法获取ck请开启抓包随意浏览，查找和ttps://bbs-api.iqoo.com/api/域名下的Authorization。
+打开boxjs->我的->数据查看器->在数据键输入iqooc_data,点击VIEW->在数据内容输入抓取到的Authorization，点击保存。
+方法二：远程引用重写开启抓包并打开小程序随意浏览，提示获取ck成功即可使用该脚本)
 3.关闭获取cookie脚本，防止产生不必要的mitm
 多账号：
 1.抓包https://bbs-api.iqoo.com/api/域名下的Authorization
