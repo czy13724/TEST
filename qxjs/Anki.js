@@ -1,7 +1,7 @@
 /*************************************
 
 项目名称：Anki记忆卡
-软件版本：1.12.1 Time：2023.8.1
+软件版本：1.12.1 Time：2023.8.16
 下载地址：https://is.gd/ogshV8
 使用声明：⚠️仅供参考，🈲️转载与售卖！
 
@@ -25,4 +25,5 @@ body.data.vip_day = 999;
 
 $done({ body: JSON.stringify(body) });
 
-// Adding a dummy sgmodule change to trigger git commit(1)// Adding a dummy sgmodule change to trigger git commit(1)
+// Adding a dummy sgmodule change to trigger git commit(1)
+// Adding a dummy sgmodule change to trigger git commit(1213313)
