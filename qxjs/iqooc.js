@@ -129,9 +129,9 @@ async signin() {
         };
         //post方法
         let result = await httpRequest(options);
-        console.log(result)
+        // console.log(result)
         if (result?.status === true) {
-            if (result?.Data && result.Data.length === 0) {
+            if (result?.Code === -13006) {
                 $.log(`❌重复签到！`);
                 $.signMsg = `❌重复签到(${result?.Message})`;
             } else{
@@ -139,7 +139,7 @@ async signin() {
                 $.signMsg = `✅签到成功(${result.Meta?.tips?.message})`;
             }
         } else {
-            $.log(`❌签到失败！`);
+           // $.log(`❌签到失败！`);
             $.signMsg = `❌签到失败(${result?.Message})`;
         }
     } catch (e) {
@@ -165,7 +165,7 @@ async point() {
             //post方法
             let result = await httpRequest(options);
             console.log(result)
-            console.log(result?.Code);
+            
             if (result?.Code === 0) {
                     $.log(`✅查询成功！`);
                     $.pointMsg = `✅积分:${result?.Data?.score}个`;
