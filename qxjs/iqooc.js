@@ -30,7 +30,7 @@ Quantumult X配置如下：
 hostname = bbs-api.iqoo.com
 
 [task_local]
-0 9 * * * https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, tag=IQOO社区签到, img-url=, enabled=true
+0 9 * * * https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, tag=IQOO社区签到, img-url=https://raw.githubusercontent.com/czy13724/LeviIcons/main/leviicons/iqooc.png, enabled=true
 -----------------------------------------------
 *************************
 【 签到脚本使用教程 】:
