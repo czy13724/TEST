@@ -146,34 +146,37 @@ async signin() {
 }
 
 
-//积分查询
-async point() {
-        try {
-            const options = {
-                //签到任务调用签到接口
-                url: `https://bbs-api.iqoo.com/api/v3/user?userId=1435970`,
-                //请求头, 所有接口通用
-                headers: {
-                    "content-type": "application/json",
-                    "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
-                    "Authorization":this.token,
-                },
-                // body: {}
-            };
-            //post方法
-            let result = await httpRequest(options);
-            console.log(result)
-            
-            if (result?.Code === 0) {
-                    $.log(`✅查询成功！`);
-                    $.pointMsg = `✅当前积分:${result?.Data?.score}个`;
-            } else {
-                $.log(`❌查询失败！`);
-                $.pointMsg = `❌查询失败`;
-            }
-        } catch (e) {
-            console.log(e);
+// 设置变量 userId，从 BoxJS 中获取
+const userId = $persistentStore.read("userId");
+
+// 积分查询
+async function point() {
+    try {
+        const options = {
+            // 使用获取到的 userId 构建 API 请求 URL
+            url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,
+            // 请求头, 所有接口通用
+            headers: {
+                "content-type": "application/json",
+                "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
+                "Authorization": this.token,
+            },
+            // body: {}
+        };
+        // 发送 HTTP 请求
+        let result = await httpRequest(options);
+        console.log(result);
+        
+        // 处理返回结果
+        if (result?.Code === 0) {
+            $.log(`✅查询成功！`);
+            $.pointMsg = `✅当前积分:${result?.Data?.score}个`;
+        } else {
+            $.log(`❌查询失败！`);
+            $.pointMsg = `❌查询失败`;
         }
+    } catch (e) {
+        console.log(e);
     }
 }
 
