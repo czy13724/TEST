@@ -37,5 +37,4 @@ module.exports = {
     ],
   },
 };
-
-// Adding a dummy sgmodule commit(6)
+// Adding a dummy sgmodule commit(1)
