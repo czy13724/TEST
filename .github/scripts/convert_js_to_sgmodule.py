@@ -87,50 +87,52 @@ def main():
 
 
 
-# 定义正则表达式，匹配注释行形式，包括任何尾随的空白字符或新行
-commit_pattern = re.compile(r'// Adding a dummy sgmodule commit\(\d+\)\s*\n?')
+# 定义匹配注释的正则表达式
+commit_pattern = re.compile(r'// Adding a dummy sgmodule commit\((\d+)\)')
 
-# 获取文件的Git提交次数
-def get_git_commit_count(file_path):
-    cmd = ["git", "rev-list", "--count", "HEAD", file_path]
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode == 0:
-        return result.stdout.strip()
-    else:
-        raise Exception(f"Error getting commit count: {result.stderr}")
+# 从内容中提取最大的计数值
+def extract_max_count(content):
+    counts = commit_pattern.findall(content)
+    max_count = max(map(int, counts)) if counts else 0
+    return max_count
 
-# 更新文件中的计数注释
-def update_file_with_commit_count(file_path, commit_count):
+# 更新文件中的注释计数
+def update_file_commit_count(file_path):
     with open(file_path, 'r+', encoding='utf-8') as file:
         content = file.read()
-        
-        # 替换文件中所有匹配的注释
-        content = commit_pattern.sub('', content).rstrip()
-        
-        # 在文件末尾添加带有正确计数的注释
-        content += f'\n// Adding a dummy sgmodule commit({commit_count})\n'
 
-        # 重新写入文件
+        # 提取现有注释中的最大计数值
+        max_count = extract_max_count(content)
+
+        # 删除所有现有的计数注释
+        content = re.sub(commit_pattern, '', content)
+
+        # 新的计数值为最大计数值加1
+        new_count = max_count + 1
+        new_commit_comment = f'// Adding a dummy sgmodule commit({new_count})\n'
+
+        # 在文件末尾追加新注释
+        content = content.rstrip() + '\n' + new_commit_comment
+
+        # 写入新的文件内容
         file.seek(0)
         file.write(content)
         file.truncate()
 
-# 处理目录中的所有文件
-def process_files(directory):
+# 处理目录中的所有适配文件
+def process_directory(directory):
     for root, dirs, files in os.walk(directory):
         for file_name in files:
             if file_name.endswith(('.js', '.conf', '.snippet')):
                 file_path = os.path.join(root, file_name)
-                commit_count = get_git_commit_count(file_path)
-                update_file_with_commit_count(file_path, commit_count)
-                print(f"Updated {file_path} with commit count {commit_count}")
+                update_file_commit_count(file_path)
 
 def main():
-    # 假设当前目录为代码所在目录
-    process_files('.')
-    # 执行Git添加和提交操作
-    os.system('git add .')
-    os.system('git commit -m "Updated commit counts in comments"')
+    process_directory('.')
+    # 添加所有更改到git
+    subprocess.run(['git', 'add', '.'])
+    # 提交这些更改
+    subprocess.run(['git', 'commit', '-m', 'Update commit counts'])
 
 if __name__ == "__main__":
     main()
