@@ -150,12 +150,11 @@ async signin() {
 
 
 // 积分查询
+// 如果没有找到userId，则通知用户并终止脚本执行
 if (!userId) {
-    console.log("❌ 没有设置userId");
-    $.msg($.name, "", "❌ 没有设置userId，请在BoxJs中进行配置。");
-} else {
-    // 执行剩余的脚本逻辑，例如调用 point 函数等
-
+    $.log("❌ 没有设置userId，请在BoxJs中设置您的userId。");
+    return; 
+}
  async point() {
          try {
              const options = {
