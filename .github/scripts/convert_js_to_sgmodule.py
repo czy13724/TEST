@@ -86,48 +86,50 @@ def main():
 
 
 
-# 正则表达式匹配提交计数注释
-commit_count_pattern = re.compile(r'// Adding a dummy sgmodule commit\((\d+)\)')
 
-def increment_commit_count(file_content):
-    # 查找现有的提交计数注释，如果找到则增加计数
-    match = commit_count_pattern.search(file_content)
-    if match:
-        new_count = int(match.group(1)) + 1
-        new_content = commit_count_pattern.sub(f'// Adding a dummy sgmodule commit({new_count})', file_content)
-        return new_content, True
-    return file_content, False
+# 定义正则表达式，匹配注释行形式，包括任何尾随的空白字符或新行
+commit_pattern = re.compile(r'// Adding a dummy sgmodule commit\(\d+\)\s*\n?')
 
-def add_commit_count(file_content):
-    # 在文件末尾添加提交次数为1的新注释
-    return file_content.rstrip() + '\n\n// Adding a dummy sgmodule commit(1)\n'
+# 获取文件的Git提交次数
+def get_git_commit_count(file_path):
+    cmd = ["git", "rev-list", "--count", "HEAD", file_path]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        raise Exception(f"Error getting commit count: {result.stderr}")
 
-def process_file(file_path):
+# 更新文件中的计数注释
+def update_file_with_commit_count(file_path, commit_count):
     with open(file_path, 'r+', encoding='utf-8') as file:
         content = file.read()
+        
+        # 替换文件中所有匹配的注释
+        content = commit_pattern.sub('', content).rstrip()
+        
+        # 在文件末尾添加带有正确计数的注释
+        content += f'\n// Adding a dummy sgmodule commit({commit_count})\n'
 
-        # 更新注释次数或者添加新的注释
-        updated_content, found = increment_commit_count(content)
-        if not found:
-            updated_content = add_commit_count(content)
-
-        # 重写整个文件，并删除文件中原有内容的其余部分
+        # 重新写入文件
         file.seek(0)
-        file.write(updated_content)
+        file.write(content)
         file.truncate()
 
-def main():
-    # 包括'.js', '.conf', '.snippet'格式的文件
-    extensions = ['.js', '.conf', '.snippet']    
-    for root, dirs, files in os.walk('.'):
-        for file in files:
-            if any(file.endswith(ext) for ext in extensions):
-                file_path = os.path.join(root, file)
-                process_file(file_path)
-                # 把文件添加到Git暂存区
-                os.system(f'git add \"{file_path}\"')
+# 处理目录中的所有文件
+def process_files(directory):
+    for root, dirs, files in os.walk(directory):
+        for file_name in files:
+            if file_name.endswith(('.js', '.conf', '.snippet')):
+                file_path = os.path.join(root, file_name)
+                commit_count = get_git_commit_count(file_path)
+                update_file_with_commit_count(file_path, commit_count)
+                print(f"Updated {file_path} with commit count {commit_count}")
 
-    # 提交所有待提交的更改
+def main():
+    # 假设当前目录为代码所在目录
+    process_files('.')
+    # 执行Git添加和提交操作
+    os.system('git add .')
     os.system('git commit -m "Updated commit counts in comments"')
 
 if __name__ == "__main__":
