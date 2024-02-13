@@ -149,37 +149,43 @@ async signin() {
 }
 
 
-//积分查询
-async point() {
-        try {
-            const options = {
-                //签到任务调用签到接口
-                url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,
-                //请求头, 所有接口通用
-                headers: {
-                    "content-type": "application/json",
-                    "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
-                    "Authorization":this.token,
-                },
-                // body: {}
-            };
-            //post方法
-            let result = await httpRequest(options);
-            console.log(result)
-            
-            if (result?.Code === 0) {
-                    $.log(`✅查询成功！`);
-                    $.pointMsg = `✅当前积分:${result?.Data?.score}个`;
-            } else {
-                $.log(`❌查询失败！`);
-                $.pointMsg = `❌查询失败`;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-}
+// 积分查询
+if (!userId) {
+    console.log("❌ 没有设置userId");
+    $.msg($.name, "", "❌ 没有设置userId，请在BoxJs中进行配置。");
+} else {
+    // 执行剩余的脚本逻辑，例如调用 point 函数等
 
+ async point() {
+         try {
+             const options = {
+                 //签到任务调用签到接口
+                 url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,
+                 //请求头, 所有接口通用
+                 headers: {
+                     "content-type": "application/json",
+                     "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
+                     "Authorization":this.token,
+                 },
+                 // body: {}
+             };
+             // post方法
+             let result = await httpRequest(options);
+             console.log(result)
+            
+             if (result?.Code === 0) {
+                     $.log(`✅查询成功！`);
+                     $.pointMsg = `✅当前积分:${result?.Data?.score}个`;
+             } else {
+                 $.log(`❌查询失败！`);
+                 $.pointMsg = `❌查询失败`;
+             }
+         } catch (e) {
+             console.log(e);
+         }
+     }
+ }
+}
 
 
 //获取Cookie
