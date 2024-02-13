@@ -65,6 +65,7 @@ hostname = bbs-api.iqoo.com
 // env.js 全局
 const $ = new Env("IQOO社区小程序");
 const ckName = "iqooc_data";
+let userId = $.getdata("userId") || '默认的userId';  
 //-------------------- 一般不动变量区域 -------------------------------------
 const Notify = 1;//0为关闭通知,1为打开通知,默认为1
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -148,19 +149,25 @@ async signin() {
 }
 
 
-//积分查询
+// 全局变量定义区域
+let userId = $.getdata("userId") || '默认的userId';  // 从BoxJs获取userId，如果未设置则使用默认值
+
+// 积分查询
 async point() {
     try {
-        // 从保存的数据中获取token和userId
-        const cookieValue = $.getdata(ckName);  
-        const [tokenValue, userId] = (cookieValue || "").split('@');
-
         const options = {
-            url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,
+            url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,  
             headers: {
                 "content-type": "application/json",
                 "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
-                "Authorization":this.token,
+                "Authorization": this.token,
+            },
+            // body: {}
+        };
+    } catch (e) {
+        console.log(e);
+    }
+}
             },
         };
     } catch (e) {
