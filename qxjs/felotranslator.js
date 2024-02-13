@@ -16,6 +16,4 @@ let obj = JSON.parse($response.body);
     $done({
         body: JSON.stringify(obj)
     });
-// Adding a dummy sgmodule commit(3)
-// Adding a dummy sgmodule commit(1)
-// Adding a dummy sgmodule commit(12)
+// Adding a dummy sgmodule commit(13)

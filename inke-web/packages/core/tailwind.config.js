@@ -5,4 +5,4 @@ module.exports = {
   ...sharedConfig,
   prefix: "novel-",
 };
-// Adding a dummy sgmodule commit(3)
+// Adding a dummy sgmodule commit(4)
