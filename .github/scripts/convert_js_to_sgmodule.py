@@ -83,43 +83,39 @@ def main():
 
                 print(f"Generated {sgmodule_file_path}")
 
-
-
-
-
-# 定义匹配注释的正则表达式
+# Define regular expressions that match comments
 commit_pattern = re.compile(r'// Adding a dummy sgmodule commit\((\d+)\)')
 
-# 从内容中提取最大的计数值
+# Extract the maximum count value from the content
 def extract_max_count(content):
     counts = commit_pattern.findall(content)
     max_count = max(map(int, counts)) if counts else 0
     return max_count
 
-# 更新文件中的注释计数
+# Update the comment count in the file
 def update_file_commit_count(file_path):
     with open(file_path, 'r+', encoding='utf-8') as file:
         content = file.read()
 
-        # 提取现有注释中的最大计数值
+     # Extract the maximum count value in an existing comment
         max_count = extract_max_count(content)
 
-        # 删除所有现有的计数注释
+       # Remove all existing count annotations
         content = re.sub(commit_pattern, '', content)
 
-        # 新的计数值为最大计数值加1
+        # New count value is the maximum count value plus 1
         new_count = max_count + 1
         new_commit_comment = f'// Adding a dummy sgmodule commit({new_count})\n'
 
-        # 在文件末尾追加新注释
+       # Append new comment at end of document
         content = content.rstrip() + '\n' + new_commit_comment
 
-        # 写入新的文件内容
+       # Write new file contents
         file.seek(0)
         file.write(content)
         file.truncate()
 
-# 处理目录中的所有适配文件
+# Process all adapter files in the directory
 def process_directory(directory):
     for root, dirs, files in os.walk(directory):
         for file_name in files:
@@ -129,9 +125,9 @@ def process_directory(directory):
 
 def main():
     process_directory('.')
-    # 添加所有更改到git
+   # Add all changes to git
     subprocess.run(['git', 'add', '.'])
-    # 提交这些更改
+  # Submit these changes
     subprocess.run(['git', 'commit', '-m', 'Update commit counts'])
 
 if __name__ == "__main__":
