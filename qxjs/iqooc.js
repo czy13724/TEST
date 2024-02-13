@@ -1,57 +1,25 @@
-/**************************************
-
+/*
 项目名称：IQOO社区
 项目作者：Levi(@czy13724)
 使用说明：微信小程序IQOO社区签到，获取到ck可用。
- // 感谢樱花大佬的脚本框架@sliverkiss 樱花频道 https://t.me/sliverkiss
+感谢樱花佬的脚本框架@sliverkiss https://t.me/sliverkiss
+脚本功能：积分可用于用于抽奖和兑换虚拟勋章，实际价值为零。详情参考小程序。
 更新日期：02/12/2024
-
-反馈群
-群组：https://t.me/IPAs_Dd
-频道：https://t.me/IPAs_share
-⚠️可复制本脚本头部链接进行远程引用，无需借助Script-Hub进行转换。其他应用配置请参考该配置。
------------------------------------------------
-***************
-【签到脚本配置】：
-***************
-
-Surge, ShadowRocket配置如下：
-本地-Script定时任务
-[Script]
-# （默认上午9点 执行，如需更改请自行修改cron表达式）
-IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js
-
-*********
-Quantumult X配置如下：
-[rewrite_local]
-^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/sign$ url script-request-body https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js
-
-[mitm]
-hostname = bbs-api.iqoo.com
-
-[task_local]
-0 9 * * * https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, tag=IQOO社区签到, img-url=https://raw.githubusercontent.com/czy13724/LeviIcons/main/leviicons/iqooc.png, enabled=true
------------------------------------------------
+反馈群组：https://t.me/IPAs_Dd
+⚠️可复制本脚本头部链接进行远程引用，无需借助Script-Hub进行转换。其他应用请参考上述头部配置cron表达式即可。
+------------------------------------------
 *************************
 【 签到脚本使用教程 】:
 *************************
-单账号：
-1.将签到脚本拉取到本地
-2.打开小程序随便逛逛，提示获取cookie成功则可以使用该脚本
-(方法一：
-如无法获取ck请开启抓包随意浏览，查找https://bbs-api.iqoo.com/api/域名下的Authorization。
+1.远程引用重写开启抓包并打开小程序随意浏览，提示获取ck成功则可以使用该脚本。
+2.如无法获取ck请开启抓包随意浏览，抓包https://bbs-api.iqoo.com/api/...域名下的Authorization和userId。
 打开boxjs->我的->数据查看器->在数据键输入iqooc_data,点击VIEW->在数据内容输入抓取到的Authorization，点击保存。
-方法二：远程引用重写开启抓包并打开小程序随意浏览，提示获取ck成功即可使用该脚本)
-3.关闭获取cookie脚本，防止产生不必要的mitm
-4.查询积分：
-(方法一：
-请开启抓包查找https://bbs-api.iqoo.com/api/v3/user?userId=该域名后的userId
-方法二：点击'我的'，查看消息上方的爱酷号
-1.抓包https://bbs-api.iqoo.com/api/域名下的Authorization和userId。
-2.打开boxjs->我的->数据查看器->在数据键输入iqooc_data,点击VIEW->在数据内容输入抓取到的Authorization，点击保存。
-3.若有多账号，用@分割，如Authorization1@Authorization2
-4.不支持多账号查询积分。
-====================================
+打开boxjs->我的->数据查看器->在数据键输入iqooc_userId,点击VIEW->在数据内容输入抓取到的userId，点击保存。
+如无法抓去userId则进入小程序，点击'我的'，查看消息上方的爱酷号，爱酷号等于userId。
+3.(可选)关闭获取cookie脚本，防止产生不必要的mitm
+4.若有多账号，用@分割，如Authorization1@Authorization2；userId1@userId2
+5.提示接口调用成功即为签到成功。不填写userId不影响签到功能只影响查询积分功能。
+------------------------------------------
 ⚠️【免责声明】
 ------------------------------------------
 1、此脚本仅用于学习研究，不保证其合法性、准确性、有效性，请根据情况自行判断，本人对此不承担任何保证责任。
@@ -61,11 +29,32 @@ hostname = bbs-api.iqoo.com
 5、本人对任何脚本引发的问题概不负责，包括但不限于由脚本错误引起的任何损失和损害。
 6、如果任何单位或个人认为此脚本可能涉嫌侵犯其权利，应及时通知并提供身份证明，所有权证明，我们将在收到认证文件确认后删除此脚本。
 7、所有直接或间接使用、查看此脚本的人均应该仔细阅读此声明。本人保留随时更改或补充此声明的权利。一旦您使用或复制了此脚本，即视为您已接受此免责声明。
-******************************************/
+***************
+【签到脚本配置】：
+***************
+
+Surge, ShadowRocket配置如下：
+# 本地-Script定时任务
+[Script]
+# （默认上午9点 执行，如需更改请自行修改cron表达式）
+IQOO社区签到 = type=cron, cronexp="0 9 * * *", script-path=https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, timeout=60, script-update-interval=-1
+
+*********
+Quantumult X配置如下：
+#重写规则
+[rewrite_local]
+^https:\/\/bbs-api\.iqoo\.com\/api\/v3\/sign$ url script-request-body https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js
+
+[mitm]
+hostname = bbs-api.iqoo.com
+#定时规则
+[task_local]
+0 9 * * * https://raw.githubusercontent.com/czy13724/Quantumult-X/main/scripts/iqooc.js, tag=IQOO社区签到, img-url=https://raw.githubusercontent.com/czy13724/LeviIcons/main/leviicons/iqooc.png, enabled=true
+
+*/
 // env.js 全局
 const $ = new Env("IQOO社区小程序");
 const ckName = "iqooc_data";
-let userId = $.getdata("userId") || '默认的userId';  
 //-------------------- 一般不动变量区域 -------------------------------------
 const Notify = 1;//0为关闭通知,1为打开通知,默认为1
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -74,6 +63,7 @@ let userCookie = ($.isNode() ? process.env[ckName] : $.getdata(ckName)) || '';
 let userList = [];
 let userIdx = 0;
 let userCount = 0;
+let userId = $.getdata("iqooc_userId") || '默认的iqooc_userId';  
 //调试
 $.is_debug = ($.isNode() ? process.env.IS_DEDUG : $.getdata('is_debug')) || 'false';
 // 为通知准备的空数组
@@ -141,7 +131,7 @@ async signin() {
             }
         } else {
           
-            $.signMsg = `${result?.Message}`;
+            $.signMsg = `${result?.✅Message}`;
         }
     } catch (e) {
         console.log(e);
@@ -150,11 +140,6 @@ async signin() {
 
 
 // 积分查询
-// 如果没有找到userId，则通知用户并终止脚本执行
-if (!userId) {
-    $.log("❌ 没有设置userId，请在BoxJs中设置您的userId。");
-    return; 
-}
  async point() {
          try {
              const options = {
@@ -184,7 +169,7 @@ if (!userId) {
          }
      }
  }
-}
+
 
 
 //获取Cookie
