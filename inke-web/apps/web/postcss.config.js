@@ -6,4 +6,4 @@ module.exports = {
     autoprefixer: {},
   },
 };
-// Adding a dummy sgmodule commit(5)
+// Adding a dummy sgmodule commit(6)
