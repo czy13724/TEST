@@ -150,18 +150,23 @@ async signin() {
 
 //积分查询
 async point() {
-        try {
-            const options = {
-                //签到任务调用签到接口
-                url: `https://bbs-api.iqoo.com/api/v3/user?userId=1435970`,
-                //请求头, 所有接口通用
-                headers: {
-                    "content-type": "application/json",
-                    "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
-                    "Authorization":this.token,
-                },
-                // body: {}
-            };
+    try {
+        // 从保存的数据中获取token和userId
+        const cookieValue = $.getdata(ckName);  
+        const [tokenValue, userId] = (cookieValue || "").split('@');
+
+        const options = {
+            url: `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`,
+            headers: {
+                "content-type": "application/json",
+                "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
+                "Authorization":this.token,
+            },
+        };
+    } catch (e) {
+        console.log(e);
+    }
+}
             //post方法
             let result = await httpRequest(options);
             console.log(result)
@@ -181,12 +186,22 @@ async point() {
 
 
 
-//获取Cookie
+// 获取用户ID函数
+function getUserIdFromUrl(url) {
+    const userIdMatch = url.match(/userId=(\d+)/);
+    return userIdMatch ? userIdMatch[1] : null;
+}
+
+// 获取Cookie
 async function getCookie() {
     if ($request && $request.method != 'OPTIONS') {
+        // 提取token
         const tokenValue = $request.headers['access-token'] || $request.headers['authorization'] || $request.headers['Authorization'];
-        if (tokenValue) {
-            $.setdata(tokenValue, ckName);
+        // 从请求URL中提取userId
+        const userId = getUserIdFromUrl($request.url);
+        if (tokenValue && userId) {
+            const ckValue = `${tokenValue}@${userId}`;
+            $.setdata(ckValue, ckName);
             $.msg($.name, "", "🎉获取签到Cookie成功");
         } else {
             $.msg($.name, "", "❌获取签到Cookie失败");
