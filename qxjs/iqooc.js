@@ -67,6 +67,7 @@ hostname = bbs-api.iqoo.com
 // env.js 全局
 const $ = new Env("IQOO社区小程序");
 const ckName = "iqooc_data";
+const userId = "iqooc_userId";
 //-------------------- 一般不动变量区域 -------------------------------------
 const Notify = 1;//0为关闭通知,1为打开通知,默认为1
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -153,7 +154,6 @@ async signin() {
 //积分查询
 async point() {
         try {
-            const userId = $prefs.valueForKey('iqooc_userId');
             const url = `https://bbs-api.iqoo.com/api/v3/user?userId=${userId}`;
                 //请求头, 所有接口通用
                 headers: {
