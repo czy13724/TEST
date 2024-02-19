@@ -6,4 +6,4 @@ module.exports = {
   tabWidth: 2,
   plugins: [require("prettier-plugin-tailwindcss")],
 };
-// Adding a dummy sgmodule commit(21)
+// Adding a dummy sgmodule commit(22)
