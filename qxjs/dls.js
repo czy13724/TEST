@@ -124,7 +124,7 @@ async signin() {
                 url: `https://vip.ixiliu.cn/mp/sign/applyV2`,
                 //请求头, 所有接口通用
                 headers: {
-                    "content-type": "application/json",
+                    "content-type": "application/json;charset=utf-8",
                     "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
                     "Access-Token":this.token,
                     "sid":10006,
@@ -160,7 +160,7 @@ async point() {
                 url: `https://vip.ixiliu.cn/mp/sign/infoV2,`
                 //请求头, 所有接口通用
                 headers: {
-                    "content-type": "application/json",
+                    "content-type": ";application/json;charset=utf-8",
                     "User-Agent": "Mozilla/5.0 (iPad; CPU OS 16_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.47(0x18002f28) NetType/WIFI Language/zh_CN",
                     "Access-Token":this.token,
                     "sid":10006,
