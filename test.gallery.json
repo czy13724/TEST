@@ -1,9 +1,0 @@
-{
-    "name": "Levi任务合集订阅",
-    "description": "如有侵权请联系@PMLevibot删除。tg机器人：https://t.me/PMLevibot",
-    "task": [
-        {
-            "config": "28 16 * * * https://raw.githubusercontent.com/czy13724/TEST/main/javascript/macat.js, tag=macat, img-url=https://raw.githubusercontent.com/czy13724/TEST/main/image/macat.png, enabled=false"
-        }
-    ]
-}
