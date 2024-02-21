@@ -5,12 +5,12 @@
 name: Generate-gisttask-sub
 
 on:
-  push:
-    paths:
-    - 'image/**'
-  pull_request:
-    paths:
-    - 'image/**'
+#  push:
+#    paths:
+#    - 'image/**'
+#  pull_request:
+#    paths:
+#    - 'image/**'
   workflow_dispatch:
 
 jobs:
