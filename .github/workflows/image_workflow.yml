@@ -5,12 +5,12 @@
 name: Image Workflow
 
 on:
-  push:
-    paths:
-      - 'test/**' # 监视 test 文件夹及其子文件夹下的内容
-  pull_request:
-    paths:
-      - 'test/**' # 监视 test 文件夹及其子文件夹下的内容
+#  push:
+#    paths:
+#      - 'test/**' # 监视 test 文件夹及其子文件夹下的内容
+#  pull_request:
+#    paths:
+#      - 'test/**' # 监视 test 文件夹及其子文件夹下的内容
   workflow_dispatch:
 
 jobs:
