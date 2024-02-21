@@ -4,18 +4,18 @@
 name: Generate_task_jsonfile
 
 on:
-  push:
-    paths:
-      - '.github/scripts/**'
-      - 'javascript/**'
-      - 'conf/**'
-      - 'image/**'
-  pull_request:
-    paths:
-      - '.github/scripts/**'
-      - 'javascript/**'
-      - 'conf/**'
-      - 'image/**'
+#  push:
+  #  paths:
+   #   - '.github/scripts/**'
+   #   - 'javascript/**'
+   #   - 'conf/**'
+   #   - 'image/**'
+#  pull_request:
+  #  paths:
+  #    - '.github/scripts/**'
+  #    - 'javascript/**'
+  #    - 'conf/**'
+  #    - 'image/**'
   workflow_dispatch:
 
 jobs:
