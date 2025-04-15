@@ -64,7 +64,7 @@ async function loadLeviUtils() {
 
     console.log(`🚀 ${$.name}: 开始下载 LeviUtils 代码`);
     return new Promise(async (resolve) => {
-        $.getScript('https://raw.githubusercontent.com/你的仓库路径/LeviUtilsKit.js').then(fn => {
+        $.getScript('https://cdn.jsdelivr.net/gh/czy13724/TEST@refs/heads/main/LeviUtilsKit.js').then(fn => {
             $.setdata(fn, 'LeviUtils_code');
             eval(fn);
             const LeviUtils = creatLeviUtils(); // 创建工具对象
