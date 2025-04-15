@@ -1,16 +1,17 @@
 /*
-
-
+*
     __              _ _                       
    / /   ___ _   __(_|_)________ _____ ___  __
   / /   / _ \ | / / / / ___/ __ `/ __ `/ / / /
  / /___/  __/ |/ / / (__  ) /_/ / /_/ / /_/ / 
 /_____/\___/|___/_/_/____/\__, /\__,_/\__, /  
                          /____/      /____/   
-
-==============================================
+    LeviUtilsKit
+                   by Levi 2025.04.15
+----------------------------------------
+=============================================
 📦 LeviUtilsKit.js - 全平台兼容通用工具箱 v1.0.0
-==============================================
+=============================================
 
 📌【用途说明】
 本工具箱用于支持 Quantumult X、Surge、Loon、Stash、Shadowrocket、Node.js（青龙）平台的通用脚本开发。
@@ -24,10 +25,11 @@
 - Shadowrocket
 - Node.js（支持青龙）
 
+// 📦 使用方式：
+// ✅ 方式一（推荐）：在脚本末尾直接粘贴本工具箱代码
 📌【引入方式】
 适用于脚本最上方：
   const $ = require('./LeviUtilsKit')('脚本名称');
-
 📌【提供功能】
 - $.log(...)          → 日志输出（支持分级别）
 - $.msg(...)          → 多平台通知支持
@@ -39,7 +41,6 @@
 - $.time(...)         → 时间格式化
 - $.done(...)         → 脚本结束
 - $.debug(...)        → Debug 日志（需开启 $.is_debug = true）
-
 📌【使用样例】
   const $ = require('./LeviUtilsKit')('示例脚本');
 
@@ -51,9 +52,27 @@
 
   $.done();
 */
+// ✅ 方式二（远程）：
+// 🚀 远程引入 Levi 工具箱
+async function loadLeviUtils() {
+    let code = ($.isNode() ? process.env['LeviUtils_code'] : $.getdata('LeviUtils_code')) || '';
+    if (code && Object.keys(code).length) {
+        console.log(`✅ ${$.name}: 缓存中存在 LeviUtils 代码，跳过下载`)
+        eval(code);
+        return creatLeviUtils(); // 用这个函数构建工具对象
+    }
 
-
- */
+    console.log(`🚀 ${$.name}: 开始下载 LeviUtils 代码`);
+    return new Promise(async (resolve) => {
+        $.getScript('https://raw.githubusercontent.com/你的仓库路径/LeviUtilsKit.js').then(fn => {
+            $.setdata(fn, 'LeviUtils_code');
+            eval(fn);
+            const LeviUtils = creatLeviUtils(); // 创建工具对象
+            console.log(`✅ LeviUtils 加载成功`);
+            resolve(LeviUtils);
+        });
+    });
+}
 
 // 环境判断函数封装
 function LeviUtilsKit(name) {
@@ -171,3 +190,19 @@ function LeviUtilsKit(name) {
 }
 
 module.exports = LeviUtilsKit;
+
+
+// 📤 导出方法（用于远程使用时创建工具对象）
+function creatLeviUtils() {
+    return {
+        Request,
+        parseJwt,
+        ObjectKeys2LowerCase,
+        sendMsg,
+        DoubleLog,
+        checkEnv,
+        debug,
+        Env,
+        createProxy
+    }
+}
