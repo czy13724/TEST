@@ -7,11 +7,11 @@ name: Update Task Collection
 
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight UTC
+#  schedule:
+#    - cron: '0 0 * * *'  # Run daily at midnight UTC
 
 jobs:
   update-collection:
@@ -34,7 +34,7 @@ jobs:
     - name: Run task collection script
       env:
         GISTID: ${{ secrets.GISTID }}
-      run: python .github/scripts/gist_task_generator.py
+ #     run: python .github/scripts/gist_task_generator.py
 
     - name: Commit and push if changed
       run: |
