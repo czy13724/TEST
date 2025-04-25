@@ -8,6 +8,11 @@
 # 4. 设置以下 Secrets 环境变量以启用通知（可选项，未设置则不推送）
 # 5. 可手动运行或等待定时触发（默认每天执行一次）
 
+# 私有仓库在Run sync_SCRIPT.py步骤前添加并启用该步骤(修改为自己的用户名和邮箱)：
+#      - name: Set up Git user
+#        run: |
+#          git config --global user.email "ypur-email"
+#          git config --global user.name "your-username"   
 # ------------------------------------------------------------------------
 # script-gist.json 文件格式如下（示例）：
 # {
