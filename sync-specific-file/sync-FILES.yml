@@ -43,6 +43,7 @@ on:
 
 env:
   CLEAN_MODE: ${{ github.event.inputs.clean_mode }}            # 谨慎开启。如你的配置文件链接访问失败/你移除了部分文件，开启后工作流执行完毕会将你备份的对应文件移除，即是否清理未在 script-gist.json 中的保留的历史文件（true/false）
+  TARGET_BRANCH: ${{ github.event.inputs.target_branch }}      # 推送分支 默认main
   FORCE_NOTIFY: true                                           # 自定义开启。强制推送通知，需在仓库secret里添加配置，搭配下方可选通知方式使用。（true/false）
   NOTIFY_LANG: ${{ github.event.inputs.notify_lang }}          # 通知语言配置 仅支持中英切换 (zh-cn或en-us)
   BARK_PUSH_URL: ${{ secrets.BARK_PUSH_URL }}                  # Bark 推送完整 URL，例如：https://api.day.app/你的Key
