@@ -13,9 +13,10 @@
 # {
 #   "示例1": "https://raw.githubusercontent.com/example1.js",
 #   "示例2": "https://raw.githubusercontent.com/example2.txt",
+#   ...,
 #   "example": "https://gist.githubusercontent.com/raw/example.json"
-#   ...
 # }
+# ⚠️ script-gist.json 文件最后一个链接不需要加逗号，否则报错！
 # ------------------------------------------------------------------------
 name: Specific Files Backup via
 
