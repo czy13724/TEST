@@ -1,0 +1,46 @@
+# 搭配sync-FILES.py使用
+# 作者：Levi
+name: Specific Files Backup via
+
+on:
+  schedule:
+    - cron: '0 2 * * *'        # UTC时间 到规定时间自动执行
+  push:                        # 监测文件内容改动 若有改动自动执行
+    paths:
+      - 'script-gist.json'     # 监视根目录文件夹script-gist.json内容是否改动
+  workflow_dispatch:           # 手动执行备份
+
+env:
+  CLEAN_MODE: true                                             # 谨慎开启。如你的配置文件链接访问失败/你移除了部分文件，开启后工作流执行完毕会将你备份的对应文件移除，即是否清理未在 script-gist.json 中的保留的历史文件（true/false）
+  FORCE_NOTIFY: true                                           # 自定义开启。强制推送通知，需在仓库secret里添加配置，搭配下方可选通知方式使用。（true/false）
+  NOTIFY_LANG: zh-cn                                           # 通知语言配置 仅支持中英切换 (zh-cn或en-us)
+  BARK_PUSH_URL: ${{ secrets.BARK_PUSH_URL }}                  # Bark 推送完整 URL，例如：https://api.day.app/你的Key
+  SERVERCHAN_SEND_KEY: ${{ secrets.SERVERCHAN_SEND_KEY }}      # Server酱 SendKey（sct.ftqq.com 获取）
+  WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}        # 企业微信机器人 Webhook 地址
+  TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}                    # Telegram Bot Token（BotFather 获取）
+  TG_USER_ID: ${{ secrets.TG_USER_ID }}                        # Telegram 用户 ID（通过 @userinfobot 获取）
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Requests
+        run: pip install requests
+
+      - name: Set up Git user
+        run: |
+        # 公开仓库可使用以下配置，如私有仓库使用请将下方改为自己的邮箱和用户名
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"        
+
+      - name: Run sync_FILES.py
+        # 如你不想把这个文件放在仓库根目录下，请自行修改以下路径 格式为 python3 你想要的路径/sync_FILES.py
+        run: python3 sync_FILES.py
