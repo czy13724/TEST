@@ -16,8 +16,8 @@
 # ------------------------------------------------------------------------
 # script-gist.json 文件格式如下（示例）：
 # {
-#   "exmaple签到": "https://raw.githubusercontent.com/example1.js",
-#   "示例签到": "https://gist.githubusercontent.com/raw/example2.js"
+#   "exmaple": "https://raw.githubusercontent.com/example1.js",
+#   "示例": "https://gist.githubusercontent.com/raw/example2.js"
 # }
 # ------------------------------------------------------------------------
 
