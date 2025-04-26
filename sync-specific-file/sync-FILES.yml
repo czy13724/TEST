@@ -29,13 +29,17 @@ on:
   workflow_dispatch:           # 手动执行备份
     inputs:
       clean_mode:
-        description: '是否清理本地多余文件？true=清理，false=不清理'
+        description: '是否清理未在 script-gist.json 中的保留的历史文件?(true=清理，false=不清理)'
         required: false
         default: 'false'
       notify_lang:
-        description: '通知语言 (en-us/zh-cn)'
+        description: '通知语言 (en-us=英文，zh-cn=中文)'
         required: false
-        default: 'zh-cn'
+        default: 'en-us'
+      target_branch:
+        description: '要推送到哪个分支？（默认 main）'
+        required: false
+        default: 'main'  
 
 env:
   CLEAN_MODE: ${{ github.event.inputs.clean_mode }}            # 谨慎开启。如你的配置文件链接访问失败/你移除了部分文件，开启后工作流执行完毕会将你备份的对应文件移除，即是否清理未在 script-gist.json 中的保留的历史文件（true/false）
