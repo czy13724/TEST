@@ -11,7 +11,7 @@
 # 私有仓库在Run sync_SCRIPT.py步骤前添加并启用该步骤(修改为自己的用户名和邮箱)：
 #      - name: Set up Git user
 #        run: |
-#          git config --global user.email "ypur-email"
+#          git config --global user.email "your-email"
 #          git config --global user.name "your-username"   
 # ------------------------------------------------------------------------
 # script-gist.json 文件格式如下（示例）：
@@ -36,7 +36,7 @@ on:
 
 
 env:
-  CLEAN_MODE: true                            # 是否清理未在 script-gist.json 中的历史文件（true/false）
+  CLEAN_MODE: false                            # 是否清理未在 script-gist.json 中的历史文件（true/false）
   FORCE_NOTIFY: true                          # 是否无更新也推送通知（true/false）
   NOTIFY_LANG: zh-cn                          # 通知语言（zh-cn = 中文，en-us = 英文）
   BARK_PUSH_URL: ${{ secrets.BARK_PUSH_URL }}               # Bark 推送完整 URL，例如：https://api.day.app/你的Key
