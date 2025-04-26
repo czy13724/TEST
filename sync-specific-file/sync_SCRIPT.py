@@ -1,3 +1,4 @@
+# 本版只能备份js文件
 #!/usr/bin/env python3
 import os, json, requests
 from urllib.parse import quote
