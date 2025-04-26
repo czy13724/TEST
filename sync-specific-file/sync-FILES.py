@@ -1,4 +1,6 @@
 # 本版可备份任意类型文件
+# 作者：Levi
+# 需搭配sync_FILES.yml使用
 #!/usr/bin/env python3
 import os, json, requests
 from urllib.parse import quote, urlparse
@@ -117,14 +119,19 @@ def cleanup_files(valid_files_set):
                 subdir = os.path.relpath(root, BACKUP_DIR)
                 deleted_files.append((full_path, subdir))
                 deleted += 1
-
+# Bark app通知
 def send_bark(title, content, url):
+    icon = os.getenv("BARK_ICON_URL")  # 获取 BARK_ICON_URL 环境变量
     try:
-        requests.get(f"{url}/{quote(title)}/{quote(content)}", timeout=5)
+        # 如果设置了图标，加入 ?icon 参数
+        if icon:
+            requests.get(f"{url}/{quote(title)}/{quote(content)}?icon={quote(icon)}", timeout=5)
+        else:
+            requests.get(f"{url}/{quote(title)}/{quote(content)}", timeout=5)
         log("📲 Bark sent.")
     except Exception as e:
         log(f"❌ Bark failed: {e}")
-
+# Server酱通知
 def send_serverchan(title, content, key):
     try:
         requests.post(f"https://sctapi.ftqq.com/{key}.send",
@@ -132,7 +139,7 @@ def send_serverchan(title, content, key):
         log("📲 Server酱 sent.")
     except Exception as e:
         log(f"❌ Server酱 failed: {e}")
-
+# 企业微信机器人通知
 def send_wechat(title, content, webhook_url):
     try:
         requests.post(webhook_url,
@@ -141,7 +148,7 @@ def send_wechat(title, content, webhook_url):
         log("📲 企业微信 sent.")
     except Exception as e:
         log(f"❌ 企业微信 failed: {e}")
-
+# TG机器人通知
 def send_telegram(title, content, token, user_id):
     try:
         requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
