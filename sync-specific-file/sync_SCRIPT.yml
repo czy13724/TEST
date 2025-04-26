@@ -27,6 +27,13 @@ on:
   schedule:
     - cron: '0 2 * * *'        # 每天凌晨 2 点（UTC）自动运行
   workflow_dispatch:           # 支持手动运行
+  push:                        # 监测文件内容改动
+    paths:
+      - 'script-gist.json' # 监视根目录文件夹script-gist.json内容是否改动
+  pull_request:
+    paths:
+      - 'script-gist.json' # 监视根目录文件夹script-gist.json内容是否改动
+
 
 env:
   CLEAN_MODE: true                            # 是否清理未在 script-gist.json 中的历史文件（true/false）
