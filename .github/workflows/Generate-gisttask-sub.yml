@@ -1,0 +1,55 @@
+# 作者: Levi
+# 功能: 生成gist里的任务脚本，需要搭配script文件夹下的gist_task_js-to-json.py使用
+
+
+name: Generate-gisttask-sub
+
+on:
+#  push:
+#    paths:
+#    - 'image/**'
+#  pull_request:
+#    paths:
+#    - 'image/**'
+  workflow_dispatch:
+
+jobs:
+  generate-task-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        pip install python-dotenv
+        pip install PyGithub
+
+    - name: Generate Task JSON
+      run: python .github/scripts/gist/gist_task_js-to-json.py
+      env:
+        GETGISTID: ${{ secrets.GETGISTID }}
+
+    - name: Upload JSON to Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: gallery-json
+        path: ${{ github.workspace }}/taskgist.gallery.json
+
+    - name: Push to TEST Repository
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git add .
+        git commit -m "Add generated taskgistJSON file"
+        git push origin HEAD:main --force
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
