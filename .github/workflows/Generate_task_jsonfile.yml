@@ -1,0 +1,68 @@
+# 作者: Levi
+# 功能: 生成仓库内里的任务脚本，方便qx引用。需要搭配scripts文件夹下的Generate_task_jsonfile.py使用。js放置在javascript，png放置在image，conf放置在conf。
+
+name: Generate_task_jsonfile
+
+on:
+#  push:
+  #  paths:
+   #   - '.github/scripts/**'
+   #   - 'javascript/**'
+   #   - 'conf/**'
+   #   - 'image/**'
+#  pull_request:
+  #  paths:
+  #    - '.github/scripts/**'
+  #    - 'javascript/**'
+  #    - 'conf/**'
+  #    - 'image/**'
+  workflow_dispatch:
+
+jobs:
+  generate-task-jsonfile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'  
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Generate task JSON file
+      run: |
+        python .github/scripts/Generate_task_jsonfile.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: List files in current directory
+      run: ls -R ${{ github.workspace }}    
+
+    - name: Upload JSON to Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: gallery-json
+        path: ${{ github.workspace }}/test.gallery.json
+
+    - name: List files in current directory
+      run: ls -R ${{ github.workspace }}    
+        
+    - name: Push to TEST Repository
+      run: |
+        set -x
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git add .
+        git commit -m "Add generated task JSON file"
+        git push origin HEAD:main --force
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
