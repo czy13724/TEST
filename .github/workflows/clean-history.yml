@@ -1,0 +1,31 @@
+name: Hard Reset Git History
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+env:
+  BRANCH: Levi
+
+jobs:
+  clean-history:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Hard reset repository
+        run: |
+          git checkout ${BRANCH}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan temp_clean_branch
+          git add -A
+          git commit -m "Initialize clean history"
+          git branch -D ${BRANCH}
+          git branch -m ${BRANCH}
+          git push origin ${BRANCH} --force
