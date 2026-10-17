@@ -1,0 +1,60 @@
+# 使用目的：自动同步指定脚本链接并保存到当前仓库
+# 作者：Levi
+# 创建时间：2025/04/25
+# 使用方式：
+# 1. 在仓库根目录创建 script-gist.json 文件，格式为 {"脚本名称": "脚本链接"}
+# 2. 将 sync_SCRIPT.py 文件放入 .github/scripts 目录中
+# 3. 将此工作流文件放入 .github/workflows/sync_SCRIPT.yml
+# 4. 设置以下 Secrets 环境变量以启用通知（可选项，未设置则不推送）
+# 5. 可手动运行或等待定时触发（默认每天执行一次）
+
+# 私有仓库在Run sync_SCRIPT.py步骤前添加并启用该步骤(修改为自己的用户名和邮箱)：
+#      - name: Set up Git user
+#        run: |
+#          git config --global user.email "your-email"
+#          git config --global user.name "your-username"   
+# ------------------------------------------------------------------------
+# script-gist.json 文件格式如下（示例）：
+# {
+#   "exmaple": "https://raw.githubusercontent.com/example1.js",
+#   "示例": "https://gist.githubusercontent.com/raw/example2.js"
+# }
+# ------------------------------------------------------------------------
+
+name: Gist Backup via
+
+on:
+  schedule:
+    - cron: '0 2 * * *'        # 每天凌晨 2 点（UTC）自动运行
+  workflow_dispatch:           # 支持手动运行
+  push:                        # 监测文件内容改动
+    paths:
+      - 'script-gist.json' # 监视根目录文件夹script-gist.json内容是否改动
+
+env:
+  CLEAN_MODE: false                            # 是否清理未在 script-gist.json 中的历史文件（true/false）
+  FORCE_NOTIFY: true                          # 是否无更新也推送通知（true/false）
+  NOTIFY_LANG: zh-cn                          # 通知语言（zh-cn = 中文，en-us = 英文）
+  BARK_PUSH_URL: ${{ secrets.BARK_PUSH_URL }}               # Bark 推送完整 URL，例如：https://api.day.app/你的Key
+  SERVERCHAN_SEND_KEY: ${{ secrets.SERVERCHAN_SEND_KEY }}   # Server酱 SendKey（sct.ftqq.com 获取）
+  WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}     # 企业微信机器人 Webhook 地址
+  TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}                 # Telegram Bot Token（BotFather 获取）
+  TG_USER_ID: ${{ secrets.TG_USER_ID }}                     # Telegram 用户 ID（通过 @userinfobot 获取）
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Requests
+        run: pip install requests
+
+      - name: Run sync_SCRIPT.py
+        run: python3 .github/scripts/sync_SCRIPT.py
