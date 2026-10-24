@@ -1,0 +1,21 @@
+# 作者: Levi
+# 功能: 每日提交一次空的commit
+# 使用方法：复制所有代码找一个仓库新建一个工作流放入即可。修改此处邮箱，最好去GitHub邮箱栏使用npreply邮箱。使用时最好做几次手动测试。
+
+name: Empty Commit
+
+on:
+    schedule:
+        - cron:  '0 0 * * *'  # 每天在北京时间8:00运行
+    workflow_dispatch:  # 这一行是启用手动触发
+
+jobs:
+  single-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: bcanseco/github-contribution-graph-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GIT_EMAIL: 103307567+czy13724@users.noreply.github.com # replace me
