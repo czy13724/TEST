@@ -1,0 +1,106 @@
+# 使用目的：可用于备份上游仓库
+# 使用方法：（建议拉取到私库，防邮箱外漏。如使用公开仓库则建议使用GitHub默认邮箱和默认用户名防止外漏。）
+# 1.创建一个公开仓库/私有仓库；命名为backups
+# 2.在仓库里设置personal access token，token名称为SYNC_GITHUB_TOKEN，并授予对应权限。
+# 3.设置好Set up Git user部分的example@example.com和username改为你的GitHub绑定邮箱和你的GitHub用户名；
+# 4.将第100行的Levi替换为你的GitHub用户名
+# 5.在仓库根目录下新建config-sync.json文件。按照格式填写你要同步的上游仓库。如：上游仓库用户名Loyalsoldier上游仓库surge-rules上游分支release，则写为"Loyalsoldier"/"surge-rules:release"。每行一个并使用{}将所有要同步的仓库放在里面。手动运行一次工作流检查是否成功。
+# 注：config-sync.json文件内容最后一个仓库不允许在最后添加逗号
+# ------------------------------------------------------------------------
+# config-sync.json 文件内容格式如下：                                        
+# ["上游仓库用户名/上游仓库名称": "分支名",](最后一个仓库末尾不要添加逗号！)
+# ---------
+# 示例如下：
+# {                                                                       
+#   "ACL4SSR/ACL4SSR": "master",              // 单一仓库                  
+#   "Loyalsoldier/surge-rules": "release",    // 单一仓库                   
+#                                                                         
+#   "sudodia/intro_alg": "master",            // 同一作者单一仓库           
+#   "sudodia/graphbook": "master"             // 同一作者单一仓库            
+# }                                                                       
+# ------------------------------------------------------------------------
+
+
+#如需每日自动运行，则将# schedule:和 #  - cron: "0 0 * * *"前面的#删除。
+
+name: Upstream Sync
+
+permissions:
+  contents: write
+
+on:
+  # schedule:
+  #  - cron: "0 0 * * *" # 每天同步
+  workflow_dispatch:
+
+jobs:
+  sync_repos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Target Repositories
+        uses: actions/checkout@v4
+
+      - name: Set up Git user
+        run: |
+          git config --global user.email "example@example.com"
+          git config --global user.name "username"
+
+      - name: Sync Upstream Repositories
+        run: |
+          # 检查配置文件是否存在
+          if [ ! -f "config-sync.json" ]; then
+            echo "Error: config-sync.json not found!"
+            exit 1
+          fi
+
+          # 创建临时目录
+          temp_dir=$(mktemp -d)
+          
+          # 遍历配置文件中的所有仓库
+          jq -r 'to_entries | .[] | "\(.key)|\(.value)"' config-sync.json | while IFS='|' read -r repo_path branch; do
+            # 分割作者和仓库名
+            author=$(echo "$repo_path" | cut -d'/' -f1)
+            repo_name=$(echo "$repo_path" | cut -d'/' -f2)
+            
+            echo "Processing $repo_path:$branch"
+            
+            dir="$temp_dir/$author/$repo_name"
+            
+            # 克隆仓库
+            echo "Cloning $repo_path..."
+            mkdir -p "$dir"
+            if ! git clone --branch "$branch" --depth 1 "https://github.com/$repo_path.git" "$dir"; then
+              echo "Failed to clone $repo_path, skipping..."
+              continue
+            fi
+            
+            cd "$dir"
+            
+            # 直接获取最新的远程分支状态
+            echo "Fetching latest changes from $branch..."
+            if ! git fetch origin "$branch" --depth 1; then
+              echo "Failed to fetch from $repo_path, skipping..."
+              cd - > /dev/null
+              continue
+            fi
+            
+            # 直接重置到远程分支的最新状态
+            git reset --hard "origin/$branch"
+            
+            # 返回工作目录
+            cd "$GITHUB_WORKSPACE"
+            
+            # 同步到备份
+            echo "Syncing changes to backups..."
+            backup_dir="$GITHUB_WORKSPACE/$author/$repo_name"
+            mkdir -p "$backup_dir"
+            rsync -av --exclude='.git/' "$temp_dir/$author/$repo_name/" "$backup_dir/"
+            git add "$author"
+            git commit -m "Sync $repo_name from $author" || echo "No changes to commit."
+            git push "https://${{ secrets.SYNC_GITHUB_TOKEN }}@github.com/Levi/backups.git" main
+            
+            cd - > /dev/null
+          done
+          
+          # 清理临时目录
+          rm -rf "$temp_dir"          
